@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- 
+    Logo Icon for ClearVue
+    Concept: A clean, framed "view" representing a photograph, in a rounded rectangle shape (iOS app style).
+    - The icon is a stylized landscape inside a rounded rectangle.
+    - The gradient uses a teal color scheme.
+    - The colors are black, teal, and orange.
+  -->
+
+  <defs>
+    <!-- A teal gradient for the background of the icon. -->
+    <linearGradient id="logo-gradient" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#4fd1c5" /> <!-- Lighter Teal -->
+      <stop offset="100%" stop-color="#319795" /> <!-- Darker Teal -->
+    </linearGradient>
+  </defs>
+
+  <!-- The main group for the logo icon, centered in the viewbox -->
+  <g transform="translate(5, 5)">
+    <!-- The rounded rectangle background frame (squircle), representing a photo. -->
+    <rect x="0" y="0" width="50" height="50" rx="14" ry="14" fill="url(#logo-gradient)" />
+    
+    <!-- Stylized sun element in orange. -->
+    <circle cx="35" cy="15" r="5" fill="#f6ad55" />
+    
+    <!-- Mountain range representing the "Vue" (view), in shades of black/charcoal. -->
+    <!-- The clip-path ensures the mountains don't extend beyond the rounded rectangle -->
+    <clipPath id="squircle-clip">
+       <rect x="0" y="0" width="50" height="50" rx="14" ry="14" />
+    </clipPath>
+    <g clip-path="url(#squircle-clip)">
+        <path d="M -5 30 L 15 20 L 30 35 L 55 15 L 55 50 L -5 50 Z" fill="#2d3748" opacity="0.85" />
+        <path d="M -5 40 L 20 30 L 40 42 L 55 35 L 55 50 L -5 50 Z" fill="#1a202c" opacity="0.9" />
+    </g>
+  </g>
+</svg>
