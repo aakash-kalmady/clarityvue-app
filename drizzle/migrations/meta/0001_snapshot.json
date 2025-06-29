@@ -1,6 +1,6 @@
 {
-  "id": "1684249b-4836-47d3-a1e8-d1a926d97e9c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "2f1f9c47-4a6b-4df4-8db4-a41e21d7f6c9",
+  "prevId": "1684249b-4836-47d3-a1e8-d1a926d97e9c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -230,6 +230,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "displayName": {
+          "name": "displayName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "username": {
           "name": "username",
           "type": "text",
@@ -269,6 +275,13 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "profiles_clerkUserId_unique": {
+          "name": "profiles_clerkUserId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "clerkUserId"
+          ]
+        },
         "profiles_username_unique": {
           "name": "profiles_username_unique",
           "nullsNotDistinct": false,

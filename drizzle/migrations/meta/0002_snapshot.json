@@ -1,6 +1,6 @@
 {
-  "id": "1684249b-4836-47d3-a1e8-d1a926d97e9c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "a6e91286-0225-4ba2-b66b-923081374b1a",
+  "prevId": "2f1f9c47-4a6b-4df4-8db4-a41e21d7f6c9",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -226,6 +226,12 @@
         },
         "clerkUserId": {
           "name": "clerkUserId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "displayName": {
+          "name": "displayName",
           "type": "text",
           "primaryKey": false,
           "notNull": true

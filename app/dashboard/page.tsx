@@ -1,17 +1,23 @@
-import { SignedIn, UserButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
-import Link from "next/link";
-import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
 import NavBar from "@/components/NavBar";
+import { getProfile } from "@/server/profiles";
+import CreateProfileForm from "@/components/forms/CreateProfileForm";
 
 export default async function Page() {
-  const user = await currentUser();
+  const user = await auth();
+  const profile = await getProfile();
   return (
     <div>
       <NavBar />
-      <p>Hi {user?.fullName}!</p>
-      <p>Welcome to ClearVue</p>
-      <p>Your Dashboard</p>
+      {!profile ? (
+        <CreateProfileForm />
+      ) : (
+        <div>
+          <p>Hi {profile.displayName}!</p>
+          <p>Welcome to ClearVue</p>
+          <p>Your Dashboard</p>
+        </div>
+      )}
     </div>
   );
 }
