@@ -98,8 +98,6 @@ export const ImageTable = pgTable("images", {
   altText: text(),
   // A caption for the image.
   caption: text(),
-  // The location where the photo was taken.
-  location: text(),
   // Timestamp for when the image was uploaded.
   createdAt,
   updatedAt,
