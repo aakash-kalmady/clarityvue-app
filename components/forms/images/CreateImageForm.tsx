@@ -1,6 +1,6 @@
 "use client";
 
-import { postImage } from "@/server/images";
+import { createImageUrl } from "@/server/actions/images";
 import { FormEvent, useState } from "react";
 
 export default function CreateImageForm() {
@@ -34,9 +34,19 @@ export default function CreateImageForm() {
     setImageUrl(null);
 
     try {
-      const url = await postImage(file);
+      const { url, publicUrl } = await createImageUrl(file.name, file.type);
+      const response = await fetch(url, {
+        method: "PUT",
+        body: file, // The actual file object goes here
+        headers: {
+          "Content-Type": file.type, // The file's content type is required
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Upload failed.");
+      }
       setUploading(false);
-      setImageUrl(url);
+      setImageUrl(publicUrl);
     } catch (error: any) {
       setUploading(false);
       throw new Error(error);

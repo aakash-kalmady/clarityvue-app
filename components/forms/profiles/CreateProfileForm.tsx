@@ -1,6 +1,6 @@
 "use client";
 
-import { createProfile } from "@/server/profiles";
+import { createProfile } from "@/server/actions/profiles";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { useState } from "react";
 
