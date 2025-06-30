@@ -3,6 +3,7 @@
 import { createProfile } from "@/server/profiles";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function CreateProfileForm() {
   const [displayName, setDisplayName] = useState("");
@@ -10,7 +11,7 @@ export default function CreateProfileForm() {
   const [bio, setBio] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("");
   const [loading, setLoading] = useState(false);
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const data = {
       displayName,
       username,
@@ -18,7 +19,13 @@ export default function CreateProfileForm() {
       backgroundColor,
     };
     setLoading(true);
-    createProfile(data);
+    try {
+      await createProfile(data);
+      setLoading(false);
+    } catch (error: any) {
+      setLoading(false);
+      throw new Error(error);
+    }
   };
   return (
     <div>
@@ -46,7 +53,7 @@ export default function CreateProfileForm() {
         value={backgroundColor}
         onChange={(e) => setBackgroundColor(e.target.value)}
       />
-      <button onClick={onSubmit}>Submit</button>
+      <Button onClick={onSubmit}>Submit</Button>
     </div>
   );
 }
