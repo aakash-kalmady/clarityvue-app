@@ -28,9 +28,11 @@ CREATE TABLE "images" (
 CREATE TABLE "profiles" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"clerkUserId" text NOT NULL,
+	"displayName" text NOT NULL,
 	"username" text NOT NULL,
 	"bio" text DEFAULT 'Welcome to my profile!' NOT NULL,
 	"backgroundColor" text DEFAULT 'FFFFFF' NOT NULL,
+	"imageUrl" text NOT NULL,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "profiles_username_unique" UNIQUE("username")

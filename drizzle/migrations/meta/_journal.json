@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1751224913813,
-      "tag": "0000_goofy_roulette",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1751231939015,
-      "tag": "0001_ambiguous_doctor_doom",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1751232416110,
-      "tag": "0002_crazy_centennial",
+      "when": 1751249314943,
+      "tag": "0000_young_mathemanic",
       "breakpoints": true
     }
   ]

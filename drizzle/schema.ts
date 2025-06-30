@@ -28,6 +28,7 @@ export const ProfileTable = pgTable("profiles", {
   bio: text().notNull().default("Welcome to my profile!"),
   // A hex code for the profile's background color.
   backgroundColor: text().notNull().default("FFFFFF"),
+  imageUrl: text().notNull(),
   // Timestamp for when the profile was last updated. Updates automatically.
   createdAt,
   updatedAt,

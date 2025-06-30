@@ -1,7 +1,7 @@
 "use client";
 
 import { createProfile } from "@/server/profiles";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { useState } from "react";
 
 export default function CreateProfileForm() {
@@ -24,17 +24,25 @@ export default function CreateProfileForm() {
     <div>
       <input
         type="text"
+        placeholder="Display Name"
         value={displayName}
         onChange={(e) => setDisplayName(e.target.value)}
       />
       <input
         type="text"
+        placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
-      <input type="text" value={bio} onChange={(e) => setBio(e.target.value)} />
       <input
         type="text"
+        placeholder="Bio (Optional)"
+        value={bio}
+        onChange={(e) => setBio(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Background Color (Optional)"
         value={backgroundColor}
         onChange={(e) => setBackgroundColor(e.target.value)}
       />

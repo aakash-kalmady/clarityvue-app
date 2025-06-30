@@ -2,22 +2,24 @@
 
 import { db } from "@/drizzle/db";
 import { ProfileTable } from "@/drizzle/schema";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { newProfileFormSchema } from "./schema/profiles";
-import z from "zod";
 import { revalidatePath } from "next/cache";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
+import z from "zod";
 
 export async function createProfile(
   unsafeData: z.infer<typeof newProfileFormSchema>
 ): Promise<void> {
   try {
-    const { userId } = await auth();
+    const user = await currentUser();
     const { success, data } = newProfileFormSchema.safeParse(unsafeData);
-    if (!userId || !success) {
+    if (!user || !success) {
       throw new Error("user not authenticated or invalid profile data");
     }
-    await db.insert(ProfileTable).values({ ...data, clerkUserId: userId });
+    await db
+      .insert(ProfileTable)
+      .values({ ...data, imageUrl: user.imageUrl, clerkUserId: user.id });
   } catch (error: any) {
     throw new Error(`Error: ${error.message || error}`);
   } finally {

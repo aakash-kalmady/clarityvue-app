@@ -1,1 +1,0 @@
-ALTER TABLE "profiles" DROP CONSTRAINT "profiles_clerkUserId_unique";
