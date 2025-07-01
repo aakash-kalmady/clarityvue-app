@@ -4,6 +4,8 @@ import { createImageUrl } from "@/server/actions/images";
 import { FormEvent, useState } from "react";
 
 export default function CreateImageForm() {
+  // Define the maximum file size (10MB in bytes)
+  const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
   // State to hold the selected file
   const [file, setFile] = useState<File | null>(null);
   // State to manage loading status
@@ -14,11 +16,15 @@ export default function CreateImageForm() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files[0].size < MAX_IMAGE_SIZE) {
       setFile(e.target.files[0]);
       // Reset error and image URL when a new file is selected
       setError(null);
       setImageUrl(null);
+    } else {
+      setFile(null);
+      setImageUrl(null);
+      setError("File is larger than 5MB");
     }
   };
 

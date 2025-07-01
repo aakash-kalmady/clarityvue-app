@@ -4,7 +4,7 @@ import { SignedIn, UserButton } from "@clerk/nextjs";
 
 export default function NavBar() {
   return (
-    <nav className="flex items-center p-4 w-full bg-gray-500">
+    <nav className="flex items-center p-4 w-full bg-gray-700">
       <div>
         <Link
           href="/dashboard"

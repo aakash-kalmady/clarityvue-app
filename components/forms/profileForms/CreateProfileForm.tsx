@@ -8,14 +8,12 @@ export default function CreateProfileForm() {
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
-  const [backgroundColor, setBackgroundColor] = useState("");
   const [loading, setLoading] = useState(false);
   const handleSubmit = async () => {
     const data = {
       displayName,
       username,
       bio,
-      backgroundColor,
     };
     setLoading(true);
     try {
@@ -45,12 +43,6 @@ export default function CreateProfileForm() {
         placeholder="Bio (Optional)"
         value={bio}
         onChange={(e) => setBio(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Background Color (Optional)"
-        value={backgroundColor}
-        onChange={(e) => setBackgroundColor(e.target.value)}
       />
       <button onClick={handleSubmit}>Submit</button>
     </div>
