@@ -1,9 +1,7 @@
 import NavBar from "@/components/NavBar";
 import { getProfile } from "@/server/actions/profiles";
 import Image from "next/image";
-import CreateImageForm from "@/components/forms/imageForms/CreateImageForm";
-import DeleteImageForm from "@/components/forms/imageForms/DeleteImageForm";
-import getAlbums from "@/server/actions/albums";
+import { getAlbums } from "@/server/actions/albums";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import AlbumCard from "@/components/cards/AlbumCard";
@@ -13,7 +11,7 @@ export default async function Page() {
   if (!profile) return redirect("/dashboard/profile/new");
   const albums = await getAlbums();
   return (
-    <main className="w-full bg-amber-50">
+    <main className="w-full h-screen bg-amber-50">
       <NavBar />
       <div className="p-5">
         <div>
@@ -55,8 +53,6 @@ export default async function Page() {
               ))}
             </div>
           )}
-          <CreateImageForm />
-          <DeleteImageForm />
         </div>
       </div>
     </main>

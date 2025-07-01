@@ -12,10 +12,10 @@ export default function AlbumCard(props: AlbumCardProps) {
       <p>Title: {props.title}</p>
       <p>Description: {props?.description}</p>
       <Link
-        href={`dashboard/album/edit/${props.albumId}`}
         className="bg-black text-white text-center"
+        href={`dashboard/album/${props.albumId}`}
       >
-        Edit Album
+        View Album
       </Link>
     </div>
   );

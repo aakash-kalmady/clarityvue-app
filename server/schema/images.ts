@@ -1,9 +1,8 @@
 import { z } from "zod";
 
 export const ImageFormSchema = z.object({
-  imageUrl: z.string(),
-  altText: z.string(),
-  caption: z.string(),
-  albumId: z.string(),
+  imageUrl: z.string().min(2).max(2000),
+  altText: z.string().min(2).max(50),
+  caption: z.string().min(2).max(150),
   imageOrder: z.number(),
 });

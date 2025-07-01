@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function LandingPage() {
   return (
-    <main className="bg-gray-950 flex items-center justify-center gap-10 p-2 max-md:flex-col w-full h-full">
+    <main className="w-full h-screen bg-gray-950 flex items-center justify-center gap-10 p-2 max-md:flex-col ">
       <section className="flex flex-col items-center">
         <Image src="/assets/logo.png" width={200} height={200} alt="Logo" />
 
@@ -14,8 +14,8 @@ export default function LandingPage() {
         </h1>
 
         <p className="font-extralight text-white">
-          Join millions of professionals who easily book meetings with the #1
-          scheduling tool
+          Join millions of professionals who easily craft photo portfolios with
+          the #1 photo portfolio building tool!
         </p>
 
         <Image

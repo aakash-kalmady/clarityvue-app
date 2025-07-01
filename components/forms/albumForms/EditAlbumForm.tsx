@@ -1,8 +1,12 @@
 "use client";
 
-import { updateAlbum } from "@/server/actions/albums";
+import {
+  deleteAlbum,
+  getAlbumById,
+  updateAlbum,
+} from "@/server/actions/albums";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type EditAlbumFormProps = {
   albumId: string;
@@ -14,6 +18,27 @@ export default function EditAlbumForm(props: EditAlbumFormProps) {
   const [albumOrder, setAlbumOrder] = useState(0);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const handleLoad = async () => {
+      const album = await getAlbumById(props.albumId);
+      if (!album) throw new Error();
+      setTitle(album.title);
+      setDescription(album.description);
+      setAlbumOrder(album.albumOrder);
+    };
+    handleLoad();
+  }, []);
+
+  const handleDelete = async () => {
+    try {
+      await deleteAlbum(props.albumId);
+      router.push("/dashboard");
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
+
   const handleSubmit = async () => {
     const data = {
       title,
@@ -24,7 +49,7 @@ export default function EditAlbumForm(props: EditAlbumFormProps) {
     try {
       await updateAlbum(props.albumId, data);
       setLoading(false);
-      router.push("/dashboard");
+      router.push(`/dashboard/album/${props.albumId}`);
     } catch (error: any) {
       setLoading(false);
       throw new Error(error);
@@ -47,10 +72,21 @@ export default function EditAlbumForm(props: EditAlbumFormProps) {
       <input
         type="text"
         placeholder="albumOrder"
-        value={albumOrder}
+        value={albumOrder.toString()}
         onChange={(e) => setAlbumOrder(parseInt(e.target.value))}
       />
-      <button onClick={handleSubmit}>Submit</button>
+      <button
+        className="bg-black text-white text-center cursor-pointer"
+        onClick={handleSubmit}
+      >
+        Submit
+      </button>
+      <button
+        className="bg-black text-white text-center cursor-pointer"
+        onClick={handleDelete}
+      >
+        Delete Album
+      </button>
     </div>
   );
 }

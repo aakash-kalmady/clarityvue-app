@@ -23,9 +23,9 @@ export const ProfileTable = pgTable("profiles", {
 export const AlbumTable = pgTable("albums", {
   id: uuid().defaultRandom().primaryKey(),
   title: text().notNull(),
-  description: text(),
+  description: text().notNull(),
   clerkUserId: text().notNull(),
-  albumOrder: integer(),
+  albumOrder: integer().notNull(),
   createdAt,
   updatedAt,
 });
@@ -43,9 +43,9 @@ export const ImageTable = pgTable("images", {
   // The URL where the image is stored.
   imageUrl: text().notNull(),
   // Alternative text for accessibility.
-  altText: text(),
+  altText: text().notNull(),
   // A caption for the image.
-  caption: text(),
+  caption: text().notNull(),
   // Timestamp for when the image was uploaded.
   createdAt,
   updatedAt,
@@ -54,7 +54,7 @@ export const ImageTable = pgTable("images", {
     .notNull()
     .references(() => AlbumTable.id, { onDelete: "cascade" }),
   // The display order of this image within its album.
-  imageOrder: integer(),
+  imageOrder: integer().notNull(),
 });
 
 // Relations for the Image Table.

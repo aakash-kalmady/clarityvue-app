@@ -1,9 +1,14 @@
 "use client";
 
-import { createImageUrl } from "@/server/actions/images";
+import { createImage, createImageUrl } from "@/server/actions/images";
+import { useParams } from "next/navigation";
 import { FormEvent, useState } from "react";
 
-export default function CreateImageForm() {
+type CreateImageFormProps = {
+  albumId: string;
+};
+
+export default function CreateImageForm(props: CreateImageFormProps) {
   // Define the maximum file size (10MB in bytes)
   const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
   // State to hold the selected file
@@ -13,17 +18,23 @@ export default function CreateImageForm() {
   // State to store any error messages
   const [error, setError] = useState<string | null>(null);
   // State to store the URL of the uploaded image
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState("");
+
+  const [altText, setAltText] = useState("asdfasdf");
+
+  const [caption, setCaption] = useState("asdfasdf");
+
+  const [imageOrder, setImageOrder] = useState(0);
+
+  const { albumId } = useParams();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0].size < MAX_IMAGE_SIZE) {
       setFile(e.target.files[0]);
       // Reset error and image URL when a new file is selected
       setError(null);
-      setImageUrl(null);
     } else {
       setFile(null);
-      setImageUrl(null);
       setError("File is larger than 5MB");
     }
   };
@@ -34,14 +45,15 @@ export default function CreateImageForm() {
       setError("Please select a file to upload.");
       return;
     }
-
     setUploading(true);
     setError(null);
-    setImageUrl(null);
 
     try {
-      const { url, publicUrl } = await createImageUrl(file.name, file.type);
-      const response = await fetch(url, {
+      const { uploadUrl, publicUrl } = await createImageUrl(
+        file.name,
+        file.type
+      );
+      const response = await fetch(uploadUrl, {
         method: "PUT",
         body: file, // The actual file object goes here
         headers: {
@@ -51,8 +63,15 @@ export default function CreateImageForm() {
       if (!response.ok) {
         throw new Error("Upload failed.");
       }
-      setUploading(false);
       setImageUrl(publicUrl);
+      setUploading(false);
+      const data = {
+        imageUrl: publicUrl,
+        altText,
+        caption,
+        imageOrder,
+      };
+      await createImage(albumId as string, data);
     } catch (error: any) {
       setUploading(false);
       throw new Error(error);
@@ -61,7 +80,7 @@ export default function CreateImageForm() {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border border-gray-200 rounded-lg shadow-md bg-white">
       <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Upload an Image to S3
+        Upload an Image to Album
       </h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

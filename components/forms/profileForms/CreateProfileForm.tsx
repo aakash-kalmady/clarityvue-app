@@ -20,11 +20,10 @@ export default function CreateProfileForm() {
     try {
       await createProfile(data);
       setLoading(false);
+      router.push("/dashboard");
     } catch (error: any) {
       setLoading(false);
       throw new Error(error);
-    } finally {
-      router.push("/dashboard");
     }
   };
   return (
@@ -43,7 +42,7 @@ export default function CreateProfileForm() {
       />
       <input
         type="text"
-        placeholder="Bio (Optional)"
+        placeholder="Bio"
         value={bio}
         onChange={(e) => setBio(e.target.value)}
       />

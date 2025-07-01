@@ -36,7 +36,7 @@ export default function DeleteImageForm() {
   return (
     <div className="w-full max-w-md mx-auto p-8 my-6 space-y-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-center text-gray-800">
-        Delete an Image from S3
+        Delete an Image from Album
       </h2>
       <p className="text-center text-gray-600">
         Enter the URL of the image you want to remove.

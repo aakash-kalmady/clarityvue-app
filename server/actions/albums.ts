@@ -3,23 +3,34 @@
 import { db } from "@/drizzle/db";
 import { AlbumTable } from "@/drizzle/schema";
 import { auth } from "@clerk/nextjs/server";
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { AlbumFormSchema } from "../schema/albums";
 import z from "zod";
 import { revalidatePath } from "next/cache";
 
-// Infer the type of a row from the ProfileTable schema
+// Infer the type of a row from the AlbumTable schema
 type AlbumRow = typeof AlbumTable.$inferSelect;
 
-export default async function getAlbums(): Promise<AlbumRow[]> {
+export async function getAlbums(): Promise<AlbumRow[]> {
   const { userId } = await auth();
   if (!userId) {
     throw new Error();
   }
   const event = await db.query.AlbumTable.findMany({
     where: eq(AlbumTable.clerkUserId, userId),
+    orderBy: [asc(AlbumTable.albumOrder)],
   });
 
+  return event;
+}
+
+export async function getAlbumById(albumId: string): Promise<AlbumRow> {
+  const event = await db.query.AlbumTable.findFirst({
+    where: eq(AlbumTable.id, albumId),
+  });
+  if (!event) {
+    throw new Error("Failed to get album");
+  }
   return event;
 }
 
