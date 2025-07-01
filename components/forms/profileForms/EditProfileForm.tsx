@@ -1,11 +1,10 @@
 "use client";
 
-import { createProfile } from "@/server/actions/profiles";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { updateProfile } from "@/server/actions/profiles";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function CreateProfileForm() {
+export default function EditProfileForm() {
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
@@ -19,7 +18,7 @@ export default function CreateProfileForm() {
     };
     setLoading(true);
     try {
-      await createProfile(data);
+      await updateProfile(data);
       setLoading(false);
     } catch (error: any) {
       setLoading(false);

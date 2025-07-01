@@ -35,8 +35,6 @@ export const AlbumTable = pgTable("albums", {
   albumOrder: integer(),
   createdAt,
   updatedAt,
-  gridSize: integer(),
-  singleRow: boolean().default(false),
 });
 
 // Relations for the Album Table.

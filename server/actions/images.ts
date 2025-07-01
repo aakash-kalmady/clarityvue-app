@@ -7,7 +7,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-// Configure the AWS S3 client
+// AWS S3 client configuration
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -16,11 +16,11 @@ const s3Client = new S3Client({
   },
 });
 
-// This function uploads the file buffer to S3
+// retireves the put request url for the client to send the image to
 export async function createImageUrl(
   fileName: string,
   imgType: string
-): Promise<any> {
+): Promise<{ url: string; publicUrl: string }> {
   const uniqueFileName = `${Date.now()}-${fileName}`;
 
   const params = {
@@ -37,6 +37,7 @@ export async function createImageUrl(
   return { url, publicUrl };
 }
 
+// deletes an image from the s3 database
 export async function deleteImage(imageUrl: string): Promise<void> {
   // Create a URL object to easily parse it
   const url = new URL(imageUrl);

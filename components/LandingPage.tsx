@@ -5,12 +5,12 @@ import Image from "next/image";
 
 export default function LandingPage() {
   return (
-    <main className="bg-gray-950 flex w-screen h-screen items-center justify-center gap-10 p-4 animate-fade-in max-md:flex-col">
+    <main className="bg-gray-950 flex items-center justify-center gap-10 p-2 max-md:flex-col w-full h-full">
       <section className="flex flex-col items-center">
         <Image src="/assets/logo.png" width={200} height={200} alt="Logo" />
 
         <h1 className="text-2xl font-black lg:text-3xl text-white">
-          Your time, perfectly planned
+          Your photos, perfectly organized
         </h1>
 
         <p className="font-extralight text-white">
