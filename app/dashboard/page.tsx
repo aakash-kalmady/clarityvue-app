@@ -1,7 +1,5 @@
-import { auth } from "@clerk/nextjs/server";
 import NavBar from "@/components/NavBar";
 import { getProfile } from "@/server/actions/profiles";
-import CreateProfileForm from "@/components/forms/profileForms/CreateProfileForm";
 import Image from "next/image";
 import CreateImageForm from "@/components/forms/imageForms/CreateImageForm";
 import DeleteImageForm from "@/components/forms/imageForms/DeleteImageForm";
