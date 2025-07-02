@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import CreateImageForm from "@/components/forms/imageForms/CreateImageForm";
 import DeleteImageForm from "@/components/forms/imageForms/DeleteImageForm";
+import { Button } from "@/components/ui/button";
 
 export default async function AlbumPage({
   params,
@@ -15,17 +16,12 @@ export default async function AlbumPage({
   const images = await getImagesByAlbumId(albumId);
   return (
     <div>
-      <Link className="bg-black text-white text-center" href={"/dashboard"}>
-        Home
-      </Link>
       <h1>Album Title: {album.title}</h1>
       <p>Description: {album.description}</p>
-      <Link
-        className="bg-black text-white text-center"
-        href={`/album/edit/${album.id}`}
-      >
-        Edit Album
-      </Link>
+      <Button>
+        <Link href={`/album/edit/${album.id}`}>Edit Album</Link>
+      </Button>
+
       <div className="flex flex-row">
         <CreateImageForm albumId={album.id} />
         <DeleteImageForm />

@@ -1,5 +1,25 @@
-import EditProfileForm from "@/components/forms/profileForms/EditProfileForm";
+import ProfileForm from "@/components/forms/ProfileForm";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getProfile } from "@/server/actions/profiles";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function EditProfilePage() {
-  return <EditProfileForm />;
+  const { userId } = await auth();
+  if (!userId) throw new Error();
+  const profile = await getProfile(userId);
+  return (
+    <div className="h-full flex items-center justify-center">
+      <Card className="w-md border-8 border-amber-50 shadow-2xl shadow-accent-foreground">
+        {/* Header section of the card displaying the title */}
+        <CardHeader>
+          <CardTitle>Edit Profile</CardTitle>
+        </CardHeader>
+
+        {/* Content section of the card containing the event form */}
+        <CardContent>
+          <ProfileForm profile={profile} />
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

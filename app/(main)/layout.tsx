@@ -12,7 +12,15 @@ export default async function MainLayout({
       {/*render privatenavbar if user exists, otherwise public navbar  */}
       {userId && <NavBar />}
       {/* render the children*/}
-      <section className={userId ? "pt-28" : ""}>{children}</section>
+      <section
+        className={
+          userId
+            ? "pt-28 bg-neutral-200 w-full h-screen"
+            : "bg-gray-900 w-full h-screen"
+        }
+      >
+        {children}
+      </section>
     </main>
   );
 }

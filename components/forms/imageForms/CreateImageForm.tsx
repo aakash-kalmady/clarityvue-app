@@ -3,6 +3,7 @@
 import { createImage, createImageUrl } from "@/server/actions/images";
 import { useParams } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { toast } from "sonner";
 
 type CreateImageFormProps = {
   albumId: string;
@@ -73,6 +74,7 @@ export default function CreateImageForm(props: CreateImageFormProps) {
         imageOrder,
       };
       await createImage(albumId as string, data);
+      toast("Image has been uploaded.");
     } catch (error: any) {
       setUploading(false);
       throw new Error(error);

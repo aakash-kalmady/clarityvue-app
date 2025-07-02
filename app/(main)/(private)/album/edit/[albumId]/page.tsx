@@ -1,11 +1,27 @@
-"use client";
+import AlbumForm from "@/components/forms/AlbumForm";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getAlbumById } from "@/server/actions/albums";
 
-import { useParams } from "next/navigation";
-import EditAlbumForm from "@/components/forms/albumForms/EditAlbumForm";
+export default async function EditAlbum({
+  params,
+}: {
+  params: { albumId: string };
+}) {
+  const albumId = params.albumId;
+  const album = await getAlbumById(albumId);
+  return (
+    <div className="h-full flex items-center justify-center">
+      <Card className="w-md border-8 border-amber-50 shadow-2xl shadow-accent-foreground">
+        {/* Header section of the card displaying the title */}
+        <CardHeader>
+          <CardTitle>Edit Album</CardTitle>
+        </CardHeader>
 
-export default function EditAlbum() {
-  const params = useParams();
-  const { albumId } = params;
-  console.log(albumId as string);
-  return <EditAlbumForm albumId={albumId as string} />;
+        {/* Content section of the card containing the event form */}
+        <CardContent>
+          <AlbumForm album={album} />
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
