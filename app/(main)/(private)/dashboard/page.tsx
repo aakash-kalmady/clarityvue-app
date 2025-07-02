@@ -1,18 +1,19 @@
-import NavBar from "@/components/NavBar";
 import { getProfile } from "@/server/actions/profiles";
-import Image from "next/image";
 import { getAlbums } from "@/server/actions/albums";
 import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
+import Image from "next/image";
 import Link from "next/link";
 import AlbumCard from "@/components/cards/AlbumCard";
 
 export default async function Page() {
-  const profile = await getProfile();
-  if (!profile) return redirect("/dashboard/profile/new");
-  const albums = await getAlbums();
+  const { userId } = await auth();
+  if (!userId) throw new Error();
+  const profile = await getProfile(userId);
+  if (!profile) return redirect("/profile/new");
+  const albums = await getAlbums(profile.clerkUserId);
   return (
-    <main className="w-full h-screen bg-amber-50">
-      <NavBar />
+    <main className="w-full h-screen">
       <div className="p-5">
         <div>
           <div>
@@ -26,16 +27,13 @@ export default async function Page() {
             <p>Hi {profile.displayName}!</p>
             <p>Welcome to your ClearVue dashboard!</p>
             <Link
-              href="/dashboard/profile/edit"
+              href="/profile/edit"
               className="bg-black text-white text-center"
             >
               Edit Profile
             </Link>
           </div>
-          <Link
-            href="/dashboard/album/new"
-            className="bg-black text-white text-center"
-          >
+          <Link href="/album/new" className="bg-black text-white text-center">
             Create an Album
           </Link>
 

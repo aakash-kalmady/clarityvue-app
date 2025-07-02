@@ -5,6 +5,7 @@ import {
   getAlbumById,
   updateAlbum,
 } from "@/server/actions/albums";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -49,7 +50,7 @@ export default function EditAlbumForm(props: EditAlbumFormProps) {
     try {
       await updateAlbum(props.albumId, data);
       setLoading(false);
-      router.push(`/dashboard/album/${props.albumId}`);
+      router.push(`/album/${props.albumId}`);
     } catch (error: any) {
       setLoading(false);
       throw new Error(error);
@@ -57,6 +58,12 @@ export default function EditAlbumForm(props: EditAlbumFormProps) {
   };
   return (
     <div>
+      <Link
+        className="bg-black text-white text-center"
+        href={`/album/${props.albumId}`}
+      >
+        Back
+      </Link>
       <input
         type="text"
         placeholder="title"
@@ -70,9 +77,10 @@ export default function EditAlbumForm(props: EditAlbumFormProps) {
         onChange={(e) => setDescription(e.target.value)}
       />
       <input
-        type="text"
+        type="number"
+        min="1"
         placeholder="albumOrder"
-        value={albumOrder.toString()}
+        value={albumOrder}
         onChange={(e) => setAlbumOrder(parseInt(e.target.value))}
       />
       <button

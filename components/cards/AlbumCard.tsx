@@ -13,7 +13,7 @@ export default function AlbumCard(props: AlbumCardProps) {
       <p>Description: {props?.description}</p>
       <Link
         className="bg-black text-white text-center"
-        href={`dashboard/album/${props.albumId}`}
+        href={`/album/${props.albumId}`}
       >
         View Album
       </Link>

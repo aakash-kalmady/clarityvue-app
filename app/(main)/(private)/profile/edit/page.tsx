@@ -1,5 +1,3 @@
-"use server";
-
 import EditProfileForm from "@/components/forms/profileForms/EditProfileForm";
 
 export default async function EditProfilePage() {

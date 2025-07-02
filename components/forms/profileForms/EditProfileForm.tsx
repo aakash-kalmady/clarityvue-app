@@ -3,6 +3,8 @@
 import { getProfile, updateProfile } from "@/server/actions/profiles";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
 
 export default function EditProfileForm() {
   const [displayName, setDisplayName] = useState("");
@@ -13,7 +15,9 @@ export default function EditProfileForm() {
 
   useEffect(() => {
     const handleLoad = async () => {
-      const profile = await getProfile();
+      const { userId } = useAuth();
+      if (!userId) throw new Error();
+      const profile = await getProfile(userId);
       if (!profile) throw new Error();
       setDisplayName(profile.displayName);
       setUsername(profile.username);
@@ -40,6 +44,9 @@ export default function EditProfileForm() {
   };
   return (
     <div>
+      <Link className="bg-black text-white text-center" href={"/dashboard"}>
+        Home
+      </Link>
       <input
         type="text"
         placeholder="Display Name"

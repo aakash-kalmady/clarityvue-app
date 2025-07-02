@@ -1,6 +1,7 @@
 "use client";
 
 import { createAlbum } from "@/server/actions/albums";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -28,6 +29,9 @@ export default function CreateAlbumForm() {
   };
   return (
     <div>
+      <Link className="bg-black text-white text-center" href={"/dashboard"}>
+        Home
+      </Link>
       <input
         type="text"
         placeholder="title"
@@ -41,7 +45,8 @@ export default function CreateAlbumForm() {
         onChange={(e) => setDescription(e.target.value)}
       />
       <input
-        type="text"
+        type="number"
+        min="1"
         placeholder="albumOrder"
         value={albumOrder}
         onChange={(e) => setAlbumOrder(parseInt(e.target.value))}

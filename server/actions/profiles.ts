@@ -66,13 +66,21 @@ export async function updateProfile(
 // Infer the type of a row from the ProfileTable schema
 type ProfileRow = typeof ProfileTable.$inferSelect;
 
-export async function getProfile(): Promise<ProfileRow | undefined> {
-  const { userId } = await auth();
-  if (!userId) {
-    throw new Error();
-  }
+export async function getProfile(
+  userId: string
+): Promise<ProfileRow | undefined> {
   const event = await db.query.ProfileTable.findFirst({
     where: eq(ProfileTable.clerkUserId, userId),
+  });
+
+  return event;
+}
+
+export async function getProfileByUsername(
+  username: string
+): Promise<ProfileRow | undefined> {
+  const event = await db.query.ProfileTable.findFirst({
+    where: eq(ProfileTable.username, username),
   });
 
   return event;

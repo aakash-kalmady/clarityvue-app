@@ -7,15 +7,12 @@ import { and, asc, eq } from "drizzle-orm";
 import { AlbumFormSchema } from "../schema/albums";
 import { revalidatePath } from "next/cache";
 import z from "zod";
+import { deleteImagesByAlbumId } from "./images";
 
 // Infer the type of a row from the AlbumTable schema
 type AlbumRow = typeof AlbumTable.$inferSelect;
 
-export async function getAlbums(): Promise<AlbumRow[]> {
-  const { userId } = await auth();
-  if (!userId) {
-    throw new Error();
-  }
+export async function getAlbums(userId: string): Promise<AlbumRow[]> {
   const event = await db.query.AlbumTable.findMany({
     where: eq(AlbumTable.clerkUserId, userId),
     orderBy: [asc(AlbumTable.albumOrder)],
@@ -115,6 +112,11 @@ export async function deleteAlbum(
         "Album not found or user not authorized to delete this album."
       );
     }
+    const { success, message } = await deleteImagesByAlbumId(albumId);
+    if (!success) {
+      throw new Error(message);
+    }
+    console.log(message);
   } catch (error: any) {
     // If any error occurs, throw a new error with a readable message
     throw new Error(`Failed to delete album: ${error.message || error}`);

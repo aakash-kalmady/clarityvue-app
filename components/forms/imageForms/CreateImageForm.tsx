@@ -20,9 +20,9 @@ export default function CreateImageForm(props: CreateImageFormProps) {
   // State to store the URL of the uploaded image
   const [imageUrl, setImageUrl] = useState("");
 
-  const [altText, setAltText] = useState("asdfasdf");
+  const [altText, setAltText] = useState("");
 
-  const [caption, setCaption] = useState("asdfasdf");
+  const [caption, setCaption] = useState("");
 
   const [imageOrder, setImageOrder] = useState(0);
 
@@ -51,7 +51,8 @@ export default function CreateImageForm(props: CreateImageFormProps) {
     try {
       const { uploadUrl, publicUrl } = await createImageUrl(
         file.name,
-        file.type
+        file.type,
+        albumId as string
       );
       const response = await fetch(uploadUrl, {
         method: "PUT",
@@ -78,7 +79,7 @@ export default function CreateImageForm(props: CreateImageFormProps) {
     }
   };
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border border-gray-200 rounded-lg shadow-md bg-white">
+    <div className="max-w-md mx-auto p-6 border border-gray-200 rounded-lg shadow-md bg-white">
       <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
         Upload an Image to Album
       </h1>
@@ -99,6 +100,25 @@ export default function CreateImageForm(props: CreateImageFormProps) {
             className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
           />
         </div>
+        <input
+          type="text"
+          placeholder="Alt Text"
+          value={altText}
+          onChange={(e) => setAltText(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Caption"
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+        />
+        <input
+          type="number"
+          min="1"
+          placeholder="Image Order"
+          value={imageOrder}
+          onChange={(e) => setImageOrder(parseInt(e.target.value))}
+        />
         <button
           type="submit"
           disabled={uploading || !file}
@@ -130,11 +150,6 @@ export default function CreateImageForm(props: CreateImageFormProps) {
             >
               {imageUrl}
             </a>
-            <img
-              src={imageUrl}
-              alt="Uploaded preview"
-              className="mt-4 rounded-lg shadow-md max-w-full h-auto"
-            />
           </div>
         </div>
       )}

@@ -4,6 +4,8 @@ import {
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand,
+  DeleteObjectsCommand,
+  ListObjectsV2Command,
 } from "@aws-sdk/client-s3";
 import { db } from "@/drizzle/db";
 import { ImageTable } from "@/drizzle/schema";
@@ -28,9 +30,10 @@ const s3Client = new S3Client({
 // retireves the put request url for the client to send the image to
 export async function createImageUrl(
   fileName: string,
-  imgType: string
+  imgType: string,
+  albumId: string
 ): Promise<{ uploadUrl: string; publicUrl: string }> {
-  const uniqueFileName = `${Date.now()}-${fileName}`;
+  const uniqueFileName = `${albumId}/${Date.now()}-${fileName}`;
 
   const params = {
     Bucket: process.env.S3_BUCKET_NAME,
@@ -92,5 +95,64 @@ export async function createImage(
     throw new Error(`Error: ${error.message || error}`);
   } finally {
     revalidatePath(`/dashboard/album/${albumIds}`);
+  }
+}
+
+// Deletes all images from the S3 bucket that are in a folder matching the albumId.
+export async function deleteImagesByAlbumId(
+  albumId: string
+): Promise<{ success: boolean; message: string }> {
+  // The "directory" in S3 is just a prefix. Ensure it ends with a slash.
+  try {
+    const bucketName = process.env.S3_BUCKET_NAME;
+    if (!bucketName) {
+      console.error("S3_BUCKET_NAME environment variable is not set.");
+      return { success: false, message: "Server configuration error." };
+    }
+    // 1. List all objects with the given prefix
+    const listCommand = new ListObjectsV2Command({
+      Bucket: bucketName,
+      Prefix: `${albumId}/`,
+    });
+    const listedObjects = await s3Client.send(listCommand);
+
+    if (!listedObjects.Contents || listedObjects.Contents.length === 0) {
+      return {
+        success: true,
+        message: "Directory is already empty or does not exist.",
+      };
+    }
+
+    // 2. Prepare the list of keys for deletion
+    const objectsToDelete = listedObjects.Contents.map((obj) => ({
+      Key: obj.Key,
+    }));
+
+    // 3. Execute the batch delete command
+    const deleteCommand = new DeleteObjectsCommand({
+      Bucket: bucketName,
+      Delete: { Objects: objectsToDelete },
+    });
+    await s3Client.send(deleteCommand);
+
+    console.log(
+      `Successfully deleted ${objectsToDelete.length} objects for albumId: ${albumId}.`
+    );
+    return {
+      success: true,
+      message: `Successfully deleted directory: ${albumId}`,
+    };
+  } catch (error) {
+    console.error(
+      `Failed to delete S3 directory for albumId ${albumId}:`,
+      error
+    );
+    if (error instanceof Error) {
+      return { success: false, message: error.message };
+    }
+    return {
+      success: false,
+      message: "An unknown error occurred during S3 directory deletion.",
+    };
   }
 }
