@@ -8,8 +8,8 @@ export default async function EditProfilePage() {
   if (!userId) throw new Error();
   const profile = await getProfile(userId);
   return (
-    <div className="h-full flex items-center justify-center">
-      <Card className="w-md border-8 border-amber-50 shadow-2xl shadow-accent-foreground">
+    <div className="flex items-center justify-center">
+      <Card className="w-md border-8 border-white shadow-2xl shadow-accent-foreground">
         {/* Header section of the card displaying the title */}
         <CardHeader>
           <CardTitle>Edit Profile</CardTitle>

@@ -33,8 +33,11 @@ export default function AlbumCard(props: AlbumCardProps) {
         />
       </CardContent>
       <CardFooter className="flex justify-around gap-2">
-        <Button className="w-full">
+        <Button className="w-2/3">
           <Link href={`/album/${props.albumId}`}>View Album</Link>
+        </Button>
+        <Button className="w-1/3" variant={"outline"}>
+          <Link href={`/album/edit/${props.albumId}`}>Edit</Link>
         </Button>
       </CardFooter>
     </Card>

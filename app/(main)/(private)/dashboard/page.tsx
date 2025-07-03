@@ -16,37 +16,48 @@ export default async function Page() {
   return (
     <main className="p-5">
       <div>
-        <Button>
-          <Link href="/profile/edit">Edit Profile</Link>
-        </Button>
-        <Image
-          src={profile.imageUrl}
-          width={100}
-          height={100}
-          alt="logo"
-          className="rounded-full"
-        />
-        <p>Hi {profile.displayName}!</p>
-        <p>Welcome to your ClearVue dashboard!</p>
-
-        <Button>
-          <Link href="/album/new">Create an Album</Link>
-        </Button>
-
-        {albums.length < 1 ? (
-          <p>You have no albums, create one now!</p>
-        ) : (
-          <div className="flex flex-row gap-1">
-            {albums.map((album) => (
-              <AlbumCard
-                key={album.id}
-                title={album.title}
-                description={album.description}
-                albumId={album.id}
-              />
-            ))}
+        <div className="flex flex-row">
+          <Image
+            src={profile.imageUrl}
+            width={100}
+            height={100}
+            alt="logo"
+            className="rounded-full mr-5"
+          />
+          <div>
+            <h1 className="text-2xl text-white">Hi {profile.displayName}!</h1>
+            <h2 className="text-white">Welcome to your dashboard</h2>
+            <Button className="mt-3">
+              <Link href="/profile/edit">Edit Profile</Link>
+            </Button>
           </div>
-        )}
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <Button className="mt-5" variant={"secondary"} size="lg">
+            <Link href="/album/new">Create an Album</Link>
+          </Button>
+          {albums.length < 1 ? (
+            <p className="text-white text-3xl mt-5">
+              You have no albums, create one now!
+            </p>
+          ) : (
+            <div className="grid grid-cols-5 gap-10 mt-5">
+              {albums.map((album) => (
+                <div
+                  key={album.id}
+                  className="w-full h-full flex flex-col justify-center items-center"
+                >
+                  <AlbumCard
+                    key={album.id}
+                    title={album.title}
+                    description={album.description}
+                    albumId={album.id}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </main>
   );

@@ -15,8 +15,8 @@ export default async function MainLayout({
       <section
         className={
           userId
-            ? "pt-28 bg-neutral-200 w-full h-screen"
-            : "bg-gray-900 w-full h-screen"
+            ? "pt-22 bg-neutral-950 w-full min-h-screen"
+            : "bg-neutral-950 w-full min-h-screen"
         }
       >
         {children}
