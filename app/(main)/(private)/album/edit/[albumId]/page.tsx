@@ -7,7 +7,7 @@ export default async function EditAlbum({
 }: {
   params: { albumId: string };
 }) {
-  const albumId = params.albumId;
+  const { albumId } = await params;
   const album = await getAlbum(albumId);
   return (
     <div className="flex items-center justify-center">

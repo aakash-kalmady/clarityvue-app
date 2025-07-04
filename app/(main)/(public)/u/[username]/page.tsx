@@ -8,7 +8,7 @@ export default async function PublicProfilePage({
 }: {
   params: { username: string };
 }) {
-  const username = params.username;
+  const { username } = await params;
   if (!username) throw new Error();
   const profile = await getProfileByUsername(username as string);
   if (!profile) throw new Error();
@@ -25,7 +25,7 @@ export default async function PublicProfilePage({
         />
         <div>
           <h1 className="text-2xl text-white">{profile.displayName}</h1>
-          <h2 className="text-white">{profile.bio}</h2>
+          <p className="text-white">{profile.bio}</p>
         </div>
       </div>
       <div className="mt-5 text-center">

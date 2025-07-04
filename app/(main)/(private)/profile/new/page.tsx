@@ -1,7 +1,8 @@
 import ProfileForm from "@/components/forms/ProfileForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { currentUser } from "@clerk/nextjs/server";
 
-export default function NewProfilePage() {
+export default async function NewProfilePage() {
   return (
     // Container Card component centered on the page with a max width
     <div className="flex items-center justify-center">

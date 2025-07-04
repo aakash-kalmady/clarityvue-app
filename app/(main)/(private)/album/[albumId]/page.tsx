@@ -7,7 +7,7 @@ export default async function Page({
 }: {
   params: { albumId: string };
 }) {
-  const albumId = params.albumId;
+  const { albumId } = await params;
   const album = await getAlbum(albumId);
   if (!album) {
     throw new Error("Album not found");

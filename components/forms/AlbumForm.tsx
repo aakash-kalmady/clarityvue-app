@@ -1,20 +1,10 @@
 "use client";
 
-import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,7 +22,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
-import Spinner from "../Spinner";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export default function AlbumForm({
   album, // Destructure the `event` object from the props
@@ -53,10 +51,9 @@ export default function AlbumForm({
     const action =
       album == null ? createAlbum : updateAlbum.bind(null, album.id);
     try {
-      toast.info(`${album ? "Editing album." : "Creating album."}`);
       await action(data);
       router.push(`${album ? `/album/${album.id}` : "/dashboard"}`);
-      toast.success(`Album has been ${album ? "edited" : "created"}.`);
+      toast.success(`Album ${album ? "edited" : "created"} successfully!`);
     } catch (error: any) {
       form.setError("root", {
         message: `There was an error saving your album ${error.message}`,
@@ -95,7 +92,7 @@ export default function AlbumForm({
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Title" {...field} />
+                <Input type="text" placeholder="Enter title here" {...field} />
               </FormControl>
               <FormDescription>This is your album title.</FormDescription>
               <FormMessage />
@@ -109,7 +106,11 @@ export default function AlbumForm({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Description" {...field} />
+                <Input
+                  type="text"
+                  placeholder="Enter description here"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 This is your album's description.
@@ -182,7 +183,6 @@ export default function AlbumForm({
                       // Start a React transition to keep the UI responsive during this async operation
                       startDeleteTransition(async () => {
                         try {
-                          toast.info("Deleting album");
                           // Attempt to delete the event by its ID
                           await deleteAlbum(album.id);
                           router.push("/dashboard");

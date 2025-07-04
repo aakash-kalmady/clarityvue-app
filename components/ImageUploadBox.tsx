@@ -6,20 +6,11 @@ import { useState, useRef, ChangeEvent } from "react";
 import { toast } from "sonner";
 import { UploadCloud, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
 
-// shadcn/ui components
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 // Define the status types for clear feedback
 type UploadStatus = "idle" | "uploading" | "success" | "error";
 
-export default function CreateImageForm(props: { albumId: string }) {
-  const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
+export default function ImageUploadBox(props: { albumId: string }) {
+  const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
   const { albumId } = useParams();
 
   // State to manage the upload process and UI feedback
@@ -38,7 +29,7 @@ export default function CreateImageForm(props: { albumId: string }) {
   const processAndUploadFile = async (file: File) => {
     // 1. Validate the file
     if (file.size > MAX_IMAGE_SIZE) {
-      handleUploadError("File is larger than 5MB.");
+      handleUploadError("File is larger than 10MB.");
       return;
     }
     if (!file.type.startsWith("image/")) {
@@ -52,7 +43,6 @@ export default function CreateImageForm(props: { albumId: string }) {
     // 2. Start the upload process
     setStatus("uploading");
     setMessage(`Uploading ${file.name}...`);
-    toast.info(`Starting upload for ${file.name}`);
 
     try {
       // 3. Get a pre-signed URL
@@ -86,7 +76,7 @@ export default function CreateImageForm(props: { albumId: string }) {
       });
 
       // 6. Handle success
-      handleUploadSuccess(`${file.name} uploaded successfully!`);
+      handleUploadSuccess(`Image uploaded successfully!`);
     } catch (err: any) {
       handleUploadError(err.message || "An unknown error occurred.");
     }
@@ -97,14 +87,14 @@ export default function CreateImageForm(props: { albumId: string }) {
     setStatus("success");
     setMessage(successMessage);
     toast.success(successMessage);
-    resetTimerRef.current = setTimeout(() => resetComponent(), 3000);
+    resetTimerRef.current = setTimeout(() => resetComponent(), 1000);
   };
 
   const handleUploadError = (errorMessage: string) => {
     setStatus("error");
     setMessage(errorMessage);
     toast.error("Upload Failed", { description: errorMessage });
-    resetTimerRef.current = setTimeout(() => resetComponent(), 5000);
+    resetTimerRef.current = setTimeout(() => resetComponent(), 2000);
   };
 
   const resetComponent = () => {
@@ -158,22 +148,22 @@ export default function CreateImageForm(props: { albumId: string }) {
   const StatusIcon = () => {
     switch (status) {
       case "uploading":
-        return <Loader2 className="h-10 w-10 animate-spin text-primary" />;
+        return <Loader2 className="h-5 w-5 animate-spin text-primary" />;
       case "success":
-        return <CheckCircle className="h-10 w-10 text-green-500" />;
+        return <CheckCircle className="h-5 w-5 text-green-500" />;
       case "error":
-        return <AlertTriangle className="h-10 w-10 text-destructive" />;
+        return <AlertTriangle className="h-5 w-5 text-destructive" />;
       default:
-        return <UploadCloud className="h-10 w-10 text-gray-400" />;
+        return <UploadCloud className="h-5 w-5 text-gray-400" />;
     }
   };
 
   return (
     <div
-      className={`relative flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg transition-colors duration-200 ease-in-out
+      className={`relative flex flex-col items-center justify-center p-4 w-md border-2 border-dashed rounded-lg transition-colors duration-200 ease-in-out
           ${status === "idle" ? "cursor-pointer" : "cursor-default"}
           ${isDragging ? "border-primary bg-primary/10" : "border-gray-300"}
-          ${status === "success" && "border-green-500 bg-green-50"}
+          ${status === "success" && "border-green-500"}
           ${status === "error" && "border-destructive bg-destructive/10"}`}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}

@@ -1,6 +1,5 @@
 import { getImages } from "@/server/actions/images";
-import Link from "next/link";
-import Image from "next/image";
+import PublicImageCard from "./cards/PublicImageCard";
 
 export default async function PublicAlbumPage({
   album, // Destructure the `event` object from the props
@@ -31,16 +30,7 @@ export default async function PublicAlbumPage({
       ) : (
         <div className="grid grid-cols-4 gap-4 mt-5">
           {images.map((image) => (
-            <Link href={image.imageUrl} target="_blank" key={image.id}>
-              <Image
-                key={image.id}
-                src={image.imageUrl}
-                alt={image.altText}
-                width={300}
-                height={300}
-                quality={100}
-              />
-            </Link>
+            <PublicImageCard key={image.id} image={image} />
           ))}
         </div>
       )}

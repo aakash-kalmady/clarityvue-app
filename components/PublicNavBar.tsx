@@ -10,7 +10,7 @@ import { Button } from "./ui/button";
 
 export default function PublicNavBar() {
   return (
-    <nav className="flex justify-between items-center fixed z-50 w-full h-22 bg-neutral-800 px-6 gap-4 shadow-2xs">
+    <nav className="flex justify-between items-center fixed z-50 w-full h-22 bg-neutral-900 px-6 gap-4 shadow-2xs">
       {/* Logo */}
       <div className="flex flex-row items-center">
         <Link href="/" className="flex items-center gap-1 mr-5">

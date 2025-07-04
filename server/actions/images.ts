@@ -162,24 +162,22 @@ export async function deleteImages(albumId: string): Promise<void> {
     // Attempt to retrieve the list of all images to delete
     const listedObjects = await s3Client.send(listCommand);
 
-    // Throw an error if no images were listed
-    if (!listedObjects.Contents || listedObjects.Contents.length === 0) {
-      throw new Error("Directory is already empty or does not exist.");
+    // Only attempt to delete all images if there are images in the album
+    if (listedObjects.Contents) {
+      // Map the list of images to their keys for deletion
+      const objectsToDelete = listedObjects.Contents.map((obj) => ({
+        Key: obj.Key,
+      }));
+
+      // Define the delete object command with the parameters
+      const deleteCommand = new DeleteObjectsCommand({
+        Bucket: process.env.S3_BUCKET_NAME,
+        Delete: { Objects: objectsToDelete },
+      });
+
+      // Attempt to delete the images from the AWS S3 bucket
+      await s3Client.send(deleteCommand);
     }
-
-    // Map the list of images to their keys for deletion
-    const objectsToDelete = listedObjects.Contents.map((obj) => ({
-      Key: obj.Key,
-    }));
-
-    // Define the delete object command with the parameters
-    const deleteCommand = new DeleteObjectsCommand({
-      Bucket: process.env.S3_BUCKET_NAME,
-      Delete: { Objects: objectsToDelete },
-    });
-
-    // Attempt to delete the images from the AWS S3 bucket
-    await s3Client.send(deleteCommand);
   } catch (error: any) {
     // If any error occurs during the process, throw a new error with a readable message
     throw new Error(`Error: ${error.message || error}`);

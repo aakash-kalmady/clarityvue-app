@@ -6,6 +6,10 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ProfileFormSchema } from "@/server/schema/profiles";
 import {
   Form,
   FormControl,
@@ -15,10 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ProfileFormSchema } from "@/server/schema/profiles";
 
 export default function ProfileForm({
   profile, // Destructure the `event` object from the props
@@ -36,10 +36,9 @@ export default function ProfileForm({
   async function onSubmit(data: z.infer<typeof ProfileFormSchema>) {
     const action = profile == null ? createProfile : updateProfile;
     try {
-      toast.info(`${profile ? "Editing profile" : "Creating profile"}`);
       await action(data);
       router.push("/dashboard");
-      toast.success(`Profile has been ${profile ? "edited" : "created"}`);
+      toast.success(`Profile ${profile ? "edited" : "created"} successfully`);
     } catch (error: any) {
       form.setError("root", {
         message: `There was an error saving your profile ${error.message}`,
@@ -71,7 +70,11 @@ export default function ProfileForm({
             <FormItem>
               <FormLabel>Display Name</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="displayName" {...field} />
+                <Input
+                  type="text"
+                  placeholder="Enter display name here"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 This is how others will see your name.
@@ -87,7 +90,11 @@ export default function ProfileForm({
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="username" {...field} />
+                <Input
+                  type="text"
+                  placeholder="Enter username here"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>This is your public username.</FormDescription>
               <FormMessage />
@@ -101,7 +108,7 @@ export default function ProfileForm({
             <FormItem>
               <FormLabel>Biography</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="bio" {...field} />
+                <Input type="text" placeholder="Enter bio here" {...field} />
               </FormControl>
               <FormDescription>
                 This is your profile description.
