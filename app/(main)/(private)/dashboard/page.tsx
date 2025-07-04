@@ -6,6 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import AlbumCard from "@/components/cards/AlbumCard";
 import { Button } from "@/components/ui/button";
+import { SquarePen, UserPen } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default async function Page() {
   const { userId } = await auth();
@@ -16,7 +22,7 @@ export default async function Page() {
   return (
     <main className="p-5">
       <div>
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center">
           <Image
             src={profile.imageUrl}
             width={100}
@@ -27,13 +33,26 @@ export default async function Page() {
           <div>
             <h1 className="text-2xl text-white">Hi {profile.displayName}!</h1>
             <h2 className="text-white">Welcome to your dashboard</h2>
-            <Button className="mt-3">
-              <Link href="/profile/edit">Edit Profile</Link>
-            </Button>
+            <p className="text-white">
+              User since {profile.createdAt.toLocaleDateString()}
+            </p>
           </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button className="mt-3">
+                <Link href="/profile/edit">
+                  <UserPen color="white" />
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Edit Profile</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
+
         <div className="flex flex-col items-center justify-center">
-          <Button className="mt-5" variant={"secondary"} size="lg">
+          <Button className="mt-5" variant={"secondary"} size="lg" asChild>
             <Link href="/album/new">Create an Album</Link>
           </Button>
           {albums.length < 1 ? (
@@ -52,6 +71,7 @@ export default async function Page() {
                     title={album.title}
                     description={album.description}
                     albumId={album.id}
+                    isPrivate={true}
                   />
                 </div>
               ))}

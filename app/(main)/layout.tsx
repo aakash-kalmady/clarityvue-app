@@ -1,5 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
-import NavBar from "@/components/NavBar";
+import PrivateNavBar from "@/components/PrivateNavBar";
+import PublicNavBar from "@/components/PublicNavBar";
+import { getProfile } from "@/server/actions/profiles";
 
 export default async function MainLayout({
   children,
@@ -10,15 +12,9 @@ export default async function MainLayout({
   return (
     <main className="relative">
       {/*render privatenavbar if user exists, otherwise public navbar  */}
-      {userId && <NavBar />}
+      {userId ? <PrivateNavBar /> : <PublicNavBar />}
       {/* render the children*/}
-      <section
-        className={
-          userId
-            ? "pt-22 bg-neutral-950 w-full min-h-screen"
-            : "bg-neutral-950 w-full min-h-screen"
-        }
-      >
+      <section className={"bg-neutral-900 pt-22 w-full min-h-screen"}>
         {children}
       </section>
     </main>

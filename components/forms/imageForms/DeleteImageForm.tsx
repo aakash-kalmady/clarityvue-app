@@ -6,7 +6,7 @@ import React, { useState } from "react";
 /**
  * A form component for deleting an image by providing its URL.
  */
-export default function DeleteImageForm() {
+export default function DeleteImageForm(props: { albumId: string }) {
   const [imageUrl, setImageUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -22,7 +22,7 @@ export default function DeleteImageForm() {
     }
     setIsSubmitting(true);
     try {
-      await deleteImage(imageUrl);
+      await deleteImage(imageUrl, props.albumId);
       setIsSubmitting(false);
       setImageUrl("");
     } catch (error: any) {
@@ -34,7 +34,7 @@ export default function DeleteImageForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-8 space-y-6 bg-white rounded-lg shadow-md">
+    <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-center text-gray-800">
         Delete an Image from Album
       </h2>

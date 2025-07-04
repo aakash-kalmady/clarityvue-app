@@ -36,9 +36,10 @@ export default function ProfileForm({
   async function onSubmit(data: z.infer<typeof ProfileFormSchema>) {
     const action = profile == null ? createProfile : updateProfile;
     try {
+      toast.info(`${profile ? "Editing profile" : "Creating profile"}`);
       await action(data);
-      toast(`Profile has been ${profile ? "edited" : "created"}`);
       router.push("/dashboard");
+      toast.success(`Profile has been ${profile ? "edited" : "created"}`);
     } catch (error: any) {
       form.setError("root", {
         message: `There was an error saving your profile ${error.message}`,
@@ -60,7 +61,6 @@ export default function ProfileForm({
           bio: "", // Ensure controlled input: default to empty string
         },
   });
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
@@ -119,7 +119,11 @@ export default function ProfileForm({
           >
             <Link href="/dashboard">Cancel</Link>
           </Button>
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button
+            disabled={form.formState.isSubmitting}
+            type="submit"
+            className="cursor-pointer"
+          >
             {profile ? "Confirm" : "Create"}
           </Button>
         </div>

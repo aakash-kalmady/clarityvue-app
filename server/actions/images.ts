@@ -10,10 +10,11 @@ import {
 import { db } from "@/drizzle/db";
 import { ImageTable } from "@/drizzle/schema";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { asc, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { ImageFormSchema } from "../schema/images";
 import { revalidatePath } from "next/cache";
 import z from "zod";
+import { auth } from "@clerk/nextjs/server";
 
 // Infer the type of a row from the AlbumTable schema
 type ImageRow = typeof ImageTable.$inferSelect;
@@ -33,7 +34,11 @@ export async function createImageUrl(
   imgType: string,
   albumId: string
 ): Promise<{ uploadUrl: string; publicUrl: string }> {
-  const uniqueFileName = `${albumId}/${Date.now()}-${fileName}`;
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("user not authenticated");
+  }
+  const uniqueFileName = `${albumId}-${Date.now()}-${fileName}`;
 
   const params = {
     Bucket: process.env.S3_BUCKET_NAME,
@@ -43,32 +48,53 @@ export async function createImageUrl(
 
   const command = new PutObjectCommand(params);
 
-  const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 300 }); // 5 minute timeout
+  const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 }); // 1 minute timeout
   const publicUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${uniqueFileName}`;
 
   return { uploadUrl, publicUrl };
 }
 
 // deletes an image from the s3 database
-export async function deleteImage(imageUrl: string): Promise<void> {
-  // Create a URL object to easily parse it
-  const url = new URL(imageUrl);
-
-  // The object key is the pathname, but we must remove the leading '/'
-  const key = url.pathname.substring(1);
-
-  const params = {
-    Bucket: process.env.S3_BUCKET_NAME,
-    Key: key, // Use the extracted key (filename)
-  };
-  const command = new DeleteObjectCommand(params);
-
+export async function deleteImage(
+  imageUrl: string,
+  albumId: string
+): Promise<void> {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("user not authenticated");
+    }
+    // Create a URL object to easily parse it
+    const url = new URL(imageUrl);
+
+    // The object key is the pathname, but we must remove the leading '/'
+    const key = url.pathname.substring(1);
+
+    const params = {
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: key, // Use the extracted key (filename)
+    };
+    const command = new DeleteObjectCommand(params);
     await s3Client.send(command);
     console.log("image deleted");
+    // Attempt to delete the image only if it belongs to the authenticated user
+    const { rowCount } = await db
+      .delete(ImageTable)
+      .where(
+        and(eq(ImageTable.imageUrl, imageUrl), eq(ImageTable.albumId, albumId))
+      );
+
+    // If no album was deleted (either not found or not owned by current album), throw an error
+    if (rowCount === 0) {
+      throw new Error(
+        "Image not found or album not authorized to delete this album."
+      );
+    }
   } catch (error) {
     console.error("Error deleting file from S3:", error);
     throw error; // Or handle it as needed
+  } finally {
+    revalidatePath(`/album/${albumId}`);
   }
 }
 
@@ -86,6 +112,10 @@ export async function createImage(
   unsafeData: z.infer<typeof ImageFormSchema>
 ): Promise<void> {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("user not authenticated");
+    }
     const { success, data } = ImageFormSchema.safeParse(unsafeData);
     if (!success) {
       throw new Error("invalid image data");
@@ -94,7 +124,7 @@ export async function createImage(
   } catch (error: any) {
     throw new Error(`Error: ${error.message || error}`);
   } finally {
-    revalidatePath(`/dashboard/album/${albumIds}`);
+    revalidatePath(`/album/${albumIds}`);
   }
 }
 
@@ -104,6 +134,10 @@ export async function deleteImagesByAlbumId(
 ): Promise<{ success: boolean; message: string }> {
   // The "directory" in S3 is just a prefix. Ensure it ends with a slash.
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("user not authenticated");
+    }
     const bucketName = process.env.S3_BUCKET_NAME;
     if (!bucketName) {
       console.error("S3_BUCKET_NAME environment variable is not set.");
@@ -112,7 +146,7 @@ export async function deleteImagesByAlbumId(
     // 1. List all objects with the given prefix
     const listCommand = new ListObjectsV2Command({
       Bucket: bucketName,
-      Prefix: `${albumId}/`,
+      Prefix: `${albumId}-`,
     });
     const listedObjects = await s3Client.send(listCommand);
 

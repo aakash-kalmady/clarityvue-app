@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -31,6 +32,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import Spinner from "../Spinner";
 
 export default function AlbumForm({
   album, // Destructure the `event` object from the props
@@ -51,9 +53,10 @@ export default function AlbumForm({
     const action =
       album == null ? createAlbum : updateAlbum.bind(null, album.id);
     try {
+      toast.info(`${album ? "Editing album." : "Creating album."}`);
       await action(data);
-      toast(`Album has been ${album ? "edited" : "created"}.`);
       router.push(`${album ? `/album/${album.id}` : "/dashboard"}`);
+      toast.success(`Album has been ${album ? "edited" : "created"}.`);
     } catch (error: any) {
       form.setError("root", {
         message: `There was an error saving your album ${error.message}`,
@@ -142,7 +145,11 @@ export default function AlbumForm({
               Cancel
             </Link>
           </Button>
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button
+            disabled={form.formState.isSubmitting}
+            type="submit"
+            className="cursor-pointer"
+          >
             {album ? "Confirm" : "Create"}
           </Button>
 
@@ -151,9 +158,9 @@ export default function AlbumForm({
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button
-                  className="cursor-pointer hover:scale-105 hover:bg-red-700"
                   variant="destructive"
                   disabled={isDeletePending || form.formState.isSubmitting}
+                  className="cursor-pointer"
                 >
                   Delete Album
                 </Button>
@@ -175,10 +182,11 @@ export default function AlbumForm({
                       // Start a React transition to keep the UI responsive during this async operation
                       startDeleteTransition(async () => {
                         try {
+                          toast.info("Deleting album");
                           // Attempt to delete the event by its ID
                           await deleteAlbum(album.id);
-                          toast("Album has been deleted");
                           router.push("/dashboard");
+                          toast.success("Album has been deleted");
                         } catch (error: any) {
                           // If something goes wrong, show an error at the root level of the form
                           form.setError("root", {

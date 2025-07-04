@@ -1,6 +1,7 @@
 import { getAlbums } from "@/server/actions/albums";
 import { getProfileByUsername } from "@/server/actions/profiles";
 import AlbumCard from "@/components/cards/AlbumCard";
+import Image from "next/image";
 
 export default async function PublicProfilePage({
   params,
@@ -13,26 +14,45 @@ export default async function PublicProfilePage({
   if (!profile) throw new Error();
   const albums = await getAlbums(profile.clerkUserId);
   return (
-    <div>
-      <p>{profile.displayName}</p>
-      <p>{profile.bio}</p>
-      <p>{profile.createdAt.toString()}</p>
-      {albums.length < 1 ? (
-        <p>
-          {profile.displayName} has no albums, let them know to create one now!
-        </p>
-      ) : (
-        <div className="flex flex-row gap-1">
-          {albums.map((album) => (
-            <AlbumCard
-              key={album.id}
-              title={album.title}
-              description={album.description}
-              albumId={album.id}
-            />
-          ))}
+    <div className="p-5">
+      <div className="flex flex-row">
+        <Image
+          src={profile.imageUrl}
+          width={100}
+          height={100}
+          alt="logo"
+          className="rounded-full mr-5"
+        />
+        <div>
+          <h1 className="text-2xl text-white">{profile.displayName}!</h1>
+          <h2 className="text-white">{profile.bio}</h2>
         </div>
-      )}
+      </div>
+      <div className="mt-5 text-center">
+        {albums.length < 1 ? (
+          <p className="text-2xl text-white">
+            {profile.displayName} has no albums, let them know to create one
+            now!
+          </p>
+        ) : (
+          <div className="grid grid-cols-5 gap-10">
+            {albums.map((album) => (
+              <div
+                key={album.id}
+                className="w-full h-full flex flex-col justify-center items-center"
+              >
+                <AlbumCard
+                  key={album.id}
+                  title={album.title}
+                  description={album.description}
+                  albumId={album.id}
+                  isPrivate={false}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

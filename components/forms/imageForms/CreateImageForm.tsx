@@ -2,159 +2,205 @@
 
 import { createImage, createImageUrl } from "@/server/actions/images";
 import { useParams } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useState, useRef, ChangeEvent } from "react";
 import { toast } from "sonner";
+import { UploadCloud, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
 
-type CreateImageFormProps = {
-  albumId: string;
-};
+// shadcn/ui components
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
-export default function CreateImageForm(props: CreateImageFormProps) {
-  // Define the maximum file size (10MB in bytes)
+// Define the status types for clear feedback
+type UploadStatus = "idle" | "uploading" | "success" | "error";
+
+export default function CreateImageForm(props: { albumId: string }) {
   const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
-  // State to hold the selected file
-  const [file, setFile] = useState<File | null>(null);
-  // State to manage loading status
-  const [uploading, setUploading] = useState(false);
-  // State to store any error messages
-  const [error, setError] = useState<string | null>(null);
-  // State to store the URL of the uploaded image
-  const [imageUrl, setImageUrl] = useState("");
-
-  const [altText, setAltText] = useState("");
-
-  const [caption, setCaption] = useState("");
-
-  const [imageOrder, setImageOrder] = useState(0);
-
   const { albumId } = useParams();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0].size < MAX_IMAGE_SIZE) {
-      setFile(e.target.files[0]);
-      // Reset error and image URL when a new file is selected
-      setError(null);
-    } else {
-      setFile(null);
-      setError("File is larger than 5MB");
-    }
-  };
+  // State to manage the upload process and UI feedback
+  const [isDragging, setIsDragging] = useState(false);
+  const [status, setStatus] = useState<UploadStatus>("idle");
+  const [message, setMessage] = useState(
+    "Drag & drop an image or click to upload"
+  );
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!file) {
-      setError("Please select a file to upload.");
+  // A ref to a timer to reset the component's state after an upload
+  const resetTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // A ref for the hidden file input element
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // --- File Processing and Upload Logic ---
+  const processAndUploadFile = async (file: File) => {
+    // 1. Validate the file
+    if (file.size > MAX_IMAGE_SIZE) {
+      handleUploadError("File is larger than 5MB.");
       return;
     }
-    setUploading(true);
-    setError(null);
+    if (!file.type.startsWith("image/")) {
+      handleUploadError("Invalid file type. Please upload an image.");
+      return;
+    }
+
+    // Clear any previous reset timers
+    if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+
+    // 2. Start the upload process
+    setStatus("uploading");
+    setMessage(`Uploading ${file.name}...`);
+    toast.info(`Starting upload for ${file.name}`);
 
     try {
+      // 3. Get a pre-signed URL
       const { uploadUrl, publicUrl } = await createImageUrl(
         file.name,
         file.type,
-        albumId as string
+        props.albumId
       );
-      const response = await fetch(uploadUrl, {
+
+      // 4. Upload the file to the storage provider
+      const uploadResponse = await fetch(uploadUrl, {
         method: "PUT",
-        body: file, // The actual file object goes here
-        headers: {
-          "Content-Type": file.type, // The file's content type is required
-        },
+        body: file,
+        headers: { "Content-Type": file.type },
       });
-      if (!response.ok) {
-        throw new Error("Upload failed.");
+
+      if (!uploadResponse.ok) {
+        throw new Error("Failed to upload file to storage.");
       }
-      setImageUrl(publicUrl);
-      setUploading(false);
-      const data = {
+
+      // 5. Auto-generate metadata and save to the database
+      const altText = file.name.split(".").slice(0, -1).join("."); // Filename without extension
+      const caption = `Photo uploaded on ${new Date().toLocaleDateString()}`; // Placeholder caption
+      const imageOrder = Math.floor(Math.random() * 1000) + 1; // Random order
+
+      await createImage(albumId as string, {
         imageUrl: publicUrl,
         altText,
         caption,
         imageOrder,
-      };
-      await createImage(albumId as string, data);
-      toast("Image has been uploaded.");
-    } catch (error: any) {
-      setUploading(false);
-      throw new Error(error);
+      });
+
+      // 6. Handle success
+      handleUploadSuccess(`${file.name} uploaded successfully!`);
+    } catch (err: any) {
+      handleUploadError(err.message || "An unknown error occurred.");
     }
   };
+
+  // --- UI Feedback Handlers ---
+  const handleUploadSuccess = (successMessage: string) => {
+    setStatus("success");
+    setMessage(successMessage);
+    toast.success(successMessage);
+    resetTimerRef.current = setTimeout(() => resetComponent(), 3000);
+  };
+
+  const handleUploadError = (errorMessage: string) => {
+    setStatus("error");
+    setMessage(errorMessage);
+    toast.error("Upload Failed", { description: errorMessage });
+    resetTimerRef.current = setTimeout(() => resetComponent(), 5000);
+  };
+
+  const resetComponent = () => {
+    setStatus("idle");
+    setMessage("Drag & drop an image or click to upload");
+    // Also reset the file input's value
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  // --- Event Handlers ---
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (status !== "uploading") setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation(); // Necessary to allow the drop event
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    if (status === "uploading") return;
+
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      processAndUploadFile(droppedFile);
+    }
+  };
+
+  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    if (status === "uploading") return;
+    const file = e.target.files?.[0];
+    if (file) {
+      processAndUploadFile(file);
+    }
+  };
+
+  // --- Render correct icon based on status ---
+  const StatusIcon = () => {
+    switch (status) {
+      case "uploading":
+        return <Loader2 className="h-10 w-10 animate-spin text-primary" />;
+      case "success":
+        return <CheckCircle className="h-10 w-10 text-green-500" />;
+      case "error":
+        return <AlertTriangle className="h-10 w-10 text-destructive" />;
+      default:
+        return <UploadCloud className="h-10 w-10 text-gray-400" />;
+    }
+  };
+
   return (
-    <div className="max-w-md mx-auto p-6 border border-gray-200 rounded-lg shadow-md bg-white">
-      <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Upload an Image to Album
-      </h1>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label
-            htmlFor="file"
-            className="block mb-2 text-sm font-medium text-gray-700"
-          >
-            Choose an image
-          </label>
-          <input
-            type="file"
-            id="file"
-            name="file"
-            onChange={handleFileChange}
-            accept="image/*" // Accept only image files
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-          />
-        </div>
-        <input
-          type="text"
-          placeholder="Alt Text"
-          value={altText}
-          onChange={(e) => setAltText(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Caption"
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-        />
-        <input
-          type="number"
-          min="1"
-          placeholder="Image Order"
-          value={imageOrder}
-          onChange={(e) => setImageOrder(parseInt(e.target.value))}
-        />
-        <button
-          type="submit"
-          disabled={uploading || !file}
-          className="w-full px-4 py-2 text-white font-bold bg-blue-600 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+    <div
+      className={`relative flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg transition-colors duration-200 ease-in-out
+          ${status === "idle" ? "cursor-pointer" : "cursor-default"}
+          ${isDragging ? "border-primary bg-primary/10" : "border-gray-300"}
+          ${status === "success" && "border-green-500 bg-green-50"}
+          ${status === "error" && "border-destructive bg-destructive/10"}`}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+      onClick={() => status !== "uploading" && fileInputRef.current?.click()}
+    >
+      <input
+        ref={fileInputRef}
+        type="file"
+        className="hidden"
+        accept="image/*"
+        onChange={handleFileSelect}
+      />
+      <div className="flex flex-row items-center justify-center">
+        <StatusIcon />
+        <p
+          className={`text-sm font-medium ml-2
+              ${
+                status === "error"
+                  ? "text-destructive"
+                  : "text-muted-foreground"
+              }`}
         >
-          {uploading ? "Uploading..." : "Upload"}
-        </button>
-      </form>
-
-      {/* Display error messages */}
-      {error && (
-        <p className="mt-4 text-sm text-red-600 bg-red-100 p-3 rounded-md">
-          {error}
+          {message}
         </p>
-      )}
-
-      {/* Display success message and the uploaded image */}
-      {imageUrl && (
-        <div className="mt-6 text-center">
-          <p className="text-green-600 bg-green-100 p-3 rounded-md">
-            Upload successful!
-          </p>
-          <div className="mt-4">
-            <a
-              href={imageUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline break-all"
-            >
-              {imageUrl}
-            </a>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
