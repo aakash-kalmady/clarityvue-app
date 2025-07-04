@@ -1,4 +1,4 @@
-import { getImagesByAlbumId } from "@/server/actions/images";
+import { getImages } from "@/server/actions/images";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -14,7 +14,7 @@ export default async function PublicAlbumPage({
     albumOrder: number; // Optional description of the event
   };
 }) {
-  const images = await getImagesByAlbumId(album.id);
+  const images = await getImages(album.id);
   return (
     <div className="p-5">
       <div className="flex flex-row">
@@ -29,7 +29,7 @@ export default async function PublicAlbumPage({
           Album has no images, let the owner know to upload one now!
         </p>
       ) : (
-        <div className="grid grid-cols-5 gap-4 mt-5">
+        <div className="grid grid-cols-4 gap-4 mt-5">
           {images.map((image) => (
             <Link href={image.imageUrl} target="_blank" key={image.id}>
               <Image

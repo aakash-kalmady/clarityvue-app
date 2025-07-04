@@ -1,4 +1,4 @@
-import { getAlbumById } from "@/server/actions/albums";
+import { getAlbum } from "@/server/actions/albums";
 import PublicAlbumPage from "@/components/PublicAlbumPage";
 
 export default async function Page({
@@ -7,6 +7,9 @@ export default async function Page({
   params: { albumId: string };
 }) {
   const { albumId } = params;
-  const album = await getAlbumById(albumId);
+  const album = await getAlbum(albumId);
+  if (!album) {
+    throw new Error("Album not found");
+  }
   return <PublicAlbumPage album={album} />;
 }

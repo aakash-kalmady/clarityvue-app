@@ -8,33 +8,45 @@ import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 import z from "zod";
 
+// Infer the type of a profile from the ProfileTable schema
+type Profile = typeof ProfileTable.$inferSelect;
+
+// This function creates a new profile in the database after validating the input data.
 export async function createProfile(
-  unsafeData: z.infer<typeof ProfileFormSchema>
+  unsafeData: z.infer<typeof ProfileFormSchema> // Raw profile data to validate and create
 ): Promise<void> {
   try {
+    // Authenticate the user
     const user = await currentUser();
+    // Validate the incoming data against the profile form schema
     const { success, data } = ProfileFormSchema.safeParse(unsafeData);
-    if (!user || !success) {
-      throw new Error("user not authenticated or invalid profile data");
+
+    // If validation fails or the user is not authenticated, throw an error
+    if (!success || !user) {
+      throw new Error("Invalid profile data or user not authenticated.");
     }
+
+    // Attempt to create the profile in the database
     await db
       .insert(ProfileTable)
       .values({ ...data, imageUrl: user.imageUrl, clerkUserId: user.id });
   } catch (error: any) {
+    // If any error occurs, throw a new error with a readable message
     throw new Error(`Error: ${error.message || error}`);
   } finally {
+    // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");
   }
 }
 
+// This function updates an existing profile in the database after validating the input and checking ownership.
 export async function updateProfile(
   unsafeData: z.infer<typeof ProfileFormSchema> // Raw profile data to validate and update
 ): Promise<void> {
   try {
     // Authenticate the user
     const { userId } = await auth();
-
-    // Validate the incoming data against the event form schema
+    // Validate the incoming data against the profile form schema
     const { success, data } = ProfileFormSchema.safeParse(unsafeData);
 
     // If validation fails or the user is not authenticated, throw an error
@@ -63,25 +75,24 @@ export async function updateProfile(
   }
 }
 
-// Infer the type of a row from the ProfileTable schema
-type ProfileRow = typeof ProfileTable.$inferSelect;
-
-export async function getProfile(
-  userId: string
-): Promise<ProfileRow | undefined> {
-  const event = await db.query.ProfileTable.findFirst({
+// This function fetches the profile for a specific user
+export async function getProfile(userId: string): Promise<Profile | undefined> {
+  // Query the database for the profile where the clerkUserId matches
+  const profile = await db.query.ProfileTable.findFirst({
     where: eq(ProfileTable.clerkUserId, userId),
   });
 
-  return event;
+  return profile ?? undefined; // Explicitly return undefined if not found
 }
 
+// This function fetches the profile for a specific user given their username
 export async function getProfileByUsername(
   username: string
-): Promise<ProfileRow | undefined> {
-  const event = await db.query.ProfileTable.findFirst({
+): Promise<Profile | undefined> {
+  // Query the database for the profile where the username matches
+  const profile = await db.query.ProfileTable.findFirst({
     where: eq(ProfileTable.username, username),
   });
 
-  return event;
+  return profile ?? undefined; // Explicitly return undefined if not found
 }

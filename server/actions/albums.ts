@@ -6,13 +6,15 @@ import { auth } from "@clerk/nextjs/server";
 import { and, asc, eq } from "drizzle-orm";
 import { AlbumFormSchema } from "../schema/albums";
 import { revalidatePath } from "next/cache";
+import { deleteImages } from "./images";
 import z from "zod";
-import { deleteImagesByAlbumId } from "./images";
 
-// Infer the type of a row from the AlbumTable schema
-type AlbumRow = typeof AlbumTable.$inferSelect;
+// Infer the type of an album from the AlbumTable schema
+type Album = typeof AlbumTable.$inferSelect;
 
-export async function getAlbums(userId: string): Promise<AlbumRow[]> {
+// This function fetches all albums for a specific user
+export async function getAlbums(userId: string): Promise<Album[]> {
+  // Query the database for albums where the clerkUserId matches
   const event = await db.query.AlbumTable.findMany({
     where: eq(AlbumTable.clerkUserId, userId),
     orderBy: [asc(AlbumTable.albumOrder)],
@@ -21,42 +23,50 @@ export async function getAlbums(userId: string): Promise<AlbumRow[]> {
   return event;
 }
 
-export async function getAlbumById(albumId: string): Promise<AlbumRow> {
+// This function fetches the albums with the matching albumId
+export async function getAlbum(albumId: string): Promise<Album | undefined> {
+  // Query the database for the album where the albumId matches
   const event = await db.query.AlbumTable.findFirst({
     where: eq(AlbumTable.id, albumId),
   });
-  if (!event) {
-    throw new Error("Failed to get album");
-  }
-  return event;
+
+  return event ?? undefined; // Explicitly return undefined if not found
 }
 
+// This function creates a new album in the database after validating the input data
 export async function createAlbum(
-  unsafeData: z.infer<typeof AlbumFormSchema>
+  unsafeData: z.infer<typeof AlbumFormSchema> // Accepts raw album data validated by the zod schema
 ): Promise<void> {
   try {
+    // Authenticate the user using Clerk
     const { userId } = await auth();
+    // Validate the incoming data against the event form schema
     const { success, data } = AlbumFormSchema.safeParse(unsafeData);
-    if (!userId || !success) {
-      throw new Error("user not authenticated or invalid album data");
+
+    // If validation fails or the user is not authenticated, throw an error
+    if (!success || !userId) {
+      throw new Error("Invalid event data or user not authenticated.");
     }
+
+    // Attempt to insert the validated album data into the database, linking it to the authenticated user
     await db.insert(AlbumTable).values({ ...data, clerkUserId: userId });
   } catch (error: any) {
+    // If any error occurs during the process, throw a new error with a readable message
     throw new Error(`Error: ${error.message || error}`);
   } finally {
+    // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");
   }
 }
 
-// updates an existing event in the database after validating the input and checking ownership.
+// This function updates an existing album in the database after validating the input and checking ownership
 export async function updateAlbum(
   id: string, // ID of the album to update
-  unsafeData: z.infer<typeof AlbumFormSchema> // Raw event data to validate and update
+  unsafeData: z.infer<typeof AlbumFormSchema> // Raw album data to validate and update
 ): Promise<void> {
   try {
     // Authenticate the user
     const { userId } = await auth();
-
     // Validate the incoming data against the event form schema
     const { success, data } = AlbumFormSchema.safeParse(unsafeData);
 
@@ -69,7 +79,7 @@ export async function updateAlbum(
     const { rowCount } = await db
       .update(AlbumTable)
       .set({ ...data }) // Update with validated data
-      .where(and(eq(AlbumTable.id, id), eq(AlbumTable.clerkUserId, userId))); // Ensure user owns the event
+      .where(and(eq(AlbumTable.id, id), eq(AlbumTable.clerkUserId, userId))); // Ensure user owns the album
 
     // If no album was updated (either not found or not owned by the user), throw an error
     if (rowCount === 0) {
@@ -86,14 +96,13 @@ export async function updateAlbum(
   }
 }
 
-// deletes an existing album from the database after checking user ownership.
+// This function deletes an existing album from the database after checking user ownership
 export async function deleteAlbum(
   albumId: string // ID of the album to delete
 ): Promise<void> {
   try {
     // Authenticate the user
     const { userId } = await auth();
-
     // Throw an error if no authenticated user
     if (!userId) {
       throw new Error("User not authenticated.");
@@ -112,11 +121,9 @@ export async function deleteAlbum(
         "Album not found or user not authorized to delete this album."
       );
     }
-    const { success, message } = await deleteImagesByAlbumId(albumId);
-    if (!success) {
-      throw new Error(message);
-    }
-    console.log(message);
+
+    // Attempt to delete the images from the AWS S3 bucket
+    await deleteImages(albumId);
   } catch (error: any) {
     // If any error occurs, throw a new error with a readable message
     throw new Error(`Failed to delete album: ${error.message || error}`);

@@ -1,6 +1,6 @@
 import AlbumForm from "@/components/forms/AlbumForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getAlbumById } from "@/server/actions/albums";
+import { getAlbum } from "@/server/actions/albums";
 
 export default async function EditAlbum({
   params,
@@ -8,7 +8,7 @@ export default async function EditAlbum({
   params: { albumId: string };
 }) {
   const albumId = params.albumId;
-  const album = await getAlbumById(albumId);
+  const album = await getAlbum(albumId);
   return (
     <div className="flex items-center justify-center">
       <Card className="w-md mx-auto my-auto border-8 border-white shadow-2xl shadow-accent-foreground">

@@ -1,4 +1,4 @@
-import { getAlbumById } from "@/server/actions/albums";
+import { getAlbum } from "@/server/actions/albums";
 import PrivateAlbumPage from "@/components/PrivateAlbumPage";
 import { auth } from "@clerk/nextjs/server";
 
@@ -8,7 +8,10 @@ export default async function Page({
   params: { albumId: string };
 }) {
   const albumId = params.albumId;
-  const album = await getAlbumById(albumId);
+  const album = await getAlbum(albumId);
+  if (!album) {
+    throw new Error("Album not found");
+  }
   const { userId } = await auth();
   if (userId !== album.clerkUserId) {
     throw new Error("User not authenticated to access this page");

@@ -1,4 +1,4 @@
-import { getImagesByAlbumId } from "@/server/actions/images";
+import { getImages } from "@/server/actions/images";
 import Link from "next/link";
 import Image from "next/image";
 import CreateImageForm from "@/components/forms/imageForms/CreateImageForm";
@@ -19,27 +19,27 @@ export default async function PrivateAlbumPage({
     albumOrder: number; // Optional description of the event
   };
 }) {
-  const images = await getImagesByAlbumId(album.id);
+  const images = await getImages(album.id);
   return (
     <div className="p-5">
       <div className="flex flex-row items-center justify-between w-full">
-        <div className="flex flex-row">
-          <div>
+        <div>
+          <div className="flex flex-row items-center">
             <h1 className="text-white text-3xl font-semibold">{album.title}</h1>
-            <p className="text-neutral-200">Description: {album.description}</p>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button asChild>
+                  <Link href={`/album/edit/${album.id}`}>
+                    <Pencil />
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Edit Album</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button>
-                <Link href={`/album/edit/${album.id}`}>
-                  <Pencil />
-                </Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Edit Album</p>
-            </TooltipContent>
-          </Tooltip>
+          <p className="text-neutral-200">Description: {album.description}</p>
         </div>
 
         <CreateImageForm albumId={album.id} />

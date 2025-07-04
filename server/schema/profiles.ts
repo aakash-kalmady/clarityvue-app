@@ -10,7 +10,7 @@ export const ProfileFormSchema = z.object({
     .min(2, { message: "Username must be at least 2 characters." })
     .max(50, { message: "Username cannot be more than 50 characters." })
     .regex(/^[a-z0-9]+$/, {
-      message: "No spaces or special characters allowed.",
+      message: "No spaces, uppercase, or special characters allowed.",
     }),
   bio: z
     .string()

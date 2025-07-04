@@ -15,7 +15,7 @@ export default async function PublicProfilePage({
   const albums = await getAlbums(profile.clerkUserId);
   return (
     <div className="p-5">
-      <div className="flex flex-row">
+      <div className="flex flex-row items-center">
         <Image
           src={profile.imageUrl}
           width={100}
@@ -24,7 +24,7 @@ export default async function PublicProfilePage({
           className="rounded-full mr-5"
         />
         <div>
-          <h1 className="text-2xl text-white">{profile.displayName}!</h1>
+          <h1 className="text-2xl text-white">{profile.displayName}</h1>
           <h2 className="text-white">{profile.bio}</h2>
         </div>
       </div>

@@ -1,5 +1,12 @@
 "use server";
 
+import { db } from "@/drizzle/db";
+import { ImageTable } from "@/drizzle/schema";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { and, asc, eq } from "drizzle-orm";
+import { ImageFormSchema } from "../schema/images";
+import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs/server";
 import {
   S3Client,
   PutObjectCommand,
@@ -7,17 +14,10 @@ import {
   DeleteObjectsCommand,
   ListObjectsV2Command,
 } from "@aws-sdk/client-s3";
-import { db } from "@/drizzle/db";
-import { ImageTable } from "@/drizzle/schema";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { and, asc, eq } from "drizzle-orm";
-import { ImageFormSchema } from "../schema/images";
-import { revalidatePath } from "next/cache";
 import z from "zod";
-import { auth } from "@clerk/nextjs/server";
 
-// Infer the type of a row from the AlbumTable schema
-type ImageRow = typeof ImageTable.$inferSelect;
+// Infer the type of an image from the ImageTable schema
+type Image = typeof ImageTable.$inferSelect;
 
 // AWS S3 client configuration
 const s3Client = new S3Client({
@@ -28,28 +28,31 @@ const s3Client = new S3Client({
   },
 });
 
-// retireves the put request url for the client to send the image to
+// This function retireves the PUT request url from AWS S3 for the client to send the image to
 export async function createImageUrl(
   fileName: string,
   imgType: string,
   albumId: string
 ): Promise<{ uploadUrl: string; publicUrl: string }> {
+  // Authenticate the user
   const { userId } = await auth();
   if (!userId) {
-    throw new Error("user not authenticated");
+    throw new Error("User not authenticated");
   }
-  const uniqueFileName = `${albumId}-${Date.now()}-${fileName}`;
 
+  // Create a unique image name using the parent albumId and the current time
+  const uniqueImageName = `${albumId}-${Date.now()}-${fileName}`;
+
+  // Define the parameters for the AWS S3 PutObjectCommand
   const params = {
     Bucket: process.env.S3_BUCKET_NAME,
-    Key: uniqueFileName,
+    Key: uniqueImageName,
     ContentType: imgType,
   };
-
   const command = new PutObjectCommand(params);
 
-  const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 }); // 1 minute timeout
-  const publicUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${uniqueFileName}`;
+  const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 }); // 60 second timeout
+  const publicUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${uniqueImageName}`;
 
   return { uploadUrl, publicUrl };
 }
@@ -60,45 +63,52 @@ export async function deleteImage(
   albumId: string
 ): Promise<void> {
   try {
+    // Authenticate the user
     const { userId } = await auth();
     if (!userId) {
-      throw new Error("user not authenticated");
+      throw new Error("User not authenticated");
     }
+
     // Create a URL object to easily parse it
     const url = new URL(imageUrl);
-
-    // The object key is the pathname, but we must remove the leading '/'
+    // Remove the leading '/' to get the image name
     const key = url.pathname.substring(1);
 
+    // Define the parameters for the AWS S3 DeleteObjectCommand
     const params = {
       Bucket: process.env.S3_BUCKET_NAME,
-      Key: key, // Use the extracted key (filename)
+      Key: key,
     };
     const command = new DeleteObjectCommand(params);
+
+    // Attempt to delete the image from the AWS S3 Bucket
     await s3Client.send(command);
-    console.log("image deleted");
-    // Attempt to delete the image only if it belongs to the authenticated user
+
+    // Attempt to delete the image from the databse only if it belongs to the authenticated user
     const { rowCount } = await db
       .delete(ImageTable)
       .where(
         and(eq(ImageTable.imageUrl, imageUrl), eq(ImageTable.albumId, albumId))
       );
 
-    // If no album was deleted (either not found or not owned by current album), throw an error
+    // If no image was deleted (either not found or not owned by current album), throw an error
     if (rowCount === 0) {
       throw new Error(
-        "Image not found or album not authorized to delete this album."
+        "Image not found or album not authorized to delete this image."
       );
     }
-  } catch (error) {
-    console.error("Error deleting file from S3:", error);
-    throw error; // Or handle it as needed
+  } catch (error: any) {
+    // If any error occurs, throw a new error with a readable message
+    throw new Error(`Failed to delete image: ${error.message || error}`);
   } finally {
+    // Revalidate the `/album/${albumId}` path to ensure the page fetches fresh data after the database operation
     revalidatePath(`/album/${albumId}`);
   }
 }
 
-export async function getImagesByAlbumId(albumId: string): Promise<ImageRow[]> {
+// This function fetches all albums for a specific album
+export async function getImages(albumId: string): Promise<Image[]> {
+  // Query the database for images where the albumId matches
   const event = await db.query.ImageTable.findMany({
     where: eq(ImageTable.albumId, albumId),
     orderBy: [asc(ImageTable.imageOrder)],
@@ -107,86 +117,71 @@ export async function getImagesByAlbumId(albumId: string): Promise<ImageRow[]> {
   return event;
 }
 
+// This function creates a new image in the database after validating the input data
 export async function createImage(
   albumIds: string,
   unsafeData: z.infer<typeof ImageFormSchema>
 ): Promise<void> {
   try {
+    // Authenticate the user using Clerk
     const { userId } = await auth();
-    if (!userId) {
-      throw new Error("user not authenticated");
-    }
+    // Validate the incoming data against the event form schema
     const { success, data } = ImageFormSchema.safeParse(unsafeData);
-    if (!success) {
-      throw new Error("invalid image data");
+
+    // If validation fails or the user is not authenticated, throw an error
+    if (!success || !userId) {
+      throw new Error("Invalid event data or user not authenticated.");
     }
+
+    // Attempt to insert the validated image data into the database, linking it to the parent album
     await db.insert(ImageTable).values({ ...data, albumId: albumIds });
   } catch (error: any) {
+    // If any error occurs during the process, throw a new error with a readable message
     throw new Error(`Error: ${error.message || error}`);
   } finally {
+    // Revalidate the `/album/${albumIds}` path to ensure the page fetches fresh data after the database operation
     revalidatePath(`/album/${albumIds}`);
   }
 }
 
 // Deletes all images from the S3 bucket that are in a folder matching the albumId.
-export async function deleteImagesByAlbumId(
-  albumId: string
-): Promise<{ success: boolean; message: string }> {
-  // The "directory" in S3 is just a prefix. Ensure it ends with a slash.
+export async function deleteImages(albumId: string): Promise<void> {
   try {
+    //Authenticate the user
     const { userId } = await auth();
     if (!userId) {
-      throw new Error("user not authenticated");
+      throw new Error("User not authenticated");
     }
-    const bucketName = process.env.S3_BUCKET_NAME;
-    if (!bucketName) {
-      console.error("S3_BUCKET_NAME environment variable is not set.");
-      return { success: false, message: "Server configuration error." };
-    }
-    // 1. List all objects with the given prefix
+
+    // Define the list object command with the parameters including the image name prefix
     const listCommand = new ListObjectsV2Command({
-      Bucket: bucketName,
+      Bucket: process.env.S3_BUCKET_NAME,
       Prefix: `${albumId}-`,
     });
+
+    // Attempt to retrieve the list of all images to delete
     const listedObjects = await s3Client.send(listCommand);
 
+    // Throw an error if no images were listed
     if (!listedObjects.Contents || listedObjects.Contents.length === 0) {
-      return {
-        success: true,
-        message: "Directory is already empty or does not exist.",
-      };
+      throw new Error("Directory is already empty or does not exist.");
     }
 
-    // 2. Prepare the list of keys for deletion
+    // Map the list of images to their keys for deletion
     const objectsToDelete = listedObjects.Contents.map((obj) => ({
       Key: obj.Key,
     }));
 
-    // 3. Execute the batch delete command
+    // Define the delete object command with the parameters
     const deleteCommand = new DeleteObjectsCommand({
-      Bucket: bucketName,
+      Bucket: process.env.S3_BUCKET_NAME,
       Delete: { Objects: objectsToDelete },
     });
-    await s3Client.send(deleteCommand);
 
-    console.log(
-      `Successfully deleted ${objectsToDelete.length} objects for albumId: ${albumId}.`
-    );
-    return {
-      success: true,
-      message: `Successfully deleted directory: ${albumId}`,
-    };
-  } catch (error) {
-    console.error(
-      `Failed to delete S3 directory for albumId ${albumId}:`,
-      error
-    );
-    if (error instanceof Error) {
-      return { success: false, message: error.message };
-    }
-    return {
-      success: false,
-      message: "An unknown error occurred during S3 directory deletion.",
-    };
+    // Attempt to delete the images from the AWS S3 bucket
+    await s3Client.send(deleteCommand);
+  } catch (error: any) {
+    // If any error occurs during the process, throw a new error with a readable message
+    throw new Error(`Error: ${error.message || error}`);
   }
 }

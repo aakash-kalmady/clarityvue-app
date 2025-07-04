@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AlbumCard from "@/components/cards/AlbumCard";
 import { Button } from "@/components/ui/button";
-import { SquarePen, UserPen } from "lucide-react";
+import { UserPen } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -32,23 +32,24 @@ export default async function Page() {
           />
           <div>
             <h1 className="text-2xl text-white">Hi {profile.displayName}!</h1>
-            <h2 className="text-white">Welcome to your dashboard</h2>
-            <p className="text-white">
-              User since {profile.createdAt.toLocaleDateString()}
-            </p>
+            <div className="flex flex-row items-center">
+              <p className="text-white">
+                User since {profile.createdAt.toLocaleDateString()}
+              </p>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button asChild>
+                    <Link href="/profile/edit">
+                      <UserPen color="white" />
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Edit Profile</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
           </div>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button className="mt-3">
-                <Link href="/profile/edit">
-                  <UserPen color="white" />
-                </Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Edit Profile</p>
-            </TooltipContent>
-          </Tooltip>
         </div>
 
         <div className="flex flex-col items-center justify-center">
@@ -60,7 +61,7 @@ export default async function Page() {
               You have no albums, create one now!
             </p>
           ) : (
-            <div className="grid grid-cols-5 gap-10 mt-5">
+            <div className="grid grid-cols-4 gap-10 mt-5">
               {albums.map((album) => (
                 <div
                   key={album.id}
