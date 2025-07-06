@@ -19,6 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Textarea } from "../ui/textarea";
 
 export default function ProfileForm({
   profile, // Destructure the `event` object from the props
@@ -60,9 +61,18 @@ export default function ProfileForm({
           bio: "", // Ensure controlled input: default to empty string
         },
   });
+
+  const { isDirty } = form.formState;
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
+        {/* Show root error if any */}
+        {form.formState.errors.root && (
+          <div className="text-destructive text-sm">
+            {form.formState.errors.root.message}
+          </div>
+        )}
         <FormField
           control={form.control}
           name="displayName"
@@ -72,7 +82,7 @@ export default function ProfileForm({
               <FormControl>
                 <Input
                   type="text"
-                  placeholder="Enter display name here"
+                  placeholder="Enter your display name"
                   {...field}
                 />
               </FormControl>
@@ -92,7 +102,7 @@ export default function ProfileForm({
               <FormControl>
                 <Input
                   type="text"
-                  placeholder="Enter username here"
+                  placeholder="Enter your username"
                   {...field}
                 />
               </FormControl>
@@ -108,7 +118,11 @@ export default function ProfileForm({
             <FormItem>
               <FormLabel>Biography</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Enter bio here" {...field} />
+                <Textarea
+                  placeholder="Enter your bio"
+                  className="resize-none"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 This is your profile description.
@@ -119,19 +133,19 @@ export default function ProfileForm({
         />
         <div className="flex gap-2 justify-around">
           <Button
+            disabled={form.formState.isSubmitting || !isDirty}
+            type="submit"
+            className="cursor-pointer"
+          >
+            {profile ? "Confirm" : "Create"}
+          </Button>
+          <Button
             disabled={form.formState.isSubmitting}
             type="button"
             asChild
             variant="outline"
           >
             <Link href="/dashboard">Cancel</Link>
-          </Button>
-          <Button
-            disabled={form.formState.isSubmitting}
-            type="submit"
-            className="cursor-pointer"
-          >
-            {profile ? "Confirm" : "Create"}
           </Button>
         </div>
       </form>

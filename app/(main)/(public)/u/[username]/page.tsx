@@ -28,14 +28,14 @@ export default async function PublicProfilePage({
           <p className="text-white">{profile.bio}</p>
         </div>
       </div>
-      <div className="mt-5 text-center">
+      <div className="mt-5">
         {albums.length < 1 ? (
-          <p className="text-2xl text-white">
+          <p className="text-2xl text-white text-center">
             {profile.displayName} has no albums, let them know to create one
             now!
           </p>
         ) : (
-          <div className="grid grid-cols-5 gap-10">
+          <div className="grid grid-cols-4 gap-10">
             {albums.map((album) => (
               <div
                 key={album.id}
@@ -46,6 +46,7 @@ export default async function PublicProfilePage({
                   title={album.title}
                   description={album.description}
                   albumId={album.id}
+                  imageUrl={album.imageUrl}
                   isPrivate={false}
                 />
               </div>

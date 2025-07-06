@@ -1,5 +1,5 @@
 {
-  "id": "d8cc97cd-9f1e-4c76-bf0b-2d465bfe5d30",
+  "id": "20042f70-be72-4fa9-8983-1dc1d2bd1f01",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -39,6 +39,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "imageUrl": {
+          "name": "imageUrl",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
@@ -54,7 +60,29 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "clerk_user_album_order_idx": {
+          "name": "clerk_user_album_order_idx",
+          "columns": [
+            {
+              "expression": "clerkUserId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "albumOrder",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

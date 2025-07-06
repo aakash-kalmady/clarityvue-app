@@ -38,7 +38,7 @@ export default async function Page() {
               </p>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button asChild>
+                  <Button asChild variant={"link"}>
                     <Link href="/profile/edit">
                       <UserPen color="white" />
                     </Link>
@@ -56,29 +56,30 @@ export default async function Page() {
           <Button className="mt-5" variant={"secondary"} size="lg" asChild>
             <Link href="/album/new">Create an Album</Link>
           </Button>
-          {albums.length < 1 ? (
-            <p className="text-white text-3xl mt-5">
-              You have no albums, create one now!
-            </p>
-          ) : (
-            <div className="grid grid-cols-4 gap-10 mt-5">
-              {albums.map((album) => (
-                <div
-                  key={album.id}
-                  className="w-full h-full flex flex-col justify-center items-center"
-                >
-                  <AlbumCard
-                    key={album.id}
-                    title={album.title}
-                    description={album.description}
-                    albumId={album.id}
-                    isPrivate={true}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
         </div>
+        {albums.length < 1 ? (
+          <p className="text-white text-3xl mt-5 text-center">
+            You have no albums, create one now!
+          </p>
+        ) : (
+          <div className="grid grid-cols-4 gap-10 mt-5">
+            {albums.map((album) => (
+              <div
+                key={album.id}
+                className="w-full h-full flex flex-col justify-center items-center"
+              >
+                <AlbumCard
+                  key={album.id}
+                  title={album.title}
+                  description={album.description}
+                  albumId={album.id}
+                  imageUrl={album.imageUrl}
+                  isPrivate={true}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

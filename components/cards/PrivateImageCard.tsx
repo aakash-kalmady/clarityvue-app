@@ -35,7 +35,7 @@ export default function PrivateImageCard({ image, albumId }: ImageCardProps) {
 
   return (
     <div
-      className="relative group aspect-square overflow-hidden cursor-pointer"
+      className="relative group aspect-square overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -51,7 +51,6 @@ export default function PrivateImageCard({ image, albumId }: ImageCardProps) {
           height={200}
           objectFit="cover" // Cover the container while maintaining aspect ratio
           quality={50}
-          className="transition-transform duration-300 group-hover:scale-105" // Optional: subtle zoom effect on hover
         />
       </Link>
 
@@ -59,7 +58,11 @@ export default function PrivateImageCard({ image, albumId }: ImageCardProps) {
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="icon" className="shadow-lg">
+              <Button
+                variant="destructive"
+                size="icon"
+                className="shadow-lg cursor-pointer"
+              >
                 <Trash2 className="h-6 w-6" />
                 <span className="sr-only">Delete Image</span>
               </Button>
@@ -75,7 +78,7 @@ export default function PrivateImageCard({ image, albumId }: ImageCardProps) {
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
-                  className="bg-red-500 hover:bg-red-700 cursor-pointer"
+                  className="bg-red-500 hover:bg-red-700 text-white cursor-pointer"
                   onClick={() => {
                     startDeleteTransition(async () => {
                       await deleteImage(image.imageUrl, albumId);

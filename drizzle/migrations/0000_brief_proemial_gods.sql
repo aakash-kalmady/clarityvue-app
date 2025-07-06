@@ -4,6 +4,7 @@ CREATE TABLE "albums" (
 	"description" text NOT NULL,
 	"clerkUserId" text NOT NULL,
 	"albumOrder" integer NOT NULL,
+	"imageUrl" text NOT NULL,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
@@ -31,4 +32,5 @@ CREATE TABLE "profiles" (
 	CONSTRAINT "profiles_username_unique" UNIQUE("username")
 );
 --> statement-breakpoint
-ALTER TABLE "images" ADD CONSTRAINT "images_albumId_albums_id_fk" FOREIGN KEY ("albumId") REFERENCES "public"."albums"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "images" ADD CONSTRAINT "images_albumId_albums_id_fk" FOREIGN KEY ("albumId") REFERENCES "public"."albums"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+CREATE UNIQUE INDEX "clerk_user_album_order_idx" ON "albums" USING btree ("clerkUserId","albumOrder");

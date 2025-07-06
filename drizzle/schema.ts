@@ -1,4 +1,11 @@
-import { pgTable, uuid, text, timestamp, integer } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  uuid,
+  text,
+  timestamp,
+  integer,
+  uniqueIndex,
+} from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 const createdAt = timestamp().notNull().defaultNow();
@@ -20,15 +27,29 @@ export const ProfileTable = pgTable("profiles", {
 });
 
 // Album Table: Stores collections of images.
-export const AlbumTable = pgTable("albums", {
-  id: uuid().defaultRandom().primaryKey(),
-  title: text().notNull(),
-  description: text().notNull(),
-  clerkUserId: text().notNull(),
-  albumOrder: integer().notNull(),
-  createdAt,
-  updatedAt,
-});
+export const AlbumTable = pgTable(
+  "albums",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    title: text().notNull(),
+    description: text().notNull(),
+    clerkUserId: text().notNull(),
+    albumOrder: integer().notNull(),
+    imageUrl: text().notNull(),
+    createdAt,
+    updatedAt,
+  },
+  (table) => {
+    // Add a composite unique index on clerkUserId and albumOrder.
+    // This ensures that for a specific user (clerkUserId), each albumOrder value is unique.
+    return {
+      clerkUserAlbumOrderUnique: uniqueIndex("clerk_user_album_order_idx").on(
+        table.clerkUserId,
+        table.albumOrder
+      ),
+    };
+  }
+);
 
 // Relations for the Album Table.
 // An album belongs to one profile and can have many images.

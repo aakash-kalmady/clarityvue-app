@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createAlbum, deleteAlbum, updateAlbum } from "@/server/actions/albums";
 import { AlbumFormSchema } from "@/server/schema/albums";
-import { useTransition } from "react";
+import { ChangeEvent, useState, useTransition } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,6 +31,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Textarea } from "../ui/textarea";
+import { createImage, createImageUrl } from "@/server/actions/images";
 
 export default function AlbumForm({
   album, // Destructure the `event` object from the props
@@ -42,16 +44,50 @@ export default function AlbumForm({
     title: string; // Unique identifier for the event
     description: string; // Name of the event
     albumOrder: number; // Optional description of the event
+    imageUrl: string;
   };
 }) {
   const router = useRouter();
   const [isDeletePending, startDeleteTransition] = useTransition();
+  const [invalidImage, setInvalidImage] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
 
   const onSubmit = async (data: z.infer<typeof AlbumFormSchema>) => {
     const action =
       album == null ? createAlbum : updateAlbum.bind(null, album.id);
     try {
+      // 3. Get a pre-signed URL
+      if (album && file) {
+        const { uploadUrl, publicUrl } = await createImageUrl(
+          file.name,
+          file.type,
+          album.id
+        );
+
+        // 4. Upload the file to the storage provider
+        const uploadResponse = await fetch(uploadUrl, {
+          method: "PUT",
+          body: file,
+          headers: { "Content-Type": file.type },
+        });
+        if (!uploadResponse.ok) {
+          throw new Error("Failed to upload file to storage.");
+        }
+        // 5. Auto-generate metadata and save to the database
+        const altText = file.name.split(".").slice(0, -1).join("."); // Filename without extension
+        const caption = `Photo uploaded on ${new Date().toLocaleDateString()}`; // Placeholder caption
+        const imageOrder = Math.floor(Math.random() * 1000) + 1; // Random order
+        await createImage(album.id, {
+          imageUrl: publicUrl,
+          altText,
+          caption,
+          imageOrder,
+        });
+        //setImageUrl(publicUrl);
+        data.imageUrl = publicUrl;
+      }
       await action(data);
+      setFile(null);
       router.push(`${album ? `/album/${album.id}` : "/dashboard"}`);
       toast.success(`Album ${album ? "edited" : "created"} successfully!`);
     } catch (error: any) {
@@ -73,9 +109,33 @@ export default function AlbumForm({
           title: "", // New events are active by default
           description: "", // Default duration is 30 minutes
           albumOrder: 1, // Ensure controlled input: default to empty string
+          imageUrl:
+            "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg",
         },
   });
 
+  const { isDirty } = form.formState;
+
+  const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > MAX_IMAGE_SIZE) {
+        form.setError("root", {
+          message: "File is larger than 10MB.",
+        });
+        setInvalidImage(true);
+      } else if (!file.type.startsWith("image/")) {
+        form.setError("root", {
+          message: "Invalid file type. Please upload an image.",
+        });
+        setInvalidImage(true);
+      } else {
+        setInvalidImage(false);
+        setFile(file);
+      }
+    }
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
@@ -92,7 +152,7 @@ export default function AlbumForm({
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Enter title here" {...field} />
+                <Input type="text" placeholder="Enter your title" {...field} />
               </FormControl>
               <FormDescription>This is your album title.</FormDescription>
               <FormMessage />
@@ -106,9 +166,9 @@ export default function AlbumForm({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input
-                  type="text"
-                  placeholder="Enter description here"
+                <Textarea
+                  placeholder="Enter your description"
+                  className="resize-none"
                   {...field}
                 />
               </FormControl>
@@ -119,6 +179,28 @@ export default function AlbumForm({
             </FormItem>
           )}
         />
+        {album && (
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Album Cover</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                </FormControl>
+                <FormDescription>
+                  This is your album's cover image (Optional).
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="albumOrder"
@@ -126,7 +208,7 @@ export default function AlbumForm({
             <FormItem>
               <FormLabel>Album Order</FormLabel>
               <FormControl>
-                <Input type="number" min="0" {...field} />
+                <Input type="number" min="1" {...field} />
               </FormControl>
               <FormDescription>
                 This is the album's order on the page.
@@ -137,6 +219,13 @@ export default function AlbumForm({
         />
         <div className="flex gap-2 justify-around">
           <Button
+            disabled={form.formState.isSubmitting || !isDirty || invalidImage}
+            type="submit"
+            className="cursor-pointer"
+          >
+            {album ? "Confirm" : "Create"}
+          </Button>
+          <Button
             disabled={form.formState.isSubmitting}
             type="button"
             asChild
@@ -145,13 +234,6 @@ export default function AlbumForm({
             <Link href={album ? `/album/${album.id}` : "/dashboard"}>
               Cancel
             </Link>
-          </Button>
-          <Button
-            disabled={form.formState.isSubmitting}
-            type="submit"
-            className="cursor-pointer"
-          >
-            {album ? "Confirm" : "Create"}
           </Button>
 
           {/* Delete Button (only shows if editing existing event) */}
@@ -177,7 +259,7 @@ export default function AlbumForm({
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
-                    className="bg-red-500 hover:bg-red-700 cursor-pointer"
+                    className="bg-destructive hover:bg-red-500 text-white cursor-pointer"
                     disabled={isDeletePending || form.formState.isSubmitting}
                     onClick={() => {
                       // Start a React transition to keep the UI responsive during this async operation

@@ -24,7 +24,6 @@ export default function PrivateImageCard({ image }: ImageCardProps) {
           height={200}
           objectFit="cover" // Cover the container while maintaining aspect ratio
           quality={50}
-          className="transition-transform duration-300 group-hover:scale-105" // Optional: subtle zoom effect on hover
         />
       </Link>
     </div>

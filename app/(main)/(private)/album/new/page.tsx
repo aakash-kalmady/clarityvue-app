@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default function NewAlbum() {
   return (
     <div className="flex items-center justify-center">
-      <Card className="w-md border-8 border-white shadow-2xl shadow-accent-foreground">
+      <Card className="w-md shadow-2xl shadow-black">
         {/* Header section of the card displaying the title */}
         <CardHeader>
           <CardTitle>New Album</CardTitle>

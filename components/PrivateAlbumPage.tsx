@@ -2,7 +2,7 @@ import { getImages } from "@/server/actions/images";
 import Link from "next/link";
 import ImageUploadBox from "@/components/ImageUploadBox";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
+import { SquarePen } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import PrivateImageCard from "./cards/PrivateImageCard";
 
@@ -27,9 +27,9 @@ export default async function PrivateAlbumPage({
             <h1 className="text-white text-3xl font-semibold">{album.title}</h1>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button asChild>
+                <Button asChild variant={"link"}>
                   <Link href={`/album/edit/${album.id}`}>
-                    <Pencil />
+                    <SquarePen />
                   </Link>
                 </Button>
               </TooltipTrigger>
@@ -40,10 +40,8 @@ export default async function PrivateAlbumPage({
           </div>
           <p className="text-neutral-200">Description: {album.description}</p>
         </div>
-
         <ImageUploadBox albumId={album.id} />
       </div>
-      {/* <DeleteImageForm albumId={album.id} /> */}
       {images.length < 1 ? (
         <p className="text-white mt-5">You have no images, upload one now!</p>
       ) : (

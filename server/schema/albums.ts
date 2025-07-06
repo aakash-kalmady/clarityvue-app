@@ -9,5 +9,9 @@ export const AlbumFormSchema = z.object({
     .string()
     .min(2, { message: "Description must be at least 2 characters." })
     .max(50, { message: "Description cannot be more than 50 characters." }),
-  albumOrder: z.number().int().positive("Duration must be greater than 0"),
+  imageUrl: z.string().min(2).max(2000),
+  albumOrder: z.coerce
+    .number()
+    .int()
+    .positive("Duration must be greater than 0"),
 });
