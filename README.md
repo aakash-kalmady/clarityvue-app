@@ -1,16 +1,46 @@
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# ClarityVue 📸✨
 
-## Learn More
+**ClarityVue** is a full-stack, modern photo album platform designed for photographers and hobbyists to showcase their work. Built with a high-performance, server-rendered stack, it provides a seamless and secure experience for users to manage and share their visual content.
 
-To learn more about Next.js, take a look at the following resources:
+**[Live Demo](https://your-live-demo-url.com)**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![ClarityVue Demo GIF](https://i.imgur.com/your-demo-gif.gif)
+_(Pro-tip: Record a short GIF of you using the app and upload it to your repo to embed here. You can use tools like Giphy Capture or Kap.)_
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **👤 Secure User Authentication:** A complete and secure authentication system with social sign-on options (Google, GitHub) and robust profile management, powered by **Clerk**.
+- **앨범 Album & Image Management:** A private, intuitive user dashboard for creating albums, uploading images, and editing profile details with full CRUD (Create, Read, Update, Delete) functionality.
+- **🖼️ Public User Profiles:** Clean, responsive, and public-facing pages for users to showcase their curated photo albums to the world.
+- **☁️ Scalable Cloud Storage:** All images are securely stored and efficiently served from **AWS S3**, ensuring high performance, reliability, and scalability.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Tech Stack & Architecture
+
+This project was built with a modern, type-safe, and scalable architecture, focusing on developer experience and application performance.
+
+| Category       | Technology                                                                                                                                                                                                                                                                                                                                                                                                             |
+| :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Framework**  | [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/) [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)                                                                                                                                                            |
+| **Language**   | [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)                                                                                                                                                                                                                                                                   |
+| **Database**   | [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/) [![Neon](https://img.shields.io/badge/Neon-00C7B1?style=for-the-badge&logo=neon&logoColor=white)](https://neon.tech/) [![Drizzle ORM](https://img.shields.io/badge/Drizzle%20ORM-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black)](https://orm.drizzle.team/) |
+| **Auth**       | [![Clerk](https://img.shields.io/badge/Clerk-6C47FF?style=for-the-badge&logo=clerk&logoColor=white)](https://clerk.dev/)                                                                                                                                                                                                                                                                                               |
+| **Validation** | [![Zod](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)](https://zod.dev/)                                                                                                                                                                                                                                                                                                       |
+| **Storage**    | [![AWS S3](https://img.shields.io/badge/AWS%20S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white)](https://aws.amazon.com/s3/)                                                                                                                                                                                                                                                                               |
+| **Deployment** | [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)                                                                                                                                                                                                                                                                                           |
+
+---
+
+## Getting Started
+
+To run this project locally, you'll need to have Node.js and pnpm installed.
+
+### 1. Clone the repository
+
+```bash
+git clone [https://github.com/your-username/clarityvue.git](https://github.com/your-username/clarityvue.git)
+cd clarityvue
+```
