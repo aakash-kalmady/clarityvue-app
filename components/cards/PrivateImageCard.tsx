@@ -1,9 +1,10 @@
-"use client"; // This component needs to be a client component for interactivity
+"use client";
 
 import { useState, useTransition } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button"; // Adjust path as per your setup
+import { deleteImage } from "@/server/actions/images";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,20 +16,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"; // Adjust path as per your setup
-import { Button } from "@/components/ui/button"; // Adjust path as per your setup
-import { deleteImage } from "@/server/actions/images";
-import { toast } from "sonner";
+import Image from "next/image";
+import Link from "next/link";
 
-interface ImageCardProps {
+export default function PrivateImageCard({
+  image,
+  albumId,
+}: {
   image: {
     id: string;
     imageUrl: string;
     altText: string;
   };
   albumId: string;
-}
-
-export default function PrivateImageCard({ image, albumId }: ImageCardProps) {
+}) {
   const [isDeletePending, startDeleteTransition] = useTransition();
 
   const [isHovered, setIsHovered] = useState(false);

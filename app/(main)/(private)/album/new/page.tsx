@@ -1,5 +1,5 @@
-import AlbumForm from "@/components/forms/AlbumForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import AlbumForm from "@/components/forms/AlbumForm";
 
 export default function NewAlbum() {
   return (

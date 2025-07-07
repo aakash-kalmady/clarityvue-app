@@ -1,10 +1,10 @@
 import { getImages } from "@/server/actions/images";
-import Link from "next/link";
-import ImageUploadBox from "@/components/ImageUploadBox";
 import { Button } from "@/components/ui/button";
 import { SquarePen } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import PrivateImageCard from "./cards/PrivateImageCard";
+import Link from "next/link";
+import ImageUploadBox from "@/components/ImageUploadBox";
 
 export default async function PrivateAlbumPage({
   album, // Destructure the `event` object from the props

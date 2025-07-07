@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Toaster } from "sonner";
-import NextTopLoader from "nextjs-toploader";
 import { ThemeProvider } from "@/components/theme-provider";
+import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,7 +19,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "ClarityVue",
-  description: "ClarityVue photo portfolio building app",
+  description:
+    "Created by Aakash Kalmady. ClarityVue is a photo portfolio building app where users can create minimal and professional looking photo profiles to share with others!",
   icons: {
     icon: "/assets/logo.svg",
   },

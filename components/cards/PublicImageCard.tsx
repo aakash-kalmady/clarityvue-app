@@ -1,15 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 
-interface ImageCardProps {
+export default function PrivateImageCard({
+  image,
+}: {
   image: {
     id: string;
     imageUrl: string;
     altText: string;
   };
-}
-
-export default function PrivateImageCard({ image }: ImageCardProps) {
+}) {
   return (
     <div className="relative group aspect-square overflow-hidden cursor-pointer">
       <Link

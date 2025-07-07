@@ -1,17 +1,13 @@
-import AlbumForm from "@/components/forms/AlbumForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAlbum } from "@/server/actions/albums";
+import AlbumForm from "@/components/forms/AlbumForm";
 
-interface AlbumPageParams {
-  albumId: string;
-}
-interface PageProps {
-  params: Promise<AlbumPageParams>; // params is now a Promise
-}
-
-export default async function EditAlbum({ params }: PageProps) {
-  const resolvedParams = await params;
-  const { albumId } = resolvedParams;
+export default async function EditAlbum({
+  params,
+}: {
+  params: Promise<{ albumId: string }>;
+}) {
+  const { albumId } = await params;
   const album = await getAlbum(albumId);
   return (
     <div className="flex items-center justify-center h-full">

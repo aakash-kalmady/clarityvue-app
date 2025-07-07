@@ -1,5 +1,5 @@
-import ProfileForm from "@/components/forms/ProfileForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ProfileForm from "@/components/forms/ProfileForm";
 
 export default async function NewProfilePage() {
   return (

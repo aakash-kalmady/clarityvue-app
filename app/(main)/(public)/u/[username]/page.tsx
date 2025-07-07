@@ -1,21 +1,19 @@
 import { getAlbums } from "@/server/actions/albums";
 import { getProfileByUsername } from "@/server/actions/profiles";
+import { redirect } from "next/navigation";
 import AlbumCard from "@/components/cards/AlbumCard";
 import Image from "next/image";
 
-interface ProfilePageParams {
-  username: string;
-}
-interface PageProps {
-  params: Promise<ProfilePageParams>; // params is now a Promise
-}
-
-export default async function PublicProfilePage({ params }: PageProps) {
-  const resolvedParams = await params;
-  const { username } = resolvedParams;
-  if (!username) throw new Error();
+export default async function PublicProfilePage({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}) {
+  const { username } = await params;
   const profile = await getProfileByUsername(username as string);
-  if (!profile) throw new Error();
+  if (!profile) {
+    redirect("/login");
+  }
   const albums = await getAlbums(profile.clerkUserId);
   return (
     <div className="p-5">
@@ -52,6 +50,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
                   albumId={album.id}
                   imageUrl={album.imageUrl}
                   isPrivate={false}
+                  username={username}
                 />
               </div>
             ))}

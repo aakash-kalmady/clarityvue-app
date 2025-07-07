@@ -1,9 +1,8 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { Button } from "../ui/button";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -11,6 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createAlbum, deleteAlbum, updateAlbum } from "@/server/actions/albums";
 import { AlbumFormSchema } from "@/server/schema/albums";
 import { ChangeEvent, useState, useTransition } from "react";
+import { Textarea } from "../ui/textarea";
+import { createImageUrl, deleteImage } from "@/server/actions/images";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,9 +31,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "../ui/textarea";
-import { createImageUrl, deleteImage } from "@/server/actions/images";
+} from "../ui/form";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 export default function AlbumForm({
   album, // Destructure the `event` object from the props
@@ -229,6 +230,9 @@ export default function AlbumForm({
             className="cursor-pointer"
           >
             {album ? "Confirm" : "Create"}
+            {form.formState.isSubmitting && (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            )}
           </Button>
           <Button
             disabled={form.formState.isSubmitting}
@@ -249,6 +253,9 @@ export default function AlbumForm({
                   className="cursor-pointer"
                 >
                   Delete Album
+                  {isDeletePending && (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  )}
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>

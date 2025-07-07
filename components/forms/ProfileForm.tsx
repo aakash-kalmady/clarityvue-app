@@ -2,14 +2,14 @@
 
 import { createProfile, updateProfile } from "@/server/actions/profiles";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { Button } from "../ui/button";
 import { z } from "zod";
-import { Input } from "@/components/ui/input";
+import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProfileFormSchema } from "@/server/schema/profiles";
+import { Textarea } from "../ui/textarea";
 import {
   Form,
   FormControl,
@@ -19,7 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "../ui/textarea";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 export default function ProfileForm({
   profile, // Destructure the `event` object from the props
@@ -140,6 +141,9 @@ export default function ProfileForm({
             className="cursor-pointer"
           >
             {profile ? "Confirm" : "Create"}
+            {form.formState.isSubmitting && (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            )}
           </Button>
           <Button
             disabled={form.formState.isSubmitting}

@@ -2,9 +2,6 @@ import { getProfile } from "@/server/actions/profiles";
 import { getAlbums } from "@/server/actions/albums";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import Image from "next/image";
-import Link from "next/link";
-import AlbumCard from "@/components/cards/AlbumCard";
 import { Button } from "@/components/ui/button";
 import { UserPen } from "lucide-react";
 import {
@@ -12,6 +9,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Image from "next/image";
+import Link from "next/link";
+import AlbumCard from "@/components/cards/AlbumCard";
 
 export default async function Page() {
   const { userId } = await auth();
@@ -74,6 +74,7 @@ export default async function Page() {
                 albumId={album.id}
                 imageUrl={album.imageUrl}
                 isPrivate={true}
+                username=""
               />
             </div>
           ))}

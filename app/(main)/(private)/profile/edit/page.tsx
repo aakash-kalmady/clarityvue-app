@@ -1,7 +1,7 @@
-import ProfileForm from "@/components/forms/ProfileForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProfile } from "@/server/actions/profiles";
 import { auth } from "@clerk/nextjs/server";
+import ProfileForm from "@/components/forms/ProfileForm";
 
 export default async function EditProfilePage() {
   const { userId } = await auth();

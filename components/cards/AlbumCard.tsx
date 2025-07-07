@@ -1,4 +1,6 @@
-import Link from "next/link";
+import { Button } from "../ui/button";
+import { SquarePen } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import {
   Card,
   CardContent,
@@ -7,20 +9,17 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Button } from "../ui/button";
 import Image from "next/image";
-import { SquarePen } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import Link from "next/link";
 
-type AlbumCardProps = {
+export default function AlbumCard(props: {
   title: string;
   description: string | null;
   albumId: string;
   imageUrl: string;
   isPrivate: boolean;
-};
-
-export default function AlbumCard(props: AlbumCardProps) {
+  username: string;
+}) {
   return (
     <Card className="w-full max-w-xs ">
       <CardHeader>
@@ -43,7 +42,7 @@ export default function AlbumCard(props: AlbumCardProps) {
             href={
               props.isPrivate
                 ? `/album/${props.albumId}`
-                : `/u/album/${props.albumId}`
+                : `/u/${props.username}/${props.albumId}`
             }
           >
             View Album
