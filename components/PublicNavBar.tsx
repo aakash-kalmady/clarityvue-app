@@ -14,12 +14,7 @@ export default function PublicNavBar() {
       {/* Logo */}
       <div className="flex flex-row items-center">
         <Link href="/" className="flex items-center gap-1 mr-5">
-          <Image
-            src="/assets/logo.png"
-            width={75}
-            height={75}
-            alt="Let's talk"
-          />
+          <Image src="/assets/logo.png" width={70} height={70} alt="Logo" />
         </Link>
         <p className="text-white text-2xl font-semibold">ClarityVue.</p>
       </div>

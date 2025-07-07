@@ -9,10 +9,10 @@ export default function LandingPage() {
           Your photos, perfectly organized
         </h1>
 
-        <p className="font-extralight text-white">
+        <p className="font-extralight text-white mb-5">
           Craft a photo portfolio with the best photo portfolio building tool!
         </p>
-        <Image src="/assets/logo.png" width={250} height={250} alt="Logo" />
+        <Image src="/assets/logo.png" width={200} height={200} alt="Logo" />
       </section>
       <div className="">
         <SignIn routing="hash" />
