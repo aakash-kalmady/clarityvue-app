@@ -39,11 +39,7 @@ export default function AlbumCard(props: AlbumCardProps) {
         />
       </CardContent>
       <CardFooter className="flex justify-around gap-2">
-        <Button
-          className={props.isPrivate ? "w-2/3" : "w-full"}
-          asChild
-          variant={"secondary"}
-        >
+        <Button className={props.isPrivate ? "w-2/3" : "w-full"} asChild>
           <Link
             href={
               props.isPrivate
@@ -58,7 +54,7 @@ export default function AlbumCard(props: AlbumCardProps) {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button className="w-1/3" asChild variant={"outline"}>
-                <Link href={`/album/edit/${props.albumId}`}>
+                <Link href={`/album/edit/${props.albumId}?redirect=/dashboard`}>
                   <SquarePen />
                 </Link>
               </Button>

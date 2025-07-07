@@ -21,66 +21,64 @@ export default async function Page() {
   const albums = await getAlbums(profile.clerkUserId);
   return (
     <main className="p-5">
-      <div>
-        <div className="flex flex-row items-center">
-          <Image
-            src={profile.imageUrl}
-            width={100}
-            height={100}
-            alt="logo"
-            className="rounded-full mr-5"
-          />
-          <div>
-            <h1 className="text-2xl text-white">Hi {profile.displayName}!</h1>
-            <div className="flex flex-row items-center">
-              <p className="text-white">
-                User since {profile.createdAt.toLocaleDateString()}
-              </p>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button asChild variant={"link"}>
-                    <Link href="/profile/edit">
-                      <UserPen color="white" />
-                    </Link>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Edit Profile</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
+      <div className="flex flex-row items-center">
+        <Image
+          src={profile.imageUrl}
+          width={100}
+          height={100}
+          alt="logo"
+          className="rounded-full mr-5"
+        />
+        <div>
+          <h1 className="text-2xl text-white">Hi {profile.displayName}!</h1>
+          <div className="flex flex-row items-center">
+            <p className="text-white">
+              User since {profile.createdAt.toLocaleDateString()}
+            </p>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button asChild variant={"link"}>
+                  <Link href="/profile/edit">
+                    <UserPen color="white" />
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Edit Profile</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
-
-        <div className="flex flex-col items-center justify-center">
-          <Button className="mt-5" variant={"secondary"} size="lg" asChild>
-            <Link href="/album/new">Create an Album</Link>
-          </Button>
-        </div>
-        {albums.length < 1 ? (
-          <p className="text-white text-3xl mt-5 text-center">
-            You have no albums, create one now!
-          </p>
-        ) : (
-          <div className="grid grid-cols-4 gap-10 mt-5">
-            {albums.map((album) => (
-              <div
-                key={album.id}
-                className="w-full h-full flex flex-col justify-center items-center"
-              >
-                <AlbumCard
-                  key={album.id}
-                  title={album.title}
-                  description={album.description}
-                  albumId={album.id}
-                  imageUrl={album.imageUrl}
-                  isPrivate={true}
-                />
-              </div>
-            ))}
-          </div>
-        )}
       </div>
+
+      <div className="flex flex-col items-center justify-center">
+        <Button className="mt-5" variant={"secondary"} size="lg" asChild>
+          <Link href="/album/new">Create an Album</Link>
+        </Button>
+      </div>
+      {albums.length < 1 ? (
+        <p className="text-white text-3xl mt-5 text-center">
+          You have no albums, create one now!
+        </p>
+      ) : (
+        <div className="grid grid-cols-4 gap-10 mt-5">
+          {albums.map((album) => (
+            <div
+              key={album.id}
+              className="w-full h-full flex flex-col justify-center items-center"
+            >
+              <AlbumCard
+                key={album.id}
+                title={album.title}
+                description={album.description}
+                albumId={album.id}
+                imageUrl={album.imageUrl}
+                isPrivate={true}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </main>
   );
 }

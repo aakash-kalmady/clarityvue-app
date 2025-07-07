@@ -10,7 +10,7 @@ export default async function MainLayout({
 }) {
   const { userId } = await auth();
   return (
-    <main className="relative">
+    <main className="flex">
       {/*render privatenavbar if user exists, otherwise public navbar  */}
       {userId ? <PrivateNavBar /> : <PublicNavBar />}
       {/* render the children*/}

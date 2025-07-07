@@ -10,7 +10,7 @@ export default async function PrivateNavBar() {
   if (!userId) throw new Error();
   const profile = await getProfile(userId);
   return (
-    <nav className="flex justify-between items-center fixed z-50 w-full h-22 bg-neutral-900 px-6 gap-4 shadow-2xs">
+    <nav className="flex justify-between items-center fixed z-50 w-full h-22 bg-neutral-900 px-6 gap-4 shadow-2xl shadow-neutral-950">
       <div className="flex flex-row items-center">
         <Link href="/dashboard" className="flex items-center gap-1 mr-4">
           <Image

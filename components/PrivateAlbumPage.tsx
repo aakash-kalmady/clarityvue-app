@@ -28,7 +28,9 @@ export default async function PrivateAlbumPage({
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button asChild variant={"link"}>
-                  <Link href={`/album/edit/${album.id}`}>
+                  <Link
+                    href={`/album/edit/${album.id}?redirect=/album/${album.id}`}
+                  >
                     <SquarePen />
                   </Link>
                 </Button>

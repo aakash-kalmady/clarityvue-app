@@ -10,8 +10,8 @@ export default async function EditAlbum({
   const { albumId } = await params;
   const album = await getAlbum(albumId);
   return (
-    <div className="flex items-center justify-center">
-      <Card className="w-md shadow-2xl shadow-black ">
+    <div className="flex items-center justify-center h-full">
+      <Card className="w-full max-w-md shadow-2xl shadow-black">
         {/* Header section of the card displaying the title */}
         <CardHeader>
           <CardTitle>Edit Album</CardTitle>

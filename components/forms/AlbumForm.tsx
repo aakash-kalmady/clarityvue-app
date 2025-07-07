@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -32,11 +32,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "../ui/textarea";
-import {
-  createImage,
-  createImageUrl,
-  deleteImage,
-} from "@/server/actions/images";
+import { createImageUrl, deleteImage } from "@/server/actions/images";
 
 export default function AlbumForm({
   album, // Destructure the `event` object from the props
@@ -52,6 +48,11 @@ export default function AlbumForm({
   };
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams(); // Get the search params object
+  const returnUrl =
+    searchParams.get("redirect") ||
+    (album ? `/album/${album.id}` : "/dashboard");
+
   const [isDeletePending, startDeleteTransition] = useTransition();
   const [invalidImage, setInvalidImage] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -100,7 +101,7 @@ export default function AlbumForm({
       }
       await action(data);
       setFile(null);
-      router.push(`${album ? `/album/${album.id}` : "/dashboard"}`);
+      router.push(returnUrl);
       toast.success(`Album ${album ? "edited" : "created"} successfully!`);
     } catch (error: any) {
       form.setError("root", {
@@ -244,9 +245,7 @@ export default function AlbumForm({
             asChild
             variant="outline"
           >
-            <Link href={album ? `/album/${album.id}` : "/dashboard"}>
-              Cancel
-            </Link>
+            <Link href={returnUrl}>Cancel</Link>
           </Button>
 
           {/* Delete Button (only shows if editing existing event) */}
