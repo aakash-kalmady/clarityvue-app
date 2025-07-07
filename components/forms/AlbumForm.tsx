@@ -86,26 +86,17 @@ export default function AlbumForm({
         if (!uploadResponse.ok) {
           throw new Error("Failed to upload file to storage.");
         }
-        // 5. Auto-generate metadata and save to the database
-        const altText = file.name.split(".").slice(0, -1).join("."); // Filename without extension
-        const caption = `Photo uploaded on ${new Date().toLocaleDateString()}`; // Placeholder caption
-        const imageOrder = Math.floor(Math.random() * 1000) + 1; // Random order
-        // await createImage(album.id, {
-        //   imageUrl: publicUrl,
-        //   altText,
-        //   caption,
-        //   imageOrder,
-        // });
-        //setImageUrl(publicUrl);
         data.imageUrl = publicUrl;
       }
       await action(data);
       setFile(null);
       router.push(returnUrl);
       toast.success(`Album ${album ? "edited" : "created"} successfully!`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       form.setError("root", {
-        message: `There was an error saving your album ${error.message}`,
+        message: `There was an error saving your album ${
+          error instanceof Error ? error.message : String(error)
+        }`,
       });
     }
   };
@@ -127,7 +118,7 @@ export default function AlbumForm({
         },
   });
 
-  let { isDirty } = form.formState;
+  const { isDirty } = form.formState;
 
   const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -187,7 +178,7 @@ export default function AlbumForm({
                 />
               </FormControl>
               <FormDescription>
-                This is your album's description.
+                This is your album&rsquo;s description.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -197,7 +188,7 @@ export default function AlbumForm({
           <FormField
             control={form.control}
             name="imageUrl"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Album Cover</FormLabel>
                 <FormControl>
@@ -208,7 +199,7 @@ export default function AlbumForm({
                   />
                 </FormControl>
                 <FormDescription>
-                  This is your album's cover image (Optional).
+                  This is your album&rsquo;s cover image (Optional).
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -225,7 +216,7 @@ export default function AlbumForm({
                 <Input type="number" min="1" {...field} />
               </FormControl>
               <FormDescription>
-                This is the album's order on the page.
+                This is the album&rsquo;s order on the page.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -281,10 +272,14 @@ export default function AlbumForm({
                           await deleteAlbum(album.id);
                           router.push("/dashboard");
                           toast.success("Album has been deleted");
-                        } catch (error: any) {
+                        } catch (error: unknown) {
                           // If something goes wrong, show an error at the root level of the form
                           form.setError("root", {
-                            message: `There was an error deleting your album: ${error.message}`,
+                            message: `There was an error deleting your album: ${
+                              error instanceof Error
+                                ? error.message
+                                : String(error)
+                            }`,
                           });
                         }
                       });

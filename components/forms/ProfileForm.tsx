@@ -40,9 +40,11 @@ export default function ProfileForm({
       await action(data);
       router.push("/dashboard");
       toast.success(`Profile ${profile ? "edited" : "created"} successfully`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       form.setError("root", {
-        message: `There was an error saving your profile ${error.message}`,
+        message: `There was an error saving your profile ${
+          error instanceof Error ? error.message : String(error)
+        }`,
       });
     }
   }

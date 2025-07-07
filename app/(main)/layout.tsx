@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import PrivateNavBar from "@/components/PrivateNavBar";
 import PublicNavBar from "@/components/PublicNavBar";
-import { getProfile } from "@/server/actions/profiles";
 
 export default async function MainLayout({
   children,

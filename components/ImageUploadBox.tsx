@@ -78,8 +78,8 @@ export default function ImageUploadBox(props: { albumId: string }) {
 
       // 6. Handle success
       handleUploadSuccess(`Image uploaded successfully!`);
-    } catch (err: any) {
-      handleUploadError(err.message || "An unknown error occurred.");
+    } catch (error: unknown) {
+      handleUploadError(error instanceof Error ? error.message : String(error));
     }
   };
 

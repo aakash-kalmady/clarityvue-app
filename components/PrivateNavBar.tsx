@@ -13,7 +13,7 @@ export default async function PrivateNavBar() {
     <nav className="flex justify-between items-center fixed z-50 w-full h-22 bg-neutral-900 px-6 gap-4 shadow-2xl shadow-neutral-950">
       <div className="flex flex-row items-center">
         <Link href="/dashboard" className="flex items-center gap-1 mr-4">
-          <Image src="/assets/logo.png" width={70} height={70} alt="Logo" />
+          <Image src="/assets/logo.svg" width={70} height={70} alt="Logo" />
         </Link>
         <p className="text-white text-2xl font-semibold">ClarityVue.</p>
       </div>

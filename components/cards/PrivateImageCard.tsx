@@ -58,6 +58,7 @@ export default function PrivateImageCard({ image, albumId }: ImageCardProps) {
                 variant="destructive"
                 size="icon"
                 className="shadow-lg cursor-pointer"
+                disabled={isDeletePending}
               >
                 <Trash2 className="h-6 w-6" />
                 <span className="sr-only">Delete Image</span>

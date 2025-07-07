@@ -3,12 +3,16 @@ import { getProfileByUsername } from "@/server/actions/profiles";
 import AlbumCard from "@/components/cards/AlbumCard";
 import Image from "next/image";
 
-export default async function PublicProfilePage({
-  params,
-}: {
-  params: { username: string };
-}) {
-  const { username } = await params;
+interface ProfilePageParams {
+  username: string;
+}
+interface PageProps {
+  params: Promise<ProfilePageParams>; // params is now a Promise
+}
+
+export default async function PublicProfilePage({ params }: PageProps) {
+  const resolvedParams = await params;
+  const { username } = resolvedParams;
   if (!username) throw new Error();
   const profile = await getProfileByUsername(username as string);
   if (!profile) throw new Error();

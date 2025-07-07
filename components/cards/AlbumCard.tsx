@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,

@@ -19,7 +19,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "ClarityVue",
-  description: "insert descriptoin here",
+  description: "ClarityVue photo portfolio building app",
+  icons: {
+    icon: "/assets/logo.svg",
+  },
 };
 
 export default function RootLayout({

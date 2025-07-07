@@ -1,9 +1,4 @@
-import {
-  SignedIn,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -14,7 +9,7 @@ export default function PublicNavBar() {
       {/* Logo */}
       <div className="flex flex-row items-center">
         <Link href="/" className="flex items-center gap-1 mr-5">
-          <Image src="/assets/logo.png" width={70} height={70} alt="Logo" />
+          <Image src="/assets/logo.svg" width={70} height={70} alt="Logo" />
         </Link>
         <p className="text-white text-2xl font-semibold">ClarityVue.</p>
       </div>
