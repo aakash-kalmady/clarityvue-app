@@ -4,9 +4,6 @@
 
 **[Live Demo](https://your-live-demo-url.com)**
 
-![ClarityVue Demo GIF](https://i.imgur.com/your-demo-gif.gif)
-_(Pro-tip: Record a short GIF of you using the app and upload it to your repo to embed here. You can use tools like Giphy Capture or Kap.)_
-
 ---
 
 ## Features
@@ -31,16 +28,3 @@ This project was built with a modern, type-safe, and scalable architecture, focu
 | **Validation** | [![Zod](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)](https://zod.dev/)                                                                                                                                                                                                                                                                                                       |
 | **Storage**    | [![AWS S3](https://img.shields.io/badge/AWS%20S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white)](https://aws.amazon.com/s3/)                                                                                                                                                                                                                                                                               |
 | **Deployment** | [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)                                                                                                                                                                                                                                                                                           |
-
----
-
-## Getting Started
-
-To run this project locally, you'll need to have Node.js and pnpm installed.
-
-### 1. Clone the repository
-
-```bash
-git clone [https://github.com/your-username/clarityvue.git](https://github.com/your-username/clarityvue.git)
-cd clarityvue
-```
