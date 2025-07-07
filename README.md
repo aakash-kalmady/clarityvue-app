@@ -2,9 +2,9 @@
 
 **ClarityVue** is a full-stack, modern photo album platform designed for photographers and hobbyists to showcase their work. Built with a high-performance, server-rendered stack, it provides a seamless and secure experience for users to manage and share their visual content.
 
-**[Live Demo](https://your-live-demo-url.com)**.
+**[Live Demo](https://your-live-demo-url.com)**
 
-**[Link to Website](https://www.clarityvue.com)**.
+**[Link to Website](https://www.clarityvue.com)**
 
 ---
 
