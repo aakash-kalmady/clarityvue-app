@@ -60,7 +60,8 @@ export async function createImageUrl(
 // deletes an image from the s3 database
 export async function deleteImage(
   imageUrl: string,
-  albumId: string
+  albumId: string,
+  deleteFromTables: boolean
 ): Promise<void> {
   try {
     // Authenticate the user
@@ -83,19 +84,23 @@ export async function deleteImage(
 
     // Attempt to delete the image from the AWS S3 Bucket
     await s3Client.send(command);
+    if (deleteFromTables) {
+      // Attempt to delete the image from the databse only if it belongs to the authenticated user
+      const { rowCount } = await db
+        .delete(ImageTable)
+        .where(
+          and(
+            eq(ImageTable.imageUrl, imageUrl),
+            eq(ImageTable.albumId, albumId)
+          )
+        );
 
-    // Attempt to delete the image from the databse only if it belongs to the authenticated user
-    const { rowCount } = await db
-      .delete(ImageTable)
-      .where(
-        and(eq(ImageTable.imageUrl, imageUrl), eq(ImageTable.albumId, albumId))
-      );
-
-    // If no image was deleted (either not found or not owned by current album), throw an error
-    if (rowCount === 0) {
-      throw new Error(
-        "Image not found or album not authorized to delete this image."
-      );
+      // If no image was deleted (either not found or not owned by current album), throw an error
+      if (rowCount === 0) {
+        throw new Error(
+          "Image not found or album not authorized to delete this image."
+        );
+      }
     }
   } catch (error: any) {
     // If any error occurs, throw a new error with a readable message
@@ -119,7 +124,7 @@ export async function getImages(albumId: string): Promise<Image[]> {
 
 // This function creates a new image in the database after validating the input data
 export async function createImage(
-  albumIds: string,
+  albumId: string,
   unsafeData: z.infer<typeof ImageFormSchema>
 ): Promise<void> {
   try {
@@ -134,13 +139,13 @@ export async function createImage(
     }
 
     // Attempt to insert the validated image data into the database, linking it to the parent album
-    await db.insert(ImageTable).values({ ...data, albumId: albumIds });
+    await db.insert(ImageTable).values({ ...data, albumId: albumId });
   } catch (error: any) {
     // If any error occurs during the process, throw a new error with a readable message
     throw new Error(`Error: ${error.message || error}`);
   } finally {
     // Revalidate the `/album/${albumIds}` path to ensure the page fetches fresh data after the database operation
-    revalidatePath(`/album/${albumIds}`);
+    revalidatePath(`/album/${albumId}`);
   }
 }
 

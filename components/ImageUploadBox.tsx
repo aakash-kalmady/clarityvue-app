@@ -45,9 +45,10 @@ export default function ImageUploadBox(props: { albumId: string }) {
     setMessage(`Uploading ${file.name}...`);
 
     try {
+      const fileName = file.name.replaceAll(" ", "_");
       // 3. Get a pre-signed URL
       const { uploadUrl, publicUrl } = await createImageUrl(
-        file.name,
+        fileName,
         file.type,
         props.albumId
       );

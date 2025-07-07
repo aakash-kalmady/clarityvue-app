@@ -39,11 +39,7 @@ export default function PrivateImageCard({ image, albumId }: ImageCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link
-        href={image.imageUrl}
-        target="_blank"
-        className="block w-full h-full"
-      >
+      <Link href={image.imageUrl} target="_blank" className=" w-full h-full">
         <Image
           src={image.imageUrl}
           alt={image.altText}
@@ -81,7 +77,7 @@ export default function PrivateImageCard({ image, albumId }: ImageCardProps) {
                   className="bg-red-500 hover:bg-red-700 text-white cursor-pointer"
                   onClick={() => {
                     startDeleteTransition(async () => {
-                      await deleteImage(image.imageUrl, albumId);
+                      await deleteImage(image.imageUrl, albumId, true);
                       toast.success("Image deleted successfully!");
                     });
                   }}

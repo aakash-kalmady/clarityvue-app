@@ -20,7 +20,7 @@ export default async function PrivateNavBar() {
             alt="Let's talk"
           />
         </Link>
-        <p className="text-white text-2xl font-semibold">ClearVue.</p>
+        <p className="text-white text-2xl font-semibold">ClarityVue.</p>
       </div>
       <div>
         <Button asChild variant={"link"}>

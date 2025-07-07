@@ -32,7 +32,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "../ui/textarea";
-import { createImage, createImageUrl } from "@/server/actions/images";
+import {
+  createImage,
+  createImageUrl,
+  deleteImage,
+} from "@/server/actions/images";
 
 export default function AlbumForm({
   album, // Destructure the `event` object from the props
@@ -58,8 +62,16 @@ export default function AlbumForm({
     try {
       // 3. Get a pre-signed URL
       if (album && file) {
+        if (
+          album.imageUrl !==
+          "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg"
+        ) {
+          await deleteImage(album.imageUrl, album.id, false);
+        }
+
+        const fileName = file.name.replaceAll(" ", "_");
         const { uploadUrl, publicUrl } = await createImageUrl(
-          file.name,
+          fileName,
           file.type,
           album.id
         );
@@ -77,12 +89,12 @@ export default function AlbumForm({
         const altText = file.name.split(".").slice(0, -1).join("."); // Filename without extension
         const caption = `Photo uploaded on ${new Date().toLocaleDateString()}`; // Placeholder caption
         const imageOrder = Math.floor(Math.random() * 1000) + 1; // Random order
-        await createImage(album.id, {
-          imageUrl: publicUrl,
-          altText,
-          caption,
-          imageOrder,
-        });
+        // await createImage(album.id, {
+        //   imageUrl: publicUrl,
+        //   altText,
+        //   caption,
+        //   imageOrder,
+        // });
         //setImageUrl(publicUrl);
         data.imageUrl = publicUrl;
       }
@@ -114,7 +126,7 @@ export default function AlbumForm({
         },
   });
 
-  const { isDirty } = form.formState;
+  let { isDirty } = form.formState;
 
   const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -133,6 +145,7 @@ export default function AlbumForm({
       } else {
         setInvalidImage(false);
         setFile(file);
+        form.setValue("imageUrl", file.name, { shouldDirty: true });
       }
     }
   };

@@ -21,7 +21,7 @@ export default function PublicNavBar() {
             alt="Let's talk"
           />
         </Link>
-        <p className="text-white text-2xl font-semibold">ClearVue.</p>
+        <p className="text-white text-2xl font-semibold">ClarityVue.</p>
       </div>
 
       {/* User button */}

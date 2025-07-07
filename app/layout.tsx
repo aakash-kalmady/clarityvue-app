@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ClearVue",
+  title: "ClarityVue",
   description: "insert descriptoin here",
 };
 
