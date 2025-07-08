@@ -62,9 +62,8 @@ export async function POST(req: Request) {
     }
     try {
       const albums = await getAlbums(id);
-      albums.forEach(async (album) => {
-        await deleteAlbum(album.id);
-      });
+      const deletePromises = albums.map((album) => deleteAlbum(album.id));
+      await Promise.all(deletePromises);
       await deleteProfile(id);
     } catch (error: unknown) {
       return new Response(

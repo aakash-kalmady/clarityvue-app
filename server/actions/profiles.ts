@@ -111,7 +111,7 @@ export async function deleteProfile(userId: string): Promise<void> {
     }
   } catch (error: any) {
     // If any error occurs, throw a new error with a readable message
-    throw new Error(`Failed to delete album: ${error.message || error}`);
+    throw new Error(`Failed to delete profile: ${error.message || error}`);
   } finally {
     // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");
