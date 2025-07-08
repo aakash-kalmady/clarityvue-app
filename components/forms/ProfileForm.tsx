@@ -145,14 +145,16 @@ export default function ProfileForm({
               <Loader2 className="h-4 w-4 animate-spin" />
             )}
           </Button>
-          <Button
-            disabled={form.formState.isSubmitting}
-            type="button"
-            asChild
-            variant="outline"
-          >
-            <Link href="/dashboard">Cancel</Link>
-          </Button>
+          {profile && (
+            <Button
+              disabled={form.formState.isSubmitting}
+              type="button"
+              asChild
+              variant="outline"
+            >
+              <Link href="/dashboard">Cancel</Link>
+            </Button>
+          )}
         </div>
       </form>
     </Form>

@@ -16,7 +16,7 @@ export default async function PublicProfilePage({
   }
   const albums = await getAlbums(profile.clerkUserId);
   return (
-    <div className="p-5">
+    <div className="p-8">
       <div className="flex flex-row items-center">
         <Image
           src={profile.imageUrl}
@@ -37,7 +37,7 @@ export default async function PublicProfilePage({
             now!
           </p>
         ) : (
-          <div className="grid grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10">
             {albums.map((album) => (
               <div
                 key={album.id}

@@ -20,7 +20,7 @@ export default async function PrivateAlbumPage({
 }) {
   const images = await getImages(album.id);
   return (
-    <div className="p-5">
+    <div className="p-8">
       <div className="flex flex-row items-center w-full">
         <div className="mr-5">
           <div className="flex flex-row items-center">
@@ -47,7 +47,7 @@ export default async function PrivateAlbumPage({
       {images.length < 1 ? (
         <p className="text-white mt-5">You have no images, upload one now!</p>
       ) : (
-        <div className="grid grid-cols-5 gap-4 mt-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-5">
           {images.map((image) => (
             <PrivateImageCard key={image.id} image={image} albumId={album.id} />
           ))}

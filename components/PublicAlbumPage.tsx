@@ -15,7 +15,7 @@ export default async function PublicAlbumPage({
 }) {
   const images = await getImages(album.id);
   return (
-    <div className="p-5">
+    <div className="p-8">
       <div className="flex flex-row">
         <div>
           <h1 className="text-white text-3xl font-semibold">{album.title}</h1>
@@ -28,7 +28,7 @@ export default async function PublicAlbumPage({
           Album has no images, let the owner know to upload one now!
         </p>
       ) : (
-        <div className="grid grid-cols-4 gap-4 mt-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-5">
           {images.map((image) => (
             <PublicImageCard key={image.id} image={image} />
           ))}

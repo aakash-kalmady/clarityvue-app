@@ -20,7 +20,7 @@ export default async function Page() {
   if (!profile) return redirect("/profile/new");
   const albums = await getAlbums(profile.clerkUserId);
   return (
-    <main className="p-5">
+    <main className="p-8">
       <div className="flex flex-row items-center">
         <Image
           src={profile.imageUrl}
@@ -52,7 +52,7 @@ export default async function Page() {
       </div>
 
       <div className="flex flex-col items-center justify-center">
-        <Button className="mt-5" variant={"secondary"} size="lg" asChild>
+        <Button className="mt-3" variant={"secondary"} size="lg" asChild>
           <Link href="/album/new">Create an Album</Link>
         </Button>
       </div>
@@ -61,7 +61,7 @@ export default async function Page() {
           You have no albums, create one now!
         </p>
       ) : (
-        <div className="grid grid-cols-4 gap-10 mt-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 mt-5">
           {albums.map((album) => (
             <div
               key={album.id}

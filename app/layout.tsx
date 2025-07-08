@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description:
     "Created by Aakash Kalmady. ClarityVue is a photo portfolio building app where users can create minimal and professional looking photo profiles to share with others!",
   icons: {
-    icon: "/assets/logo.svg",
+    icon: "/assets/logo.png",
   },
 };
 

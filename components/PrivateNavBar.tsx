@@ -10,35 +10,29 @@ export default async function PrivateNavBar() {
   if (!userId) throw new Error();
   const profile = await getProfile(userId);
   return (
-    <nav className="flex justify-between items-center fixed z-50 w-full h-22 bg-neutral-900 px-6 gap-4 shadow-2xl shadow-neutral-950">
+    <nav className="flex justify-between items-center fixed z-50 w-full h-15 bg-neutral-900 px-6 shadow-xl shadow-neutral-950">
       <div className="flex flex-row items-center">
         <Link href="/dashboard" className="flex items-center gap-1 mr-4">
-          <Image src="/assets/logo.svg" width={55} height={55} alt="Logo" />
+          <Image src="/assets/logo.svg" width={40} height={40} alt="Logo" />
         </Link>
-        <p className="text-white text-2xl font-semibold">ClarityVue.</p>
+        <p className="text-white text-2xl font-semibold">ClarityVue</p>
       </div>
-      <div>
+      <Button asChild variant={"link"}>
+        <Link className="text-white" href="/dashboard">
+          Dashboard
+        </Link>
+      </Button>
+      {profile && (
         <Button asChild variant={"link"}>
-          <Link className="text-white" href="/dashboard">
-            Dashboard
+          <Link className="text-white" href={"/u/" + profile.username}>
+            Public Profile
           </Link>
         </Button>
-      </div>
-      <div>
-        {profile && (
-          <Button asChild variant={"link"}>
-            <Link className="text-white" href={"/u/" + profile.username}>
-              Public Profile
-            </Link>
-          </Button>
-        )}
-      </div>
-      <div>
-        <SignedIn>
-          {/* Mount the UserButton component */}
-          <UserButton />
-        </SignedIn>
-      </div>
+      )}
+      <SignedIn>
+        {/* Mount the UserButton component */}
+        <UserButton />
+      </SignedIn>
     </nav>
   );
 }
