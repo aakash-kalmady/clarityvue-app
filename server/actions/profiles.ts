@@ -98,15 +98,8 @@ export async function getProfileByUsername(
 }
 
 // This function deletes an existing profile from the database after checking user ownership
-export async function deleteProfile(): Promise<void> {
+export async function deleteProfile(userId: string): Promise<void> {
   try {
-    // Authenticate the user
-    const { userId } = await auth();
-    // Throw an error if no authenticated user
-    if (!userId) {
-      throw new Error("User not authenticated.");
-    }
-
     // Attempt to delete the profile only if it belongs to the authenticated user
     const { rowCount } = await db
       .delete(ProfileTable)
@@ -114,9 +107,7 @@ export async function deleteProfile(): Promise<void> {
 
     // If no profile was deleted (either not found or not owned by user), throw an error
     if (rowCount === 0) {
-      throw new Error(
-        "Profile not found or user not authorized to delete this profile."
-      );
+      throw new Error("Profile not found.");
     }
   } catch (error: any) {
     // If any error occurs, throw a new error with a readable message

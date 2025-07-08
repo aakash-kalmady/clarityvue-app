@@ -101,19 +101,17 @@ export async function deleteAlbum(
   albumId: string // ID of the album to delete
 ): Promise<void> {
   try {
-    // Authenticate the user
-    const { userId } = await auth();
-    // Throw an error if no authenticated user
-    if (!userId) {
-      throw new Error("User not authenticated.");
-    }
+    // // Authenticate the user
+    // const { userId } = await auth();
+    // // Throw an error if no authenticated user
+    // if (!userId) {
+    //   throw new Error("User not authenticated.");
+    // }
 
     // Attempt to delete the album only if it belongs to the authenticated user
     const { rowCount } = await db
       .delete(AlbumTable)
-      .where(
-        and(eq(AlbumTable.id, albumId), eq(AlbumTable.clerkUserId, userId))
-      );
+      .where(eq(AlbumTable.id, albumId));
 
     // If no album was deleted (either not found or not owned by user), throw an error
     if (rowCount === 0) {

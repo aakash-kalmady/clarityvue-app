@@ -66,7 +66,7 @@ export async function POST(req: Request) {
         albums.forEach(async (album) => {
           await deleteAlbum(album.id);
         });
-        await deleteProfile();
+        await deleteProfile(id);
         console.log(`Successfully deleted user data for Clerk user ID: ${id}`);
       } catch (error) {
         console.error("Error deleting user data:", error);
