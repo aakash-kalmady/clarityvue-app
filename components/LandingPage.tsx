@@ -1,7 +1,7 @@
 import { SignIn } from "@clerk/nextjs";
+import { Button } from "./ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "./ui/button";
 
 export default function LandingPage() {
   return (

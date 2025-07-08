@@ -4,7 +4,6 @@ import { createProfile, updateProfile } from "@/server/actions/profiles";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { z } from "zod";
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Loader2 } from "lucide-react";
+import { z } from "zod";
 import Link from "next/link";
 
 export default function ProfileForm({
