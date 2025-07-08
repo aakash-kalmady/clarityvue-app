@@ -29,7 +29,7 @@ const PrivacyPolicyPage = () => {
 
         <h2>1. Information We Collect</h2>
         <p>
-          When you sign up and authenticate using our third-party provider,{" "}
+          When you sign up and authenticate using our third-party provider,
           <strong>Clerk</strong>, we require access to certain personal
           information to create and manage your account. The data we store in
           our database includes:
@@ -128,8 +128,8 @@ const PrivacyPolicyPage = () => {
         <p>
           We may update our Privacy Policy from time to time. We will notify you
           of any changes by posting the new Privacy Policy on this page and
-          updating the "Last Updated" date. You are advised to review this
-          Privacy Policy periodically for any changes.
+          updating the &ldquo;Last Updated&rdquo; date. You are advised to
+          review this Privacy Policy periodically for any changes.
         </p>
 
         <h2>8. Contact Us</h2>
@@ -138,7 +138,7 @@ const PrivacyPolicyPage = () => {
           at:
         </p>
         <p>
-          <a href="mailto:arkalmady@gmail.com">arkalmady@gmail.com</a>
+          <Link href="mailto:arkalmady@gmail.com">arkalmady@gmail.com</Link>
         </p>
       </div>
     </main>
