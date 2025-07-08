@@ -66,9 +66,11 @@ export async function POST(req: Request) {
         await deleteAlbum(album.id);
       });
       await deleteProfile(id);
-    } catch (error: any) {
+    } catch (error: unknown) {
       return new Response(
-        `Error occured while deleting user data ${error || error.message}`,
+        `Error occured while deleting user data ${
+          error instanceof Error ? error.message : String(error)
+        }`,
         {
           status: 500,
         }
