@@ -10,12 +10,17 @@ export default async function PrivateNavBar() {
   if (!userId) throw new Error();
   const profile = await getProfile(userId);
   return (
-    <nav className="flex justify-between items-center fixed z-50 w-full h-15 bg-neutral-900 px-6 shadow-xl shadow-neutral-950">
+    <nav className="flex justify-between items-center fixed z-50 w-full h-15 bg-neutral-900 px-6 max-sm:px-4 shadow-xl shadow-neutral-950">
       <div className="flex flex-row items-center">
-        <Link href="/dashboard" className="flex items-center gap-1 mr-4">
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-1 mr-4 max-sm:hidden"
+        >
           <Image src="/assets/logo.svg" width={40} height={40} alt="Logo" />
         </Link>
-        <p className="text-white text-2xl font-semibold">ClarityVue</p>
+        <p className="text-white text-2xl max-sm:text-xl font-semibold">
+          ClarityVue
+        </p>
       </div>
       <Button asChild variant={"link"}>
         <Link className="text-white" href="/dashboard">
