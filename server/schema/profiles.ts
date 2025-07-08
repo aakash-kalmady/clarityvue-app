@@ -4,7 +4,7 @@ export const ProfileFormSchema = z.object({
   displayName: z
     .string()
     .min(2, { message: "Display name must be at least 2 characters." })
-    .max(50, { message: "Display name cannot be more than 50 characters." }),
+    .max(75, { message: "Display name cannot be more than 70 characters." }),
   username: z
     .string()
     .min(2, { message: "Username must be at least 2 characters." })
@@ -15,5 +15,5 @@ export const ProfileFormSchema = z.object({
   bio: z
     .string()
     .min(2, { message: "Bio must be at least 2 characters." })
-    .max(50, { message: "Bio cannot be more than 150 characters." }),
+    .max(150, { message: "Bio cannot be more than 150 characters." }),
 });

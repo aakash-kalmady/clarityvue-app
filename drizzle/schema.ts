@@ -5,6 +5,7 @@ import {
   timestamp,
   integer,
   uniqueIndex,
+  varchar,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -18,10 +19,10 @@ const updatedAt = timestamp()
 export const ProfileTable = pgTable("profiles", {
   id: uuid().primaryKey().defaultRandom(),
   clerkUserId: text().notNull(),
-  displayName: text().notNull(),
-  username: text().notNull().unique(),
-  bio: text().notNull().default("Welcome to my profile!"),
-  imageUrl: text().notNull(),
+  displayName: varchar({ length: 70 }).notNull(),
+  username: varchar({ length: 50 }).notNull().unique(),
+  bio: varchar({ length: 150 }).notNull().default("Welcome to my profile!"),
+  imageUrl: varchar({ length: 2000 }).notNull(),
   createdAt,
   updatedAt,
 });
@@ -31,11 +32,11 @@ export const AlbumTable = pgTable(
   "albums",
   {
     id: uuid().defaultRandom().primaryKey(),
-    title: text().notNull(),
-    description: text().notNull(),
+    title: varchar({ length: 50 }).notNull(),
+    description: varchar({ length: 150 }).notNull(),
     clerkUserId: text().notNull(),
     albumOrder: integer().notNull(),
-    imageUrl: text().notNull(),
+    imageUrl: varchar({ length: 2000 }).notNull(),
     createdAt,
     updatedAt,
   },
@@ -62,11 +63,11 @@ export const ImageTable = pgTable("images", {
   // A unique identifier for each image, generated automatically.
   id: uuid().defaultRandom().primaryKey(),
   // The URL where the image is stored.
-  imageUrl: text().notNull(),
+  imageUrl: varchar({ length: 2000 }).notNull(),
   // Alternative text for accessibility.
-  altText: text().notNull(),
+  altText: varchar({ length: 50 }).notNull(),
   // A caption for the image.
-  caption: text().notNull(),
+  caption: varchar({ length: 150 }).notNull(),
   // Timestamp for when the image was uploaded.
   createdAt,
   updatedAt,
