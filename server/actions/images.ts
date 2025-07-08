@@ -152,12 +152,6 @@ export async function createImage(
 // Deletes all images from the S3 bucket that are in a folder matching the albumId.
 export async function deleteImages(albumId: string): Promise<void> {
   try {
-    //Authenticate the user
-    const { userId } = await auth();
-    if (!userId) {
-      throw new Error("User not authenticated");
-    }
-
     // Define the list object command with the parameters including the image name prefix
     const listCommand = new ListObjectsV2Command({
       Bucket: process.env.S3_BUCKET_NAME,
