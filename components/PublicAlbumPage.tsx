@@ -15,7 +15,7 @@ export default async function PublicAlbumPage({
 }) {
   const images = await getImages(album.id);
   return (
-    <div className="p-8">
+    <div className="p-6">
       <div className="flex flex-row">
         <div>
           <h1 className="text-white text-3xl font-semibold">{album.title}</h1>

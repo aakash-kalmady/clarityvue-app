@@ -20,7 +20,7 @@ export default async function PrivateAlbumPage({
 }) {
   const images = await getImages(album.id);
   return (
-    <div className="p-8">
+    <div className="p-6">
       <div className="flex flex-row items-center w-full">
         <div className="mr-5">
           <div className="flex flex-row items-center">

@@ -20,7 +20,7 @@ export default async function Page() {
   if (!profile) return redirect("/profile/new");
   const albums = await getAlbums(profile.clerkUserId);
   return (
-    <main className="p-8">
+    <main className="p-6">
       <div className="flex flex-row items-center">
         <Image
           src={profile.imageUrl}

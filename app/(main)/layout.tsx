@@ -13,7 +13,7 @@ export default async function MainLayout({
       {/*render privatenavbar if user exists, otherwise public navbar  */}
       {userId ? <PrivateNavBar /> : <PublicNavBar />}
       {/* render the children*/}
-      <section className={"bg-neutral-900 pt-15 w-full min-h-screen"}>
+      <section className={"bg-neutral-900 pt-20 w-full min-h-screen"}>
         {children}
       </section>
     </main>
