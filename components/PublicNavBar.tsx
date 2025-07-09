@@ -11,23 +11,21 @@ export default function PublicNavBar() {
         <Link href="/" className="flex items-center gap-1 mr-5">
           <Image src="/assets/logo.svg" width={55} height={55} alt="Logo" />
         </Link>
-        <p className="text-white text-2xl font-semibold">ClarityVue.</p>
+        <p className="text-white text-2xl font-semibold">ClarityVue</p>
       </div>
 
       {/* User button */}
-      <div>
-        <div className="flex flex-1 max-sm:gap-0 sm:gap-6">
-          <SignInButton>
-            <Button className="cursor-pointer mr-1 text-white" variant={"link"}>
-              Login
-            </Button>
-          </SignInButton>
-          <SignUpButton>
-            <Button className="cursor-pointer text-white" variant={"link"}>
-              Register
-            </Button>
-          </SignUpButton>
-        </div>
+      <div className="flex  max-sm:gap-0 sm:gap-6">
+        <SignInButton>
+          <Button className="cursor-pointer mr-1 text-white" variant={"link"}>
+            Login
+          </Button>
+        </SignInButton>
+        <SignUpButton>
+          <Button className="cursor-pointer text-white" variant={"link"}>
+            Register
+          </Button>
+        </SignUpButton>
       </div>
     </nav>
   );

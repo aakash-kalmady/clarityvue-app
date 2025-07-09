@@ -24,7 +24,7 @@ export default function LandingPage() {
         <SignIn routing="hash" />
       </div>
       <div className="bg-neutral-900/50 hover:bg-neutral-900 duration-200 absolute text-xs p-4 bottom-0 left-0 right-0 h-15 flex items-center justify-around">
-        <p>&copy; AAKASH KALMADY 2025.</p>
+        <p>&copy; AAKASH KALMADY 2025</p>
         <Button variant="link" asChild size="sm">
           <Link href="/privacy">Privacy Policy</Link>
         </Button>
