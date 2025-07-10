@@ -315,15 +315,15 @@ export default function LandingPage() {
                 style={createAnimation(1200).style}
               >
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-400 animate-pulse" />
+                  <CheckCircle className="w-4 h-4 text-green-400" />
                   <span>Free to use</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-400 animate-pulse" />
+                  <CheckCircle className="w-4 h-4 text-green-400" />
                   <span>Built with modern tech</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
+                  <Star className="w-4 h-4 text-yellow-400" />
                   <span>Open source</span>
                 </div>
               </div>
@@ -346,9 +346,6 @@ export default function LandingPage() {
                   <h2 className="text-xl sm:text-2xl font-bold text-white mb-1 drop-shadow-lg">
                     Getting Started
                   </h2>
-                  <p className="text-white/70 text-sm sm:text-base">
-                    How to use ClarityVue in 5 easy steps
-                  </p>
                 </div>
 
                 {/* Steps with staggered animations */}

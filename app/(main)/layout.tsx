@@ -30,7 +30,7 @@ export default async function MainLayout({
       {/* Mobile Layout */}
       <div className="lg:hidden flex flex-col min-h-screen">
         <PrivateNavBar profile={profile} />
-        <div className="flex-1 overflow-auto relative z-10 pb-safe-area-bottom">
+        <div className="flex-1 overflow-auto relative z-10 pb-safe-area-bottom pt-16">
           {children}
         </div>
       </div>
