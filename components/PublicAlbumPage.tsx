@@ -1,8 +1,5 @@
-"use client";
-
 import PublicImageCard from "./cards/PublicImageCard";
 import { Camera, Sparkles, Image as ImageIcon } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 
 interface Image {
@@ -29,20 +26,10 @@ export default function PublicAlbumPage({
   album,
   images,
 }: PublicAlbumPageProps) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => setIsVisible(true), 100);
-  }, []);
-
   return (
     <div className="p-4 sm:p-6 space-y-6">
       {/* Header Section */}
-      <div
-        className={`relative transition-all duration-1000 delay-200 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-        }`}
-      >
+      <div className="relative transition-all duration-1000 delay-200 animate-in slide-in-from-bottom-4 fade-in">
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-600/40 via-indigo-600/30 to-purple-600/20 backdrop-blur-2xl border border-white/20 shadow-2xl" />
         <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6 p-6 rounded-2xl z-10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
@@ -78,11 +65,7 @@ export default function PublicAlbumPage({
       </div>
 
       {/* Images Section */}
-      <div
-        className={`transition-all duration-1000 delay-400 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-        }`}
-      >
+      <div className="transition-all duration-1000 delay-400 animate-in slide-in-from-bottom-4 fade-in">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-6">
           <h2 className="text-xl sm:text-2xl font-semibold text-white flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-blue-300 animate-pulse" />
@@ -121,11 +104,7 @@ export default function PublicAlbumPage({
                 key={image.id}
                 className={`transition-all duration-700 delay-${
                   600 + index * 50
-                } ${
-                  isVisible
-                    ? "translate-y-0 opacity-100 scale-100"
-                    : "translate-y-10 opacity-0 scale-95"
-                }`}
+                } animate-in slide-in-from-bottom-4 fade-in`}
               >
                 <PublicImageCard image={image} />
               </div>

@@ -6,7 +6,6 @@ import { useState, useCallback, memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { User, Plus, ChevronLeft, ChevronRight, Eye, Home } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 interface PrivateNavBarProps {
   profile?: {
@@ -24,23 +23,81 @@ const PrivateNavBar = memo(function PrivateNavBar({
     setIsCollapsed((prev) => !prev);
   }, []);
 
-  return (
-    <div
-      className={`relative bg-white/5 backdrop-blur-xl border-r border-white/10 flex flex-col transition-all duration-300 ease-out ${
-        isCollapsed ? "w-16" : "w-fit min-w-[160px] max-w-[220px]"
-      }`}
-      style={{
-        width: isCollapsed ? "64px" : "fit-content",
-        minWidth: isCollapsed ? "64px" : "160px",
-        maxWidth: isCollapsed ? "64px" : "220px",
-      }}
-    >
+  // Mobile/Tablet Top Navigation
+  const MobileTopNav = () => (
+    <div className="lg:hidden bg-white/5 backdrop-blur-xl border-b border-white/10">
+      <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-3">
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <Image src="/assets/logo.svg" width={24} height={24} alt="Logo" />
+            <span className="text-base font-bold text-white">ClarityVue</span>
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-1">
+          <Link href="/dashboard">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/10 text-xs px-2"
+            >
+              <Home className="w-3 h-3 mr-1" />
+              <span>Home</span>
+            </Button>
+          </Link>
+
+          <Link href="/album/new">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/10 text-xs px-2"
+            >
+              <Plus className="w-3 h-3 mr-1" />
+              <span>New</span>
+            </Button>
+          </Link>
+
+          <Link href="/profile/edit">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/10 text-xs px-2"
+            >
+              <User className="w-3 h-3 mr-1" />
+              <span>Profile</span>
+            </Button>
+          </Link>
+
+          {profile && (
+            <Link href={`/u/${profile.username}`}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white hover:bg-white/10 text-xs px-2"
+              >
+                <Eye className="w-3 h-3 mr-1" />
+                <span>View</span>
+              </Button>
+            </Link>
+          )}
+
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Desktop Sidebar Navigation
+  const DesktopSidebar = () => (
+    <div className="hidden lg:flex relative bg-white/5 backdrop-blur-xl border-r border-white/10 flex-col flex-shrink-0">
       {/* Logo Section */}
       <div
         className={`border-b border-white/10 ${isCollapsed ? "p-2" : "p-2"}`}
       >
         {isCollapsed ? (
-          <div className="flex flex-col items-center justify-center gap-2">
+          <div className="flex flex-col items-center justify-center">
             <Link
               href="/dashboard"
               className="flex justify-center items-center"
@@ -54,19 +111,12 @@ const PrivateNavBar = memo(function PrivateNavBar({
               />
             </Link>
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={toggleCollapsed}
-                  className="p-1 text-white/60 hover:text-white transition-colors flex justify-center items-center"
-                >
-                  <ChevronRight />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Expand sidebar</p>
-              </TooltipContent>
-            </Tooltip>
+            <button
+              onClick={toggleCollapsed}
+              className="p-1 text-white/60 hover:text-white transition-colors flex justify-center items-center"
+            >
+              <ChevronRight />
+            </button>
           </div>
         ) : (
           <div className="flex items-center justify-between">
@@ -78,19 +128,12 @@ const PrivateNavBar = memo(function PrivateNavBar({
               </Link>
             </Button>
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={toggleCollapsed}
-                  className="text-white/60 hover:text-white transition-colors flex justify-center items-center"
-                >
-                  <ChevronLeft />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Collapse sidebar</p>
-              </TooltipContent>
-            </Tooltip>
+            <button
+              onClick={toggleCollapsed}
+              className="text-white/60 hover:text-white transition-colors flex justify-center items-center"
+            >
+              <ChevronLeft />
+            </button>
           </div>
         )}
       </div>
@@ -98,21 +141,14 @@ const PrivateNavBar = memo(function PrivateNavBar({
       {/* Navigation Links */}
       <nav className="flex-1 px-2 py-1 space-y-1">
         {isCollapsed ? (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link href="/dashboard">
-                <Button
-                  variant="ghost"
-                  className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
-                >
-                  <Home className="w-4 h-4 flex-shrink-0" />
-                </Button>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Dashboard</p>
-            </TooltipContent>
-          </Tooltip>
+          <Link href="/dashboard">
+            <Button
+              variant="ghost"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
+            >
+              <Home className="w-4 h-4 flex-shrink-0" />
+            </Button>
+          </Link>
         ) : (
           <Link href="/dashboard">
             <Button
@@ -126,21 +162,14 @@ const PrivateNavBar = memo(function PrivateNavBar({
         )}
 
         {isCollapsed ? (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link href="/album/new">
-                <Button
-                  variant="ghost"
-                  className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
-                >
-                  <Plus className="w-4 h-4 flex-shrink-0" />
-                </Button>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Create Album</p>
-            </TooltipContent>
-          </Tooltip>
+          <Link href="/album/new">
+            <Button
+              variant="ghost"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
+            >
+              <Plus className="w-4 h-4 flex-shrink-0" />
+            </Button>
+          </Link>
         ) : (
           <Link href="/album/new">
             <Button
@@ -154,21 +183,14 @@ const PrivateNavBar = memo(function PrivateNavBar({
         )}
 
         {isCollapsed ? (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link href="/profile/edit">
-                <Button
-                  variant="ghost"
-                  className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
-                >
-                  <User className="w-4 h-4 flex-shrink-0" />
-                </Button>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Profile</p>
-            </TooltipContent>
-          </Tooltip>
+          <Link href="/profile/edit">
+            <Button
+              variant="ghost"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
+            >
+              <User className="w-4 h-4 flex-shrink-0" />
+            </Button>
+          </Link>
         ) : (
           <Link href="/profile/edit">
             <Button
@@ -183,21 +205,14 @@ const PrivateNavBar = memo(function PrivateNavBar({
 
         {profile &&
           (isCollapsed ? (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link href={`/u/${profile.username}`}>
-                  <Button
-                    variant="ghost"
-                    className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
-                  >
-                    <Eye className="w-4 h-4 flex-shrink-0" />
-                  </Button>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Public Profile</p>
-              </TooltipContent>
-            </Tooltip>
+            <Link href={`/u/${profile.username}`}>
+              <Button
+                variant="ghost"
+                className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
+              >
+                <Eye className="w-4 h-4 flex-shrink-0" />
+              </Button>
+            </Link>
           ) : (
             <Link href={`/u/${profile.username}`}>
               <Button
@@ -234,6 +249,13 @@ const PrivateNavBar = memo(function PrivateNavBar({
         </div>
       </div>
     </div>
+  );
+
+  return (
+    <>
+      <MobileTopNav />
+      <DesktopSidebar />
+    </>
   );
 });
 

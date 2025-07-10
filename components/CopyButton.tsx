@@ -1,3 +1,5 @@
+"use client";
+
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";

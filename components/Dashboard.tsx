@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "./ui/button";
 import {
   UserPen,
@@ -10,12 +8,10 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import Image from "next/image";
 import Link from "next/link";
 import AlbumCard from "./cards/AlbumCard";
 import { Card } from "./ui/card";
-import { useEffect, useState } from "react";
 
 interface Profile {
   id: string;
@@ -39,22 +35,12 @@ interface Album {
   albumOrder: number;
 }
 
-interface DashboardClientProps {
+interface DashboardProps {
   profile: Profile;
   albums: Album[];
 }
 
-export default function DashboardClient({
-  profile,
-  albums,
-}: DashboardClientProps) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    // Trigger animations after component mounts
-    setTimeout(() => setIsVisible(true), 100);
-  }, []);
-
+export default function Dashboard({ profile, albums }: DashboardProps) {
   const totalImages = 0; // Placeholder - would need to query images table for each album
   const memberSince = new Date(profile.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
@@ -64,11 +50,7 @@ export default function DashboardClient({
   return (
     <div className="p-4 sm:p-6 space-y-8">
       {/* Header Section */}
-      <div
-        className={`relative transition-all duration-1000 delay-200 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-        }`}
-      >
+      <div className="relative transition-all duration-1000 delay-200 opacity-0 animate-[fadeIn_1s_ease-out_0.2s_forwards]">
         <div
           className="absolute inset-0 rounded-2xl bg-gradient-to-br from-slate-900/80 via-blue-900/40 to-indigo-900/60 backdrop-blur-2xl border border-slate-700/50 shadow-2xl"
           style={{ zIndex: 0 }}
@@ -95,52 +77,34 @@ export default function DashboardClient({
             </div>
           </div>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  asChild
-                  className="text-sm border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 transition-all duration-300 hover:scale-105"
-                >
-                  <Link href="/profile/edit">
-                    <UserPen className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-                    Edit Profile
-                  </Link>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Edit your profile information</p>
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-slate-100 text-sm shadow-xl transition-all duration-300 hover:scale-105"
-                  asChild
-                >
-                  <Link href="/album/new">
-                    <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-                    Create Album
-                  </Link>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Create a new photo album</p>
-              </TooltipContent>
-            </Tooltip>
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="text-sm border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 transition-all duration-300 hover:scale-105"
+            >
+              <Link href="/profile/edit">
+                <UserPen className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                Edit Profile
+              </Link>
+            </Button>
+            <Button
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-slate-100 text-sm shadow-xl transition-all duration-300 hover:scale-105"
+              asChild
+            >
+              <Link href="/album/new">
+                <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                Create Album
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div
-        className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 transition-all duration-1000 delay-400 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-        }`}
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 transition-all duration-1000 delay-400 opacity-0 animate-[fadeIn_1s_ease-out_0.4s_forwards]">
         <Card className="group bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 border border-slate-600/50 backdrop-blur-xl shadow-2xl hover:shadow-blue-500/20 hover:scale-[1.03] transition-all duration-300 hover:border-slate-500/70">
-          <div className="px-5 py-4">
+          <div className="px-5">
             <div className="flex items-center gap-2 text-base text-slate-200 mb-2">
               <div className="p-2 rounded-lg bg-blue-600/20">
                 <ImageIcon className="w-5 h-5 text-blue-300" />
@@ -154,7 +118,7 @@ export default function DashboardClient({
           </div>
         </Card>
         <Card className="group bg-gradient-to-br from-slate-800/60 via-indigo-900/30 to-purple-900/40 border border-slate-600/50 backdrop-blur-xl shadow-2xl hover:shadow-purple-500/20 hover:scale-[1.03] transition-all duration-300 hover:border-slate-500/70">
-          <div className="px-5 py-4">
+          <div className="px-5">
             <div className="flex items-center gap-2 text-base text-slate-200 mb-2">
               <div className="p-2 rounded-lg bg-indigo-600/20">
                 <TrendingUp className="w-5 h-5 text-indigo-300" />
@@ -168,46 +132,31 @@ export default function DashboardClient({
           </div>
         </Card>
         <Card className="group bg-gradient-to-br from-slate-800/60 via-purple-900/30 to-blue-900/40 border border-slate-600/50 backdrop-blur-xl shadow-2xl hover:shadow-cyan-500/20 hover:scale-[1.03] transition-all duration-300 hover:border-slate-500/70 sm:col-span-2 lg:col-span-1">
-          <div className="px-5 py-4">
+          <div className="px-5">
             <div className="flex items-center gap-2 text-base text-slate-200 mb-2">
               <div className="p-2 rounded-lg bg-purple-600/20">
                 <Users className="w-5 h-5 text-purple-300" />
               </div>
               Public Profile
             </div>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  asChild
-                  className="w-full text-sm border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 h-9 transition-all duration-300 hover:scale-105 rounded-xl font-semibold"
-                >
-                  <Link href={`/u/${profile.username}`}>View Profile</Link>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>View your public profile page</p>
-              </TooltipContent>
-            </Tooltip>
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="w-full text-sm border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 h-9 transition-all duration-300 hover:scale-105 rounded-xl font-semibold"
+            >
+              <Link href={`/u/${profile.username}`}>View Profile</Link>
+            </Button>
           </div>
         </Card>
       </div>
 
       {/* Divider above Albums Section */}
-      <div
-        className={`w-full h-1 bg-gradient-to-r from-slate-600/30 via-blue-600/30 to-indigo-600/30 rounded-full my-6 transition-all duration-1000 delay-600 ${
-          isVisible ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
-        }`}
-      />
 
       {/* Albums Section */}
-      <div
-        className={`transition-all duration-1000 delay-800 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-        }`}
-      >
-        <div className="flex items-center justify-between mb-6">
+      <div className="transition-all duration-1000 delay-800 opacity-0 mb-8 animate-[fadeIn_1s_ease-out_0.8s_forwards]">
+        <div className="w-full h-1 bg-gradient-to-r from-slate-600/80 via-blue-600/80 to-indigo-600/80 rounded-full mb-4 opacity-0 animate-[fadeIn_1s_ease-out_0.6s_forwards]" />
+        <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-slate-100 drop-shadow-lg">
             Your Albums
           </h2>
@@ -265,9 +214,11 @@ export default function DashboardClient({
             {albums.map((album, index) => (
               <div
                 key={album.id}
-                className="transition-all duration-500"
+                className="transition-all duration-500 opacity-0 translate-y-8"
                 style={{
-                  animationDelay: `${index * 100}ms`,
+                  animation: `fadeIn 0.8s ease-out ${
+                    0.8 + index * 0.1
+                  }s forwards`,
                 }}
               >
                 <AlbumCard

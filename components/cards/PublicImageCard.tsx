@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { memo } from "react";
 
-export default function PrivateImageCard({
+const PublicImageCard = memo(function PublicImageCard({
   image,
 }: {
   image: {
@@ -22,10 +23,14 @@ export default function PrivateImageCard({
           alt={image.altText}
           width={200}
           height={200}
-          objectFit="cover" // Cover the container while maintaining aspect ratio
-          quality={50}
+          className="object-cover"
+          quality={75}
+          loading="lazy"
+          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
         />
       </Link>
     </div>
   );
-}
+});
+
+export default PublicImageCard;

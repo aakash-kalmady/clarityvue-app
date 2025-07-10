@@ -25,9 +25,7 @@ export default function LoginPage() {
         ))}
       </div>
       {/* Centered Clerk SignIn */}
-      <div className="relative z-10 flex flex-col items-center justify-center">
-        <SignIn routing="hash" />
-      </div>
+      <SignIn routing="hash" />
     </main>
   );
 }

@@ -23,13 +23,22 @@ export default async function MainLayout({
   const profile = await getProfile(userId);
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
       {/* Subtle background overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-700/10 via-slate-600/5 to-slate-700/10"></div>
 
-      <PrivateNavBar profile={profile} />
-      <div className="flex-1 flex flex-col relative z-10">
-        <div className="flex-1 overflow-auto">{children}</div>
+      {/* Mobile Layout */}
+      <div className="lg:hidden flex flex-col h-screen">
+        <PrivateNavBar profile={profile} />
+        <div className="flex-1 overflow-auto relative z-10">{children}</div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden lg:flex h-screen">
+        <PrivateNavBar profile={profile} />
+        <div className="flex-1 flex flex-col relative z-10">
+          <div className="flex-1 overflow-auto">{children}</div>
+        </div>
       </div>
     </div>
   );

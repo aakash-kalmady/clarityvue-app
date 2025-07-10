@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, memo } from "react";
 import { Trash2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { deleteImage } from "@/server/actions/images";
@@ -24,7 +24,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export default function PrivateImageCard({
+const PrivateImageCard = memo(function PrivateImageCard({
   image,
   albumId,
 }: {
@@ -87,6 +87,8 @@ export default function PrivateImageCard({
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+          loading="lazy"
+          quality={75}
         />
 
         {/* Overlay */}
@@ -168,4 +170,6 @@ export default function PrivateImageCard({
       </div>
     </div>
   );
-}
+});
+
+export default PrivateImageCard;

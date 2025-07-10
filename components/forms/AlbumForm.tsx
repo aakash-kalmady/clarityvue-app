@@ -34,7 +34,6 @@ import {
 import { Loader2, Image as ImageIcon, Trash2 } from "lucide-react";
 import { z } from "zod";
 import Link from "next/link";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 interface AlbumFormProps {
   album?: {
@@ -135,13 +134,13 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
   };
 
   return (
-    <div className="w-lg mx-auto p-6">
-      <div className="bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 backdrop-blur-xl border border-slate-600/50 rounded-2xl shadow-2xl shadow-slate-900/50 p-6 sm:p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 drop-shadow-lg">
+    <div className="w-full max-w-2xl mx-auto p-4 sm:p-6">
+      <div className="bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 backdrop-blur-xl border border-slate-600/50 rounded-2xl shadow-2xl shadow-slate-900/50 p-4 sm:p-6 lg:p-8">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-100 drop-shadow-lg">
             {album ? "Edit Album" : "Create New Album"}
           </h1>
-          <p className="text-slate-300 text-base sm:text-lg mt-2">
+          <p className="text-slate-300 text-sm sm:text-base lg:text-lg mt-2">
             {album
               ? "Update your album's details and cover image."
               : "Create a new album to organize and showcase your photos."}
@@ -260,120 +259,99 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
             />
 
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    disabled={form.formState.isSubmitting || !isDirty}
-                    type="submit"
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-slate-100 shadow-lg text-base font-semibold py-3 transition-all duration-200 flex items-center justify-center min-w-0"
-                  >
-                    {form.formState.isSubmitting ? (
-                      <>
-                        <Loader2 className="h-5 w-5 animate-spin mr-2 flex-shrink-0" />
-                        <span className="truncate">
-                          {album ? "Updating..." : "Creating..."}
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <ImageIcon className="h-5 w-5 mr-2 flex-shrink-0" />
-                        <span className="truncate">
-                          {album ? "Update" : "Create"}
-                        </span>
-                      </>
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{album ? "Save your changes" : "Create your album"}</p>
-                </TooltipContent>
-              </Tooltip>
+              <Button
+                disabled={form.formState.isSubmitting || !isDirty}
+                type="submit"
+                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-slate-100 shadow-lg text-base font-semibold py-3 transition-all duration-200 flex items-center justify-center min-w-0"
+              >
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin mr-2 flex-shrink-0" />
+                    <span className="truncate">
+                      {album ? "Updating..." : "Creating..."}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <ImageIcon className="h-5 w-5 mr-2 flex-shrink-0" />
+                    <span className="truncate">
+                      {album ? "Update" : "Create"}
+                    </span>
+                  </>
+                )}
+              </Button>
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    disabled={form.formState.isSubmitting}
-                    type="button"
-                    asChild
-                    variant="outline"
-                    className="flex-1 border-slate-600/50 text-slate-100 hover:bg-slate-700/10 text-base font-semibold min-w-0"
-                  >
-                    <Link
-                      href={returnUrl}
-                      className="flex items-center justify-center"
-                    >
-                      <span className="truncate">Cancel</span>
-                    </Link>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Cancel and go back</p>
-                </TooltipContent>
-              </Tooltip>
+              <Button
+                disabled={form.formState.isSubmitting}
+                type="button"
+                asChild
+                variant="outline"
+                className="flex-1 border-slate-600/50 text-slate-100 hover:bg-slate-700/10 text-base font-semibold min-w-0"
+              >
+                <Link
+                  href={returnUrl}
+                  className="flex items-center justify-center"
+                >
+                  <span className="truncate">Cancel</span>
+                </Link>
+              </Button>
 
               {/* Delete Button (only shows if editing existing album) */}
               {album && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className="flex-1 border-slate-600/50 text-slate-100 hover:bg-slate-700/10 text-base font-semibold min-w-0"
-                          disabled={isDeletePending}
-                        >
-                          <Trash2 className="h-5 w-5 mr-2 flex-shrink-0" />
-                          <span className="truncate">Delete</span>
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent className="bg-slate-800/50 backdrop-blur-xl border-slate-600/50">
-                        <AlertDialogHeader>
-                          <AlertDialogTitle className="text-slate-100 text-lg sm:text-xl">
-                            Are you sure?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription className="text-slate-400 text-sm sm:text-base">
-                            This action cannot be undone. This will permanently
-                            delete this album and all its images.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel className="border-slate-600/50 text-slate-100 hover:bg-slate-700/10 text-sm">
-                            Cancel
-                          </AlertDialogCancel>
-                          <AlertDialogAction
-                            className="bg-red-600 hover:bg-red-700 text-slate-100 text-sm"
-                            disabled={
-                              isDeletePending || form.formState.isSubmitting
-                            }
-                            onClick={() => {
-                              startDeleteTransition(async () => {
-                                try {
-                                  await deleteAlbum(album.id);
-                                  router.push("/dashboard");
-                                  toast.success("Album has been deleted");
-                                } catch (error: unknown) {
-                                  form.setError("root", {
-                                    message: `There was an error deleting your album: ${
-                                      error instanceof Error
-                                        ? error.message
-                                        : String(error)
-                                    }`,
-                                  });
-                                }
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="flex-1 border-slate-600/50 text-slate-100 hover:bg-slate-700/10 text-base font-semibold min-w-0"
+                      disabled={isDeletePending}
+                    >
+                      <Trash2 className="h-5 w-5 mr-2 flex-shrink-0" />
+                      <span className="truncate">Delete</span>
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="bg-slate-800/50 backdrop-blur-xl border-slate-600/50">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="text-slate-100 text-lg sm:text-xl">
+                        Are you sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription className="text-slate-400 text-sm sm:text-base">
+                        This action cannot be undone. This will permanently
+                        delete this album and all its images.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="border-slate-600/50 text-slate-100 hover:bg-slate-700/10 text-sm">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-red-600 hover:bg-red-700 text-slate-100 text-sm"
+                        disabled={
+                          isDeletePending || form.formState.isSubmitting
+                        }
+                        onClick={() => {
+                          startDeleteTransition(async () => {
+                            try {
+                              await deleteAlbum(album.id);
+                              router.push("/dashboard");
+                              toast.success("Album has been deleted");
+                            } catch (error: unknown) {
+                              form.setError("root", {
+                                message: `There was an error deleting your album: ${
+                                  error instanceof Error
+                                    ? error.message
+                                    : String(error)
+                                }`,
                               });
-                            }}
-                          >
-                            Delete Album
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Permanently delete this album</p>
-                  </TooltipContent>
-                </Tooltip>
+                            }
+                          });
+                        }}
+                      >
+                        Delete Album
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               )}
             </div>
           </form>

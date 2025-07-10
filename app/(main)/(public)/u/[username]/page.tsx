@@ -30,18 +30,26 @@ export default async function PublicProfilePage({
 
       {/* Floating Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white/20 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${3 + Math.random() * 2}s`,
-            }}
-          />
-        ))}
+        {Array.from({ length: 20 }, (_, i) => {
+          const seed = i * 12345;
+          const left = (((seed * 9301 + 49297) % 233280) / 233280) * 100;
+          const top = (((seed * 49297 + 9301) % 233280) / 233280) * 100;
+          const delay = (((seed * 49297 + 49297) % 233280) / 233280) * 3;
+          const duration = 3 + (((seed * 9301 + 9301) % 233280) / 233280) * 2;
+
+          return (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-white/20 rounded-full animate-float"
+              style={{
+                left: `${left}%`,
+                top: `${top}%`,
+                animationDelay: `${delay}s`,
+                animationDuration: `${duration}s`,
+              }}
+            />
+          );
+        })}
       </div>
 
       <div className="relative z-10 p-6 sm:p-8 max-w-7xl mx-auto">

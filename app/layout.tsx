@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ClarityVue - Professional Photo Portfolio Platform",
+  title: "ClarityVue",
   description:
     "ClarityVue, developed by Aakash Kalmady, is a full-stack, modern photo album platform designed for photographers and hobbyists to showcase their work. Built with a high-performance, server-rendered stack, it provides a seamless and secure experience for users to manage and share their visual content.",
   icons: {

@@ -25,9 +25,7 @@ export default function RegisterPage() {
         ))}
       </div>
       {/* Centered Clerk SignUp */}
-      <div className="relative z-10 flex flex-col items-center justify-center">
-        <SignUp routing="hash" />
-      </div>
+      <SignUp routing="hash" />
     </main>
   );
 }

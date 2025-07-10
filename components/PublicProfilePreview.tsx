@@ -1,5 +1,3 @@
-"use client";
-
 import AlbumCard from "./cards/AlbumCard";
 import CopyButton from "./CopyButton";
 
@@ -65,11 +63,11 @@ export default function PublicProfilePreview({
 
       {/* Albums Grid */}
       <div className="relative">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-in">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in">
           {albums.map((album, index) => (
             <div
               key={album.id}
-              className="transition-all duration-500"
+              className={`transition-all duration-500 animate-in slide-in-from-bottom-4 fade-in`}
               style={{
                 animationDelay: `${index * 100}ms`,
               }}

@@ -1,12 +1,9 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { SquarePen, Camera, Sparkles, Upload, Eye } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import PrivateImageCard from "./cards/PrivateImageCard";
 import Link from "next/link";
 import ImageUploadBox from "@/components/ImageUploadBox";
-import { useEffect, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 
 interface Image {
@@ -34,20 +31,10 @@ export default function PrivateAlbumPage({
   album,
   images,
 }: PrivateAlbumPageProps) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => setIsVisible(true), 100);
-  }, []);
-
   return (
     <div className="p-4 sm:p-6 space-y-6">
       {/* Header Section */}
-      <div
-        className={`relative transition-all duration-1000 delay-200 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-        }`}
-      >
+      <div className="relative transition-all duration-1000 delay-200 animate-in slide-in-from-bottom-4 fade-in">
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-slate-900/80 via-blue-900/40 to-indigo-900/60 backdrop-blur-2xl border border-slate-700/50 shadow-2xl" />
         <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6 p-6 rounded-2xl z-10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
@@ -120,20 +107,12 @@ export default function PrivateAlbumPage({
       </div>
 
       {/* Upload Box */}
-      <div
-        className={`transition-all duration-1000 delay-400 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-        }`}
-      >
+      <div className="transition-all duration-1000 delay-400 animate-in slide-in-from-bottom-4 fade-in">
         <ImageUploadBox albumId={album.id} />
       </div>
 
       {/* Images Section */}
-      <div
-        className={`transition-all duration-1000 delay-600 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-        }`}
-      >
+      <div className="transition-all duration-1000 delay-600 animate-in slide-in-from-bottom-4 fade-in">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-6">
           <h2 className="text-xl sm:text-2xl font-semibold text-slate-100 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-blue-300 animate-pulse" />
@@ -172,11 +151,7 @@ export default function PrivateAlbumPage({
                 key={image.id}
                 className={`transition-all duration-700 delay-${
                   800 + index * 50
-                } ${
-                  isVisible
-                    ? "translate-y-0 opacity-100 scale-100"
-                    : "translate-y-10 opacity-0 scale-95"
-                }`}
+                } animate-in slide-in-from-bottom-4 fade-in`}
               >
                 <PrivateImageCard image={image} albumId={album.id} />
               </div>
