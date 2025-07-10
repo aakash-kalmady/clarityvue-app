@@ -2,7 +2,7 @@
 
 import { db } from "@/drizzle/db";
 import { ProfileTable } from "@/drizzle/schema";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { ProfileFormSchema } from "../schema/profiles";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";

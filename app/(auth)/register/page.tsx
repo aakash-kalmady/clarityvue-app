@@ -25,30 +25,8 @@ export default function RegisterPage() {
         ))}
       </div>
       {/* Centered Clerk SignUp */}
-      <div className="relative z-10 flex items-center justify-center w-full min-h-[60vh]">
-        <SignUp routing="hash" appearance={{
-          elements: {
-            formButtonPrimary: "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg transition-all duration-200 text-sm sm:text-base shadow-lg hover:shadow-xl",
-            card: "bg-transparent shadow-none border-0",
-            headerTitle: "text-white text-lg sm:text-xl font-semibold",
-            headerSubtitle: "text-white/60 text-sm",
-            formFieldInput: "bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40 focus:ring-2 focus:ring-blue-500/50 text-sm sm:text-base transition-all duration-200",
-            formFieldLabel: "text-white/80 text-sm font-medium",
-            footerActionLink: "text-blue-400 hover:text-blue-300 text-sm transition-colors",
-            dividerLine: "bg-white/20",
-            dividerText: "text-white/60 text-sm",
-            socialButtonsBlockButton: "bg-white/10 border-white/20 text-white hover:bg-white/20 transition-all duration-200 text-sm",
-            socialButtonsBlockButtonText: "text-white text-sm",
-            formResendCodeLink: "text-blue-400 hover:text-blue-300 text-sm transition-colors",
-            formFieldInputShowPasswordButton: "text-white/60 hover:text-white transition-colors",
-            formFieldInputShowPasswordIcon: "text-white/60",
-            footer: "bg-transparent border-none shadow-none text-white/70",
-            footerContent: "text-white/70",
-            footerAction: "text-white/80",
-            badge: "bg-transparent text-white/60 border-none shadow-none",
-            logoBox: "bg-transparent text-white/60 border-none shadow-none",
-          }
-        }} />
+      <div className="relative z-10 flex flex-col items-center justify-center">
+        <SignUp routing="hash" />
       </div>
     </main>
   );

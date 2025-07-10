@@ -75,7 +75,7 @@ export default function PrivateImageCard({
 
   return (
     <div
-      className="relative group aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+      className="relative group aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 border border-slate-600/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-blue-500/20"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -90,7 +90,7 @@ export default function PrivateImageCard({
         />
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300" />
+        <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/40 transition-all duration-300" />
       </div>
 
       {/* Action Buttons */}
@@ -106,7 +106,7 @@ export default function PrivateImageCard({
               asChild
               size="icon"
               variant="secondary"
-              className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-300 hover:scale-110"
+              className="bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-600/50 backdrop-blur-sm transition-all duration-300 hover:scale-110 shadow-lg"
             >
               <Link href={image.imageUrl} target="_blank">
                 <Eye className="h-4 w-4" />
@@ -127,7 +127,7 @@ export default function PrivateImageCard({
                   size="icon"
                   variant="destructive"
                   disabled={isDeletePending}
-                  className="bg-red-500/90 hover:bg-red-600 text-white border border-red-400/50 backdrop-blur-sm transition-all duration-300 hover:scale-110 shadow-lg"
+                  className="bg-red-600/90 hover:bg-red-700 text-slate-100 border border-red-500/50 backdrop-blur-sm transition-all duration-300 hover:scale-110 shadow-lg"
                   onClick={handleDeleteClick}
                 >
                   <Trash2 className="h-4 w-4" />
@@ -138,26 +138,26 @@ export default function PrivateImageCard({
               </TooltipContent>
             </Tooltip>
           </AlertDialogTrigger>
-          <AlertDialogContent className="bg-gray-900/95 border border-white/20 backdrop-blur-xl">
+          <AlertDialogContent className="bg-slate-900/95 border border-slate-600/50 backdrop-blur-xl">
             <AlertDialogHeader>
-              <AlertDialogTitle className="text-white">
+              <AlertDialogTitle className="text-slate-100">
                 Delete Image
               </AlertDialogTitle>
-              <AlertDialogDescription className="text-white/70">
+              <AlertDialogDescription className="text-slate-300">
                 This action cannot be undone. This will permanently delete this
                 image from your album.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel
-                className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
+                className="bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 border border-slate-600/50"
                 onClick={() => setIsDialogOpen(false)}
               >
                 Cancel
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDelete}
-                className="bg-red-500 hover:bg-red-600 text-white"
+                className="bg-red-600 hover:bg-red-700 text-slate-100"
                 disabled={isDeletePending}
               >
                 {isDeletePending ? "Deleting..." : "Delete"}

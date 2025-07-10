@@ -26,9 +26,14 @@ const PrivateNavBar = memo(function PrivateNavBar({
 
   return (
     <div
-      className={`relative bg-white/5 backdrop-blur-xl border-r border-white/10 flex flex-col transition-[width] duration-300 ease-out ${
-        isCollapsed ? "w-16" : "w-52"
+      className={`relative bg-white/5 backdrop-blur-xl border-r border-white/10 flex flex-col transition-all duration-300 ease-out ${
+        isCollapsed ? "w-16" : "w-fit min-w-[160px] max-w-[220px]"
       }`}
+      style={{
+        width: isCollapsed ? "64px" : "fit-content",
+        minWidth: isCollapsed ? "64px" : "160px",
+        maxWidth: isCollapsed ? "64px" : "220px",
+      }}
     >
       {/* Logo Section */}
       <div
@@ -112,9 +117,9 @@ const PrivateNavBar = memo(function PrivateNavBar({
           <Link href="/dashboard">
             <Button
               variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start px-2"
             >
-              <Home className="w-4 h-4 flex-shrink-0" />
+              <Home className="w-4 h-4 flex-shrink-0 mr-2" />
               <span className="truncate">Dashboard</span>
             </Button>
           </Link>
@@ -140,9 +145,9 @@ const PrivateNavBar = memo(function PrivateNavBar({
           <Link href="/album/new">
             <Button
               variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start px-2"
             >
-              <Plus className="w-4 h-4 flex-shrink-0" />
+              <Plus className="w-4 h-4 flex-shrink-0 mr-2" />
               <span className="truncate">Create Album</span>
             </Button>
           </Link>
@@ -168,9 +173,9 @@ const PrivateNavBar = memo(function PrivateNavBar({
           <Link href="/profile/edit">
             <Button
               variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start px-2"
             >
-              <User className="w-4 h-4 flex-shrink-0" />
+              <User className="w-4 h-4 flex-shrink-0 mr-2" />
               <span className="truncate">Profile</span>
             </Button>
           </Link>
@@ -197,9 +202,9 @@ const PrivateNavBar = memo(function PrivateNavBar({
             <Link href={`/u/${profile.username}`}>
               <Button
                 variant="ghost"
-                className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start"
+                className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start px-2"
               >
-                <Eye className="w-4 h-4 flex-shrink-0" />
+                <Eye className="w-4 h-4 flex-shrink-0 mr-2" />
                 <span className="truncate">Public Profile</span>
               </Button>
             </Link>
@@ -210,26 +215,12 @@ const PrivateNavBar = memo(function PrivateNavBar({
       <div className="p-2 border-t border-white/10">
         <div
           className={`flex flex-row items-center p-2 rounded-lg ${
-            isCollapsed ? "justify-center" : "bg-white/5"
+            isCollapsed ? "justify-center" : "bg-white/5 justify-start"
           }`}
         >
-          <div className="flex-shrink-0 flex items-center justify-center">
-            <SignedIn>
-              <UserButton
-                appearance={{
-                  elements: {
-                    userButtonAvatarBox: "w-6 h-6",
-                    userButtonPopoverCard:
-                      "bg-white/10 backdrop-blur-xl border border-white/20",
-                    userButtonPopoverActionButton:
-                      "text-white hover:bg-white/10",
-                    userButtonPopoverActionButtonText: "text-white",
-                    userButtonPopoverFooter: "border-white/10",
-                  },
-                }}
-              />
-            </SignedIn>
-          </div>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
           {!isCollapsed && (
             <div className="min-w-0 flex flex-col items-start justify-center">
               <p className="text-xs font-medium text-white truncate">

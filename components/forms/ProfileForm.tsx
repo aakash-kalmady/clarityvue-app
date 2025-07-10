@@ -65,12 +65,12 @@ export default function ProfileForm({
 
   return (
     <div className="w-lg mx-auto p-6">
-      <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl shadow-black/20 p-6 sm:p-8">
+      <div className="bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 backdrop-blur-xl border border-slate-600/50 rounded-2xl shadow-2xl shadow-slate-900/50 p-6 sm:p-8">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-white drop-shadow-lg">
+          <h1 className="text-2xl font-bold text-slate-100 drop-shadow-lg">
             {profile ? "Edit Profile" : "Create Your Profile"}
           </h1>
-          <p className="text-white/70 text-base mt-2">
+          <p className="text-slate-300 text-base mt-2">
             {profile
               ? "Update your public profile information."
               : "Set up your profile to get started with ClarityVue."}
@@ -80,7 +80,7 @@ export default function ProfileForm({
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Show root error if any */}
             {form.formState.errors.root && (
-              <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+              <div className="p-4 rounded-lg bg-red-600/10 border border-red-500/30 text-red-300 text-sm">
                 {form.formState.errors.root.message}
               </div>
             )}
@@ -89,7 +89,7 @@ export default function ProfileForm({
               name="displayName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white flex items-center gap-2 text-base font-semibold">
+                  <FormLabel className="text-slate-200 flex items-center gap-2 text-base font-semibold">
                     <User className="w-4 h-4" />
                     Display Name
                   </FormLabel>
@@ -97,11 +97,11 @@ export default function ProfileForm({
                     <Input
                       type="text"
                       placeholder="Your full name"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/50 focus:shadow-[0_0_0_2px_rgba(99,102,241,0.3)] text-base transition-all duration-200"
+                      className="bg-slate-800/50 border-slate-600/50 text-slate-100 placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/50 focus:shadow-[0_0_0_2px_rgba(59,130,246,0.3)] text-base transition-all duration-200"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="text-white/60 text-sm">
+                  <FormDescription className="text-slate-400 text-sm">
                     This name will be visible on your public profile.
                   </FormDescription>
                   <FormMessage />
@@ -113,7 +113,7 @@ export default function ProfileForm({
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white flex items-center gap-2 text-base font-semibold">
+                  <FormLabel className="text-slate-200 flex items-center gap-2 text-base font-semibold">
                     <AtSign className="w-4 h-4" />
                     Username
                   </FormLabel>
@@ -121,11 +121,11 @@ export default function ProfileForm({
                     <Input
                       type="text"
                       placeholder="Unique username (e.g. janedoe)"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/50 focus:shadow-[0_0_0_2px_rgba(168,85,247,0.3)] text-base transition-all duration-200"
+                      className="bg-slate-800/50 border-slate-600/50 text-slate-100 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/50 focus:shadow-[0_0_0_2px_rgba(99,102,241,0.3)] text-base transition-all duration-200"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="text-white/60 text-sm">
+                  <FormDescription className="text-slate-400 text-sm">
                     Your username will be part of your public profile URL.
                   </FormDescription>
                   <FormMessage />
@@ -137,19 +137,19 @@ export default function ProfileForm({
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white flex items-center gap-2 text-base font-semibold">
+                  <FormLabel className="text-slate-200 flex items-center gap-2 text-base font-semibold">
                     <FileText className="w-4 h-4" />
                     Biography
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Tell visitors about yourself and your photography style."
-                      className="resize-none bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/50 focus:shadow-[0_0_0_2px_rgba(99,102,241,0.3)] text-base transition-all duration-200"
+                      className="resize-none bg-slate-800/50 border-slate-600/50 text-slate-100 placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/50 focus:shadow-[0_0_0_2px_rgba(59,130,246,0.3)] text-base transition-all duration-200"
                       rows={4}
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="text-white/60 text-sm">
+                  <FormDescription className="text-slate-400 text-sm">
                     Share a short bio for your profile page.
                   </FormDescription>
                   <FormMessage />
@@ -160,7 +160,7 @@ export default function ProfileForm({
               <Button
                 disabled={form.formState.isSubmitting || !isDirty}
                 type="submit"
-                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg text-base font-semibold py-3 transition-all duration-200 flex items-center justify-center min-w-0"
+                className="flex-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-slate-100 shadow-lg text-base font-semibold py-3 transition-all duration-200 flex items-center justify-center min-w-0"
               >
                 {form.formState.isSubmitting ? (
                   <>
@@ -184,7 +184,7 @@ export default function ProfileForm({
                   type="button"
                   asChild
                   variant="outline"
-                  className="flex-1 border-white/20 text-white hover:bg-white/10 text-base font-semibold min-w-0"
+                  className="flex-1 border-slate-600/50 text-slate-100 hover:bg-slate-700/10 text-base font-semibold min-w-0"
                 >
                   <Link
                     href="/dashboard"

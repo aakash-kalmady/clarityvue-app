@@ -9,14 +9,12 @@ export default async function MainLayout({
   children: React.ReactNode;
 }) {
   const { userId } = await auth();
-  
+
   if (!userId) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
         <PublicNavBar />
-        <section className="w-full">
-          {children}
-        </section>
+        <section className="w-full">{children}</section>
       </main>
     );
   }
@@ -25,12 +23,13 @@ export default async function MainLayout({
   const profile = await getProfile(userId);
 
   return (
-    <div className="flex h-screen bg-gradient-to-b from-slate-900 to-slate-800">
+    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+      {/* Subtle background overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-700/10 via-slate-600/5 to-slate-700/10"></div>
+
       <PrivateNavBar profile={profile} />
-      <div className="flex-1 flex flex-col">
-        <div className="flex-1 overflow-auto">
-          {children}
-        </div>
+      <div className="flex-1 flex flex-col relative z-10">
+        <div className="flex-1 overflow-auto">{children}</div>
       </div>
     </div>
   );

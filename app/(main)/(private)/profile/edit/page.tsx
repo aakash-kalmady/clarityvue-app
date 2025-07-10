@@ -7,7 +7,7 @@ export default async function EditProfilePage() {
   if (!userId) throw new Error();
   const profile = await getProfile(userId);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center">
       <ProfileForm profile={profile} />
     </div>
   );

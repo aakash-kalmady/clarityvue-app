@@ -16,7 +16,7 @@ export default function ImageUploadBox(props: { albumId: string }) {
   // State to manage the upload process and UI feedback
   const [isDragging, setIsDragging] = useState(false);
   const [status, setStatus] = useState<UploadStatus>("idle");
-  const [message, setMessage] = useState("Click or drag to upload animage");
+  const [message, setMessage] = useState("Click or drag to upload an image");
 
   // A ref to a timer to reset the component's state after an upload
   const resetTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -155,7 +155,7 @@ export default function ImageUploadBox(props: { albumId: string }) {
       case "error":
         return <AlertTriangle className="h-6 w-6 sm:h-8 sm:w-8 text-red-400" />;
       default:
-        return <UploadCloud className="h-6 w-6 sm:h-8 sm:w-8 text-white/60" />;
+        return <UploadCloud className="h-6 w-6 sm:h-8 sm:w-8 text-slate-400" />;
     }
   };
 
@@ -169,12 +169,12 @@ export default function ImageUploadBox(props: { albumId: string }) {
           }
           ${
             isDragging
-              ? "border-blue-400 bg-blue-500/10 scale-[1.02]"
-              : "border-white/20 bg-white/5"
+              ? "border-blue-400 bg-blue-600/10 scale-[1.02]"
+              : "border-slate-600/50 bg-slate-800/30"
           }
-          ${status === "success" && "border-green-400 bg-green-500/10"}
-          ${status === "error" && "border-red-400 bg-red-500/10"}
-          ${status === "uploading" && "border-blue-400 bg-blue-500/10"}
+          ${status === "success" && "border-green-400 bg-green-600/10"}
+          ${status === "error" && "border-red-400 bg-red-600/10"}
+          ${status === "uploading" && "border-blue-400 bg-blue-600/10"}
           backdrop-blur-xl`}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
@@ -197,15 +197,20 @@ export default function ImageUploadBox(props: { albumId: string }) {
 
         <div className="text-center space-y-2">
           <p
-            className={`text-base sm:text-lg font-medium
-              ${status === "error" ? "text-red-400" : "text-white"}
-          `}
+            className={`text-base sm:text-lg font-medium ${
+              status === "idle"
+                ? "text-slate-200"
+                : status === "success"
+                ? "text-green-300"
+                : status === "error"
+                ? "text-red-300"
+                : "text-blue-300"
+            }`}
           >
             {message}
           </p>
-
           {status === "idle" && (
-            <p className="text-xs sm:text-sm text-white/60">
+            <p className="text-slate-400 text-sm">
               Supports JPG, PNG, GIF up to 10MB
             </p>
           )}

@@ -135,13 +135,13 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
   };
 
   return (
-    <div className="w-lg mx-auto p-4 sm:p-6">
-      <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl shadow-black/20 p-6 sm:p-8">
+    <div className="w-lg mx-auto p-6">
+      <div className="bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 backdrop-blur-xl border border-slate-600/50 rounded-2xl shadow-2xl shadow-slate-900/50 p-6 sm:p-8">
         <div className="text-center mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 drop-shadow-lg">
             {album ? "Edit Album" : "Create New Album"}
           </h1>
-          <p className="text-white/70 text-base sm:text-lg mt-2">
+          <p className="text-slate-300 text-base sm:text-lg mt-2">
             {album
               ? "Update your album's details and cover image."
               : "Create a new album to organize and showcase your photos."}
@@ -151,7 +151,7 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Show root error if any */}
             {form.formState.errors.root && (
-              <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+              <div className="p-4 rounded-lg bg-red-600/10 border border-red-500/30 text-red-300 text-sm">
                 {form.formState.errors.root.message}
               </div>
             )}
@@ -160,18 +160,18 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white text-base font-semibold">
+                  <FormLabel className="text-slate-200 text-base font-semibold">
                     Album Title
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="text"
                       placeholder="Album title (e.g. Summer Vacation)"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/50 focus:shadow-[0_0_0_2px_rgba(99,102,241,0.3)] text-base transition-all duration-200"
+                      className="bg-slate-800/50 border-slate-600/50 text-slate-100 placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/50 focus:shadow-[0_0_0_2px_rgba(59,130,246,0.3)] text-base transition-all duration-200"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="text-white/60 text-sm">
+                  <FormDescription className="text-slate-400 text-sm">
                     Give your album a clear, descriptive name.
                   </FormDescription>
                   <FormMessage />
@@ -183,18 +183,18 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white text-base font-semibold">
+                  <FormLabel className="text-slate-200 text-base font-semibold">
                     Description
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="What is this album about?"
-                      className="resize-none bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/50 focus:shadow-[0_0_0_2px_rgba(168,85,247,0.3)] text-base transition-all duration-200"
+                      className="resize-none bg-slate-800/50 border-slate-600/50 text-slate-100 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/50 focus:shadow-[0_0_0_2px_rgba(99,102,241,0.3)] text-base transition-all duration-200"
                       rows={3}
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="text-white/60 text-sm">
+                  <FormDescription className="text-slate-400 text-sm">
                     Briefly describe the album&lsquo;s content or purpose.
                   </FormDescription>
                   <FormMessage />
@@ -208,7 +208,7 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
                 name="imageUrl"
                 render={() => (
                   <FormItem>
-                    <FormLabel className="text-white text-base font-semibold">
+                    <FormLabel className="text-slate-200 text-base font-semibold">
                       Album Cover
                     </FormLabel>
                     <FormControl>
@@ -217,16 +217,16 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
                           type="file"
                           accept="image/*"
                           onChange={handleFileChange}
-                          className="bg-white/10 border-white/20 text-white file:bg-white/10 file:border-white/20 file:text-white file:rounded file:px-2 sm:px-3 file:py-1 file:mr-2 sm:mr-3 text-base transition-all duration-200"
+                          className="bg-slate-800/50 border-slate-600/50 text-slate-100 file:bg-slate-800/50 file:border-slate-600/50 file:text-slate-100 file:rounded file:px-2 sm:px-3 file:py-1 file:mr-2 sm:mr-3 text-base transition-all duration-200"
                         />
                         {file && (
-                          <span className="text-white/60 text-xs ml-2">
+                          <span className="text-slate-400 text-xs ml-2">
                             {file.name}
                           </span>
                         )}
                       </div>
                     </FormControl>
-                    <FormDescription className="text-white/60 text-sm">
+                    <FormDescription className="text-slate-400 text-sm">
                       Choose a cover image for your album (optional).
                     </FormDescription>
                     <FormMessage />
@@ -240,18 +240,18 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
               name="albumOrder"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white text-base font-semibold">
+                  <FormLabel className="text-slate-200 text-base font-semibold">
                     Display Order
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
                       min="1"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/50 focus:shadow-[0_0_0_2px_rgba(168,85,247,0.3)] text-base transition-all duration-200"
+                      className="bg-slate-800/50 border-slate-600/50 text-slate-100 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/50 focus:shadow-[0_0_0_2px_rgba(99,102,241,0.3)] text-base transition-all duration-200"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="text-white/60 text-sm">
+                  <FormDescription className="text-slate-400 text-sm">
                     Lower numbers appear first in your album list.
                   </FormDescription>
                   <FormMessage />
@@ -265,7 +265,7 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
                   <Button
                     disabled={form.formState.isSubmitting || !isDirty}
                     type="submit"
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg text-base font-semibold py-3 transition-all duration-200 flex items-center justify-center min-w-0"
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-slate-100 shadow-lg text-base font-semibold py-3 transition-all duration-200 flex items-center justify-center min-w-0"
                   >
                     {form.formState.isSubmitting ? (
                       <>
@@ -296,7 +296,7 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
                     type="button"
                     asChild
                     variant="outline"
-                    className="flex-1 border-white/20 text-white hover:bg-white/10 text-base font-semibold min-w-0"
+                    className="flex-1 border-slate-600/50 text-slate-100 hover:bg-slate-700/10 text-base font-semibold min-w-0"
                   >
                     <Link
                       href={returnUrl}
@@ -320,29 +320,29 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
                         <Button
                           type="button"
                           variant="outline"
-                          className="flex-1 border-white/20 text-white hover:bg-white/10 text-base font-semibold min-w-0"
+                          className="flex-1 border-slate-600/50 text-slate-100 hover:bg-slate-700/10 text-base font-semibold min-w-0"
                           disabled={isDeletePending}
                         >
                           <Trash2 className="h-5 w-5 mr-2 flex-shrink-0" />
                           <span className="truncate">Delete</span>
                         </Button>
                       </AlertDialogTrigger>
-                      <AlertDialogContent className="bg-white/10 backdrop-blur-xl border-white/20">
+                      <AlertDialogContent className="bg-slate-800/50 backdrop-blur-xl border-slate-600/50">
                         <AlertDialogHeader>
-                          <AlertDialogTitle className="text-white text-lg sm:text-xl">
+                          <AlertDialogTitle className="text-slate-100 text-lg sm:text-xl">
                             Are you sure?
                           </AlertDialogTitle>
-                          <AlertDialogDescription className="text-white/60 text-sm sm:text-base">
+                          <AlertDialogDescription className="text-slate-400 text-sm sm:text-base">
                             This action cannot be undone. This will permanently
                             delete this album and all its images.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel className="border-white/20 text-white hover:bg-white/10 text-sm">
+                          <AlertDialogCancel className="border-slate-600/50 text-slate-100 hover:bg-slate-700/10 text-sm">
                             Cancel
                           </AlertDialogCancel>
                           <AlertDialogAction
-                            className="bg-red-600 hover:bg-red-700 text-white text-sm"
+                            className="bg-red-600 hover:bg-red-700 text-slate-100 text-sm"
                             disabled={
                               isDeletePending || form.formState.isSubmitting
                             }
