@@ -28,9 +28,11 @@ export default async function MainLayout({
       <div className="absolute inset-0 bg-gradient-to-br from-slate-700/10 via-slate-600/5 to-slate-700/10"></div>
 
       {/* Mobile Layout */}
-      <div className="lg:hidden flex flex-col h-screen">
+      <div className="lg:hidden flex flex-col min-h-screen">
         <PrivateNavBar profile={profile} />
-        <div className="flex-1 overflow-auto relative z-10">{children}</div>
+        <div className="flex-1 overflow-auto relative z-10 pb-safe-area-bottom">
+          {children}
+        </div>
       </div>
 
       {/* Desktop Layout */}

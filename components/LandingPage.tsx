@@ -100,13 +100,16 @@ export default function LandingPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Enhanced animation classes with better timing
+  // Enhanced animation styles with inline CSS
   const createAnimation = (delay: number, duration: number = 700) => ({
-    className: `transition-all duration-${duration} delay-${delay} ${
-      mounted
-        ? "translate-y-0 opacity-100 scale-100"
-        : "translate-y-8 opacity-0 scale-95"
-    }`,
+    style: {
+      transition: `all ${duration}ms ease-out`,
+      transitionDelay: `${delay}ms`,
+      transform: mounted
+        ? "translateY(0) scale(1)"
+        : "translateY(32px) scale(0.95)",
+      opacity: mounted ? 1 : 0,
+    },
   });
 
   const createStaggeredAnimation =
@@ -115,17 +118,23 @@ export default function LandingPage() {
       createAnimation(baseDelay + index * stagger);
 
   const createFadeInRight = (delay: number) => ({
-    className: `transition-all duration-800 delay-${delay} ${
-      mounted
-        ? "translate-x-0 opacity-100 scale-100"
-        : "-translate-x-12 opacity-0 scale-95"
-    }`,
+    style: {
+      transition: "all 800ms ease-out",
+      transitionDelay: `${delay}ms`,
+      transform: mounted
+        ? "translateX(0) scale(1)"
+        : "translateX(-48px) scale(0.95)",
+      opacity: mounted ? 1 : 0,
+    },
   });
 
   const createScaleIn = (delay: number) => ({
-    className: `transition-all duration-1000 delay-${delay} ${
-      mounted ? "scale-100 opacity-100" : "scale-75 opacity-0"
-    }`,
+    style: {
+      transition: "all 1000ms ease-out",
+      transitionDelay: `${delay}ms`,
+      transform: mounted ? "scale(1)" : "scale(0.75)",
+      opacity: mounted ? 1 : 0,
+    },
   });
 
   return (
@@ -136,19 +145,31 @@ export default function LandingPage() {
       {/* Floating orbs with parallax */}
       <div
         className="absolute top-20 left-4 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 bg-purple-500/30 rounded-full blur-3xl animate-pulse"
-        style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+        style={{
+          transform: `translateY(${scrollY * 0.1}px)`,
+          animationDuration: "4s",
+        }}
       />
       <div
         className="absolute bottom-20 right-4 sm:right-10 w-64 h-64 sm:w-96 sm:h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse"
-        style={{ transform: `translateY(${-scrollY * 0.05}px)` }}
+        style={{
+          transform: `translateY(${-scrollY * 0.05}px)`,
+          animationDuration: "4s",
+        }}
       />
       <div
         className="absolute top-1/2 left-1/4 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl animate-bounce"
-        style={{ transform: `translateX(${scrollY * 0.02}px)` }}
+        style={{
+          transform: `translateX(${scrollY * 0.02}px)`,
+          animationDuration: "3s",
+        }}
       />
       <div
         className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-cyan-500/20 rounded-full blur-2xl animate-pulse"
-        style={{ transform: `translateX(${-scrollY * 0.03}px)` }}
+        style={{
+          transform: `translateX(${-scrollY * 0.03}px)`,
+          animationDuration: "3s",
+        }}
       />
 
       {/* Optimized Floating Particles */}
@@ -213,9 +234,8 @@ export default function LandingPage() {
             <div ref={heroRef} className="space-y-8 text-center lg:text-left">
               {/* Badge with enhanced animation */}
               <div
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-white/20 text-white/90 text-sm backdrop-blur-xl ${
-                  createScaleIn(100).className
-                }`}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-white/20 text-white/90 text-sm backdrop-blur-xl"
+                style={createScaleIn(100).style}
               >
                 <Sparkles className="w-4 h-4 animate-pulse" />
                 <span className="hidden sm:inline">
@@ -227,20 +247,23 @@ export default function LandingPage() {
               {/* Main heading with enhanced animation */}
               <div className="space-y-4">
                 <h1
-                  className={`text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight ${
-                    createAnimation(200).className
-                  }`}
+                  className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight"
+                  style={createAnimation(200).style}
                 >
                   Your Photos,
-                  <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
+                  <span
+                    className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient"
+                    style={{
+                      backgroundSize: "200% 200%",
+                    }}
+                  >
                     Perfectly Organized
                   </span>
                 </h1>
 
                 <p
-                  className={`text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto lg:mx-0 ${
-                    createAnimation(400).className
-                  }`}
+                  className="text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto lg:mx-0"
+                  style={createAnimation(400).style}
                 >
                   Craft stunning professional photo portfolios with our modern,
                   high-performance platform. Showcase your work beautifully with
@@ -266,7 +289,8 @@ export default function LandingPage() {
                   return (
                     <div
                       key={index}
-                      className={`flex items-center gap-3 text-white/80 group hover:text-white p-3 rounded-xl transition-all duration-300 hover:bg-white/5 ${animation.className}`}
+                      className="flex items-center gap-3 text-white/80 group hover:text-white p-3 rounded-xl transition-all duration-300 hover:bg-white/5"
+                      style={animation.style}
                     >
                       <div
                         className={`p-2 rounded-lg transition-all duration-300 group-hover:scale-110 ${
@@ -287,9 +311,8 @@ export default function LandingPage() {
 
               {/* Platform Features with enhanced animation */}
               <div
-                className={`flex items-center justify-center lg:justify-start gap-6 text-white/60 text-xs sm:text-sm ${
-                  createAnimation(1200).className
-                }`}
+                className="flex items-center justify-center lg:justify-start gap-6 text-white/60 text-xs sm:text-sm"
+                style={createAnimation(1200).style}
               >
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-400 animate-pulse" />
@@ -308,9 +331,8 @@ export default function LandingPage() {
 
             {/* Right Column - Getting Started with enhanced animations */}
             <div
-              className={`flex items-center justify-center mt-8 lg:mt-0 ${
-                createFadeInRight(300).className
-              }`}
+              className="flex items-center justify-center mt-8 lg:mt-0"
+              style={createFadeInRight(300).style}
             >
               <div className="w-full max-w-md p-4 lg:pl-6 rounded-2xl bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border border-white/20 shadow-2xl flex flex-col items-center relative overflow-hidden">
                 {/* Enhanced accent bar */}
@@ -318,9 +340,8 @@ export default function LandingPage() {
 
                 {/* Header with enhanced animation */}
                 <div
-                  className={`text-center mb-4 ${
-                    createAnimation(400).className
-                  }`}
+                  className="text-center mb-4"
+                  style={createAnimation(400).style}
                 >
                   <h2 className="text-xl sm:text-2xl font-bold text-white mb-1 drop-shadow-lg">
                     Getting Started
@@ -338,7 +359,8 @@ export default function LandingPage() {
                     return (
                       <li
                         key={i}
-                        className={`flex items-start gap-3 p-2 rounded-xl hover:bg-white/5 transition-all duration-300 ${animation.className}`}
+                        className="flex items-start gap-3 p-2 rounded-xl hover:bg-white/5 transition-all duration-300"
+                        style={animation.style}
                       >
                         <div className="flex flex-col items-center">
                           <div className="rounded-full bg-white/15 p-1.5 mb-1 shadow-md hover:scale-110 transition-all duration-300">
@@ -358,9 +380,8 @@ export default function LandingPage() {
 
                 {/* Enhanced CTA button */}
                 <div
-                  className={`mt-6 flex justify-center w-full ${
-                    createAnimation(1600).className
-                  }`}
+                  className="mt-6 flex justify-center w-full"
+                  style={createAnimation(1600).style}
                 >
                   <Link href="/login">
                     <Button className="w-full px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold text-base shadow-lg transition-all duration-300 hover:scale-105">
@@ -376,9 +397,8 @@ export default function LandingPage() {
 
       {/* Enhanced Footer */}
       <footer
-        className={`relative z-10 border-t border-white/10 py-2 sm:py-3 px-4 sm:px-6 bg-white/5 backdrop-blur-xl mt-auto ${
-          createAnimation(1800).className
-        }`}
+        className="relative z-10 border-t border-white/10 py-2 sm:py-3 px-4 sm:px-6 bg-white/5 backdrop-blur-xl mt-auto"
+        style={createAnimation(1800).style}
       >
         <div className="flex flex-row items-center justify-between gap-x-4 text-white/60 text-xs w-full">
           <p className="text-left">&copy; 2025 Aakash Kalmady.</p>
