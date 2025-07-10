@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/drizzle/db";
-import { AlbumTable } from "@/drizzle/schema";
+import { AlbumTable, ProfileTable } from "@/drizzle/schema";
 import { auth } from "@clerk/nextjs/server";
 import { and, asc, eq } from "drizzle-orm";
 import { AlbumFormSchema } from "../schema/albums";
@@ -33,6 +33,34 @@ export async function getAlbum(albumId: string): Promise<Album | undefined> {
   return event ?? undefined; // Explicitly return undefined if not found
 }
 
+// This function fetches the album with username for public URL construction
+export async function getAlbumWithUsername(
+  albumId: string
+): Promise<(Album & { username: string }) | undefined> {
+  // Query the database for the album and join with profile to get username
+  const result = await db
+    .select({
+      id: AlbumTable.id,
+      title: AlbumTable.title,
+      description: AlbumTable.description,
+      clerkUserId: AlbumTable.clerkUserId,
+      albumOrder: AlbumTable.albumOrder,
+      imageUrl: AlbumTable.imageUrl,
+      createdAt: AlbumTable.createdAt,
+      updatedAt: AlbumTable.updatedAt,
+      username: ProfileTable.username,
+    })
+    .from(AlbumTable)
+    .innerJoin(
+      ProfileTable,
+      eq(AlbumTable.clerkUserId, ProfileTable.clerkUserId)
+    )
+    .where(eq(AlbumTable.id, albumId))
+    .limit(1);
+
+  return result[0] ?? undefined;
+}
+
 // This function creates a new album in the database after validating the input data
 export async function createAlbum(
   unsafeData: z.infer<typeof AlbumFormSchema> // Accepts raw album data validated by the zod schema
@@ -50,9 +78,10 @@ export async function createAlbum(
 
     // Attempt to insert the validated album data into the database, linking it to the authenticated user
     await db.insert(AlbumTable).values({ ...data, clerkUserId: userId });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If any error occurs during the process, throw a new error with a readable message
-    throw new Error(`Error: ${error.message || error}`);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`Error: ${errorMessage}`);
   } finally {
     // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");
@@ -87,9 +116,10 @@ export async function updateAlbum(
         "Album not found or user not authorized to update this album."
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If any error occurs, throw a new error with a readable message
-    throw new Error(`Failed to update album: ${error.message || error}`);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to update album: ${errorMessage}`);
   } finally {
     // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");
@@ -115,9 +145,10 @@ export async function deleteAlbum(
 
     // Attempt to delete the images from the AWS S3 bucket
     await deleteImages(albumId);
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If any error occurs, throw a new error with a readable message
-    throw new Error(`Failed to delete album: ${error.message || error}`);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to delete album: ${errorMessage}`);
   } finally {
     // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");

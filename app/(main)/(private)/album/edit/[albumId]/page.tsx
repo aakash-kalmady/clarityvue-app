@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAlbum } from "@/server/actions/albums";
 import AlbumForm from "@/components/forms/AlbumForm";
 
@@ -10,18 +9,8 @@ export default async function EditAlbum({
   const { albumId } = await params;
   const album = await getAlbum(albumId);
   return (
-    <div className="flex items-center justify-center h-full">
-      <Card className="w-full max-w-md shadow-2xl shadow-black">
-        {/* Header section of the card displaying the title */}
-        <CardHeader>
-          <CardTitle>Edit Album</CardTitle>
-        </CardHeader>
-
-        {/* Content section of the card containing the event form */}
-        <CardContent>
-          <AlbumForm album={album} />
-        </CardContent>
-      </Card>
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
+      <AlbumForm album={album} />
     </div>
   );
 }

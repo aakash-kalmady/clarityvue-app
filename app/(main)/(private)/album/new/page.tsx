@@ -1,20 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AlbumForm from "@/components/forms/AlbumForm";
 
 export default function NewAlbum() {
   return (
-    <div className="flex items-center justify-center h-full">
-      <Card className="w-full max-w-md shadow-2xl shadow-black">
-        {/* Header section of the card displaying the title */}
-        <CardHeader>
-          <CardTitle>New Album</CardTitle>
-        </CardHeader>
-
-        {/* Content section of the card containing the event form */}
-        <CardContent>
-          <AlbumForm />
-        </CardContent>
-      </Card>
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
+      <AlbumForm />
     </div>
   );
 }

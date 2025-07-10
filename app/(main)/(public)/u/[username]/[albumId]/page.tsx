@@ -1,4 +1,5 @@
 import { getAlbum } from "@/server/actions/albums";
+import { getImages } from "@/server/actions/images";
 import { redirect } from "next/navigation";
 import PublicAlbumPage from "@/components/PublicAlbumPage";
 
@@ -12,5 +13,7 @@ export default async function Page({
   if (!album) {
     redirect("/login");
   }
-  return <PublicAlbumPage album={album} />;
+
+  const images = await getImages(albumId);
+  return <PublicAlbumPage album={album} images={images} />;
 }

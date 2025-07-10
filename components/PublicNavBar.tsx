@@ -2,30 +2,48 @@ import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function PublicNavBar() {
   return (
-    <nav className="flex justify-between items-center fixed z-50 w-full h-20 bg-neutral-900 px-6 gap-4 shadow-2xs">
+    <nav className="flex justify-between items-center px-6 py-4 border-b border-white/10 bg-white/5 backdrop-blur-xl">
       {/* Logo */}
-      <div className="flex flex-row items-center">
-        <Link href="/" className="flex items-center gap-1 mr-5">
-          <Image src="/assets/logo.svg" width={55} height={55} alt="Logo" />
+      <div className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/assets/logo.svg" width={32} height={32} alt="Logo" />
+          <span className="text-xl font-bold text-white">ClarityVue</span>
         </Link>
-        <p className="text-white text-2xl font-semibold">ClarityVue</p>
       </div>
 
-      {/* User button */}
-      <div className="flex  max-sm:gap-0 sm:gap-6">
-        <SignInButton>
-          <Button className="cursor-pointer mr-1 text-white" variant={"link"}>
-            Login
-          </Button>
-        </SignInButton>
-        <SignUpButton>
-          <Button className="cursor-pointer text-white" variant={"link"}>
-            Register
-          </Button>
-        </SignUpButton>
+      {/* Auth Buttons */}
+      <div className="flex items-center gap-3">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <SignInButton>
+              <Button
+                variant="ghost"
+                className="text-white hover:text-white/80 hover:bg-white/10"
+              >
+                Sign In
+              </Button>
+            </SignInButton>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Sign in to your account</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <SignUpButton>
+              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                Get Started
+              </Button>
+            </SignUpButton>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Create a new account</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
     </nav>
   );

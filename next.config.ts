@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       new URL("https://www.shutterstock.com/**"),
     ],
   },
+  devIndicators: false,
 };
 
 export default nextConfig;
