@@ -16,7 +16,7 @@ export default async function PublicProfilePage({
   }
   const albums = await getAlbums(profile.clerkUserId);
   return (
-    <div className="p-8">
+    <div className="p-6">
       <div className="flex flex-row items-center">
         <Image
           src={profile.imageUrl}
