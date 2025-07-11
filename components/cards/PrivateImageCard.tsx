@@ -18,11 +18,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 const PrivateImageCard = memo(function PrivateImageCard({
   image,
@@ -102,43 +97,29 @@ const PrivateImageCard = memo(function PrivateImageCard({
         }`}
       >
         {/* View Button */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              asChild
-              size="icon"
-              variant="secondary"
-              className="bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-600/50 backdrop-blur-sm transition-all duration-300 hover:scale-110 shadow-lg"
-            >
-              <Link href={image.imageUrl} target="_blank">
-                <Eye className="h-4 w-4" />
-              </Link>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>View full size</p>
-          </TooltipContent>
-        </Tooltip>
+        <Button
+          asChild
+          size="icon"
+          variant="secondary"
+          className="bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-600/50 backdrop-blur-sm transition-all duration-300 hover:scale-110 shadow-lg"
+        >
+          <Link href={image.imageUrl} target="_blank">
+            <Eye className="h-4 w-4" />
+          </Link>
+        </Button>
 
         {/* Delete Button */}
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  size="icon"
-                  variant="destructive"
-                  disabled={isDeletePending}
-                  className="bg-red-600/90 hover:bg-red-700 text-slate-100 border border-red-500/50 backdrop-blur-sm transition-all duration-300 hover:scale-110 shadow-lg"
-                  onClick={handleDeleteClick}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Delete image</p>
-              </TooltipContent>
-            </Tooltip>
+            <Button
+              size="icon"
+              variant="destructive"
+              disabled={isDeletePending}
+              className="bg-red-600/90 hover:bg-red-700 text-slate-100 border border-red-500/50 backdrop-blur-sm transition-all duration-300 hover:scale-110 shadow-lg"
+              onClick={handleDeleteClick}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent className="bg-slate-900/95 border border-slate-600/50 backdrop-blur-xl">
             <AlertDialogHeader>

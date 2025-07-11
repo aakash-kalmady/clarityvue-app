@@ -127,31 +127,14 @@
     @apply bg-background text-foreground;
   }
 
-  /* Mobile-specific improvements */
-  @media (max-width: 640px) {
-    html {
-      font-size: 14px;
-    }
-  }
-
   /* Prevent horizontal scroll on mobile */
   html,
   body {
     overflow-x: hidden;
   }
 
-  /* Improve touch targets on mobile */
-  button,
-  a,
-  input,
-  textarea,
-  select {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* Better focus indicators for accessibility */
-  *:focus-visible {
+  /* Better focus indicators for accessibility - but don't override Clerk's styles */
+  *:focus-visible:not([data-clerk-component]) {
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
   }
@@ -208,107 +191,6 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  /* Responsive text utilities */
-  .text-responsive-xs {
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
-  }
-
-  .text-responsive-sm {
-    font-size: clamp(0.875rem, 2.5vw, 1rem);
-  }
-
-  .text-responsive-base {
-    font-size: clamp(1rem, 3vw, 1.125rem);
-  }
-
-  .text-responsive-lg {
-    font-size: clamp(1.125rem, 3.5vw, 1.25rem);
-  }
-
-  .text-responsive-xl {
-    font-size: clamp(1.25rem, 4vw, 1.5rem);
-  }
-
-  .text-responsive-2xl {
-    font-size: clamp(1.5rem, 5vw, 2rem);
-  }
-
-  .text-responsive-3xl {
-    font-size: clamp(2rem, 6vw, 3rem);
-  }
-
-  /* Responsive spacing utilities */
-  .space-responsive {
-    gap: clamp(0.5rem, 2vw, 1rem);
-  }
-
-  .p-responsive {
-    padding: clamp(1rem, 3vw, 1.5rem);
-  }
-
-  .px-responsive {
-    padding-left: clamp(1rem, 3vw, 1.5rem);
-    padding-right: clamp(1rem, 3vw, 1.5rem);
-  }
-
-  .py-responsive {
-    padding-top: clamp(1rem, 3vw, 1.5rem);
-    padding-bottom: clamp(1rem, 3vw, 1.5rem);
-  }
-
-  /* Mobile-first responsive containers */
-  .container-responsive {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: clamp(1rem, 4vw, 2rem);
-    padding-right: clamp(1rem, 4vw, 2rem);
-  }
-
-  @media (min-width: 640px) {
-    .container-responsive {
-      max-width: 640px;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .container-responsive {
-      max-width: 768px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .container-responsive {
-      max-width: 1024px;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .container-responsive {
-      max-width: 1280px;
-    }
-  }
-
-  /* Touch-friendly button sizes */
-  .touch-target {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* Mobile-optimized grid */
-  .grid-mobile {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .grid-mobile {
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.5rem;
-    }
-  }
-
   /* Safe area for mobile devices */
   .safe-area-top {
     padding-top: env(safe-area-inset-top);
@@ -325,242 +207,69 @@
   .safe-area-right {
     padding-right: env(safe-area-inset-right);
   }
+}
 
-  /* Landing page animations */
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
+/* Animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
   }
-
-  @keyframes gradient {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
+  50% {
+    transform: translateY(-10px);
   }
+}
 
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
   }
-
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
+  50% {
+    background-position: 100% 50%;
   }
-
-  .animate-gradient {
-    background-size: 200% 200%;
-    animation: gradient 3s ease infinite;
+  100% {
+    background-position: 0% 50%;
   }
+}
 
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out;
-  }
-
-  /* Reveal animations */
-  .reveal-on-scroll {
+@keyframes fadeIn {
+  from {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(10px);
   }
-
-  .reveal-on-scroll.animate-in {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
+}
 
-  /* Staggered animations */
-  .stagger-1 {
-    animation-delay: 0.1s;
-  }
-  .stagger-2 {
-    animation-delay: 0.2s;
-  }
-  .stagger-3 {
-    animation-delay: 0.3s;
-  }
-  .stagger-4 {
-    animation-delay: 0.4s;
-  }
-  .stagger-5 {
-    animation-delay: 0.5s;
-  }
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
 
-  /* Hover animations */
-  .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-  }
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
 
-  .hover-lift:hover {
-    transform: translateY(-4px);
-  }
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
 
-  /* Scale animations */
-  .scale-in {
-    animation: scaleIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
+/* Clerk component overrides to ensure proper styling */
+[data-clerk-component] {
+  font-family: inherit;
+}
 
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
+[data-clerk-component] * {
+  font-family: inherit;
+}
 
-  @keyframes scaleInX {
-    from {
-      opacity: 0;
-      transform: scaleX(0);
-    }
-    to {
-      opacity: 1;
-      transform: scaleX(1);
-    }
-  }
-
-  /* Slide animations */
-  .slide-in-left {
-    animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  .slide-in-right {
-    animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  @keyframes slideInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slideInRight {
-    from {
-      opacity: 0;
-      transform: translateX(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  /* Add missing Tailwind animations */
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-
-  @keyframes bounce {
-    0%,
-    100% {
-      transform: translateY(-25%);
-      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-    }
-    50% {
-      transform: none;
-      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    }
-  }
-
-  .animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .animate-bounce {
-    animation: bounce 1s infinite;
-  }
-
-  /* Landing page specific animations */
-  .landing-fade-in {
-    opacity: 0;
-    transform: translateY(32px) scale(0.95);
-    transition: all 700ms ease-out;
-  }
-
-  .landing-fade-in.animate-in {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-
-  .landing-slide-in-right {
-    opacity: 0;
-    transform: translateX(-48px) scale(0.95);
-    transition: all 800ms ease-out;
-  }
-
-  .landing-slide-in-right.animate-in {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-
-  .landing-scale-in {
-    opacity: 0;
-    transform: scale(0.75);
-    transition: all 1000ms ease-out;
-  }
-
-  .landing-scale-in.animate-in {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  /* Staggered landing animations */
-  .landing-stagger-1 {
-    transition-delay: 0.1s;
-  }
-  .landing-stagger-2 {
-    transition-delay: 0.2s;
-  }
-  .landing-stagger-3 {
-    transition-delay: 0.3s;
-  }
-  .landing-stagger-4 {
-    transition-delay: 0.4s;
-  }
-  .landing-stagger-5 {
-    transition-delay: 0.5s;
-  }
-  .landing-stagger-6 {
-    transition-delay: 0.6s;
-  }
-  .landing-stagger-7 {
-    transition-delay: 0.7s;
-  }
-  .landing-stagger-8 {
-    transition-delay: 0.8s;
-  }
-  .landing-stagger-9 {
-    transition-delay: 0.9s;
-  }
-  .landing-stagger-10 {
-    transition-delay: 1s;
-  }
+/* Ensure Clerk components don't get affected by our global styles */
+[data-clerk-component] button,
+[data-clerk-component] input,
+[data-clerk-component] select,
+[data-clerk-component] textarea {
+  min-height: auto;
+  min-width: auto;
 }

@@ -29,7 +29,7 @@ export default function PublicAlbumPage({
   return (
     <div className="p-4 sm:p-6 space-y-6">
       {/* Header Section */}
-      <div className="relative transition-all duration-1000 delay-200 animate-in slide-in-from-bottom-4 fade-in">
+      <div className="relative transition-all duration-1000 delay-200 opacity-0 animate-[fadeIn_1s_ease-out_0.2s_forwards]">
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-600/40 via-indigo-600/30 to-purple-600/20 backdrop-blur-2xl border border-white/20 shadow-2xl" />
         <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6 p-6 rounded-2xl z-10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
@@ -44,7 +44,7 @@ export default function PublicAlbumPage({
                   </h1>
                 </div>
                 {album.description && (
-                  <p className="text-white/70 text-sm sm:text-base mt-1">
+                  <p className="text-white/70 text-base mt-1">
                     {album.description}
                   </p>
                 )}
@@ -56,7 +56,7 @@ export default function PublicAlbumPage({
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 border border-white/20">
               <ImageIcon className="w-4 h-4 text-white/60" />
-              <span className="text-white/80 text-sm font-medium">
+              <span className="text-white/80 text-base font-medium">
                 {images.length} photo{images.length !== 1 ? "s" : ""}
               </span>
             </div>
@@ -65,14 +65,14 @@ export default function PublicAlbumPage({
       </div>
 
       {/* Images Section */}
-      <div className="transition-all duration-1000 delay-400 animate-in slide-in-from-bottom-4 fade-in">
+      <div className="transition-all duration-1000 delay-400 opacity-0 animate-[fadeIn_1s_ease-out_0.4s_forwards]">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-6">
           <h2 className="text-xl sm:text-2xl font-semibold text-white flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-blue-300 animate-pulse" />
             Gallery
           </h2>
           {images.length > 0 && (
-            <p className="text-white/60 text-xs sm:text-sm">
+            <p className="text-white/60 text-sm">
               {images.length} photo{images.length !== 1 ? "s" : ""}
             </p>
           )}
@@ -89,7 +89,7 @@ export default function PublicAlbumPage({
                   <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
                     No photos yet
                   </h3>
-                  <p className="text-white/60 mb-6 max-w-md mx-auto text-sm sm:text-base">
+                  <p className="text-white/60 mb-6 max-w-md mx-auto text-base">
                     This album doesn&apos;t have any photos yet. Check back
                     later to see the owner&apos;s beautiful collection.
                   </p>
@@ -102,9 +102,12 @@ export default function PublicAlbumPage({
             {images.map((image, index) => (
               <div
                 key={image.id}
-                className={`transition-all duration-700 delay-${
-                  600 + index * 50
-                } animate-in slide-in-from-bottom-4 fade-in`}
+                className="transition-all duration-500 opacity-0 translate-y-8"
+                style={{
+                  animation: `fadeIn 0.8s ease-out ${
+                    0.6 + index * 0.1
+                  }s forwards`,
+                }}
               >
                 <PublicImageCard image={image} />
               </div>

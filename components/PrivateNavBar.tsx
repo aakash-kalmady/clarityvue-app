@@ -5,7 +5,14 @@ import { Button } from "./ui/button";
 import { useState, useCallback, memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { User, Plus, ChevronLeft, ChevronRight, Eye, Home } from "lucide-react";
+import {
+  User,
+  Plus,
+  Eye,
+  Home,
+  ArrowLeftToLine,
+  ArrowRightToLine,
+} from "lucide-react";
 
 interface PrivateNavBarProps {
   profile?: {
@@ -44,9 +51,9 @@ const PrivateNavBar = memo(function PrivateNavBar({
             <Button
               variant="ghost"
               size="sm"
-              className="text-white hover:bg-white/10 text-xs px-1.5 sm:px-2 h-8 min-w-0"
+              className="text-white hover:bg-white/10 text-sm px-2 sm:px-3 h-10 min-w-0"
             >
-              <Home className="w-3 h-3 sm:mr-1 flex-shrink-0" />
+              <Home className="w-4 h-4 sm:mr-2 flex-shrink-0" />
               <span className="hidden sm:inline truncate">Home</span>
             </Button>
           </Link>
@@ -56,9 +63,9 @@ const PrivateNavBar = memo(function PrivateNavBar({
             <Button
               variant="ghost"
               size="sm"
-              className="text-white hover:bg-white/10 text-xs px-1.5 sm:px-2 h-8 min-w-0"
+              className="text-white hover:bg-white/10 text-sm px-2 sm:px-3 h-10 min-w-0"
             >
-              <Plus className="w-3 h-3 sm:mr-1 flex-shrink-0" />
+              <Plus className="w-4 h-4 sm:mr-2 flex-shrink-0" />
               <span className="hidden sm:inline truncate">New</span>
             </Button>
           </Link>
@@ -68,9 +75,9 @@ const PrivateNavBar = memo(function PrivateNavBar({
             <Button
               variant="ghost"
               size="sm"
-              className="text-white hover:bg-white/10 text-xs px-1.5 sm:px-2 h-8 min-w-0"
+              className="text-white hover:bg-white/10 text-sm px-2 sm:px-3 h-10 min-w-0"
             >
-              <User className="w-3 h-3 sm:mr-1 flex-shrink-0" />
+              <User className="w-4 h-4 sm:mr-2 flex-shrink-0" />
               <span className="hidden sm:inline truncate">Profile</span>
             </Button>
           </Link>
@@ -81,9 +88,9 @@ const PrivateNavBar = memo(function PrivateNavBar({
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-white hover:bg-white/10 text-xs px-1.5 sm:px-2 h-8 min-w-0"
+                className="text-white hover:bg-white/10 text-sm px-2 sm:px-3 h-10 min-w-0"
               >
-                <Eye className="w-3 h-3 sm:mr-1 flex-shrink-0" />
+                <Eye className="w-4 h-4 sm:mr-2 flex-shrink-0" />
                 <span className="hidden sm:inline truncate">View</span>
               </Button>
             </Link>
@@ -102,13 +109,11 @@ const PrivateNavBar = memo(function PrivateNavBar({
 
   // Desktop Sidebar Navigation
   const DesktopSidebar = () => (
-    <div className="hidden lg:flex relative bg-white/5 backdrop-blur-xl border-r border-white/10 flex-col flex-shrink-0">
+    <div className="hidden lg:flex relative bg-white/5 backdrop-blur-xl border-r border-white/10 flex-col transition-all duration-300">
       {/* Logo Section */}
-      <div
-        className={`border-b border-white/10 ${isCollapsed ? "p-2" : "p-2"}`}
-      >
+      <div className={"border-b border-white/10 py-3 px-2 "}>
         {isCollapsed ? (
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-between">
             <Link
               href="/dashboard"
               className="flex justify-center items-center"
@@ -124,16 +129,16 @@ const PrivateNavBar = memo(function PrivateNavBar({
 
             <button
               onClick={toggleCollapsed}
-              className="p-1 text-white/60 hover:text-white transition-colors flex justify-center items-center"
+              className="mt-4 text-white/60 hover:text-white transition-colors flex justify-center items-center"
             >
-              <ChevronRight />
+              <ArrowRightToLine />
             </button>
           </div>
         ) : (
           <div className="flex items-center justify-between">
             <Button asChild variant="link">
               <Link href="/dashboard" className="flex items-center gap-2">
-                <span className="text-base font-bold text-white truncate">
+                <span className="text-xl font-bold text-white truncate">
                   ClarityVue
                 </span>
               </Link>
@@ -143,30 +148,32 @@ const PrivateNavBar = memo(function PrivateNavBar({
               onClick={toggleCollapsed}
               className="text-white/60 hover:text-white transition-colors flex justify-center items-center"
             >
-              <ChevronLeft />
+              <ArrowLeftToLine />
             </button>
           </div>
         )}
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 px-2 py-1 space-y-1">
+      <nav className="flex-1 p-2 space-y-5">
         {isCollapsed ? (
           <Link href="/dashboard">
             <Button
+              size={"sm"}
               variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-center"
             >
-              <Home className="w-4 h-4 flex-shrink-0" />
+              <Home className="w-5 h-5" />
             </Button>
           </Link>
         ) : (
           <Link href="/dashboard">
             <Button
+              size={"sm"}
               variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start px-2"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-start px-2"
             >
-              <Home className="w-4 h-4 flex-shrink-0 mr-2" />
+              <Home className="mr-2 w-5 h-5" />
               <span className="truncate">Dashboard</span>
             </Button>
           </Link>
@@ -175,19 +182,21 @@ const PrivateNavBar = memo(function PrivateNavBar({
         {isCollapsed ? (
           <Link href="/album/new">
             <Button
+              size={"sm"}
               variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-center"
             >
-              <Plus className="w-4 h-4 flex-shrink-0" />
+              <Plus className="w-5 h-5" />
             </Button>
           </Link>
         ) : (
           <Link href="/album/new">
             <Button
+              size={"sm"}
               variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start px-2"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-start px-2"
             >
-              <Plus className="w-4 h-4 flex-shrink-0 mr-2" />
+              <Plus className="mr-2 w-5 h-5" />
               <span className="truncate">Create Album</span>
             </Button>
           </Link>
@@ -196,19 +205,21 @@ const PrivateNavBar = memo(function PrivateNavBar({
         {isCollapsed ? (
           <Link href="/profile/edit">
             <Button
+              size={"sm"}
               variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-center"
             >
-              <User className="w-4 h-4 flex-shrink-0" />
+              <User className="w-5 h-5" />
             </Button>
           </Link>
         ) : (
           <Link href="/profile/edit">
             <Button
+              size={"sm"}
               variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start px-2"
+              className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-start px-2"
             >
-              <User className="w-4 h-4 flex-shrink-0 mr-2" />
+              <User className=" mr-2 w-5 h-5" />
               <span className="truncate">Profile</span>
             </Button>
           </Link>
@@ -218,19 +229,21 @@ const PrivateNavBar = memo(function PrivateNavBar({
           (isCollapsed ? (
             <Link href={`/u/${profile.username}`}>
               <Button
+                size={"sm"}
                 variant="ghost"
-                className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-center"
+                className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-center"
               >
-                <Eye className="w-4 h-4 flex-shrink-0" />
+                <Eye className="w-5 h-5" />
               </Button>
             </Link>
           ) : (
             <Link href={`/u/${profile.username}`}>
               <Button
+                size={"sm"}
                 variant="ghost"
-                className="w-full flex text-white hover:bg-white/10 hover:text-white text-sm justify-start px-2"
+                className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-start px-2"
               >
-                <Eye className="w-4 h-4 flex-shrink-0 mr-2" />
+                <Eye className="mr-2 w-5 h-5" />
                 <span className="truncate">Public Profile</span>
               </Button>
             </Link>
@@ -238,17 +251,17 @@ const PrivateNavBar = memo(function PrivateNavBar({
       </nav>
 
       {/* User Section */}
-      <div className="p-2 border-t border-white/10">
+      <div className="p-2 border-t">
         <div
-          className={`flex flex-row items-center p-2 rounded-lg ${
-            isCollapsed ? "justify-center" : "bg-white/5 justify-start"
+          className={`flex flex-row items-center p-2 rounded-full bg-white/5  ${
+            isCollapsed ? "justify-center" : "justify-start"
           }`}
         >
           <SignedIn>
             <UserButton />
           </SignedIn>
           {!isCollapsed && (
-            <div className="min-w-0 flex flex-col items-start justify-center">
+            <div className="ml-2 min-w-0 flex flex-col items-start justify-center">
               <p className="text-xs font-medium text-white truncate">
                 {profile?.displayName || "User"}
               </p>

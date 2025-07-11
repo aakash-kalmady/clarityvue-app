@@ -34,7 +34,7 @@ const AlbumCard = memo(function AlbumCard(props: AlbumCardProps) {
               {props.title}
             </CardTitle>
             {props.description && (
-              <CardDescription className="text-slate-300 text-xs sm:text-sm mt-1 line-clamp-2">
+              <CardDescription className="text-slate-300 text-sm mt-1 line-clamp-2">
                 {props.description}
               </CardDescription>
             )}
@@ -87,28 +87,21 @@ const AlbumCard = memo(function AlbumCard(props: AlbumCardProps) {
       </CardContent>
       <CardFooter className="pt-0">
         <div className="flex gap-2 w-full">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                className="flex-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-slate-100 text-xs sm:text-sm shadow-md"
-                asChild
-              >
-                <Link
-                  href={
-                    props.isPrivate
-                      ? `/album/${props.albumId}`
-                      : `/u/${props.username}/${props.albumId}`
-                  }
-                >
-                  <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                  View Album
-                </Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Open album to view photos</p>
-            </TooltipContent>
-          </Tooltip>
+          <Button
+            className="flex-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-slate-100 text-sm shadow-md"
+            asChild
+          >
+            <Link
+              href={
+                props.isPrivate
+                  ? `/album/${props.albumId}`
+                  : `/u/${props.username}/${props.albumId}`
+              }
+            >
+              <Eye className="w-4 h-4 mr-2" />
+              View Album
+            </Link>
+          </Button>
         </div>
       </CardFooter>
     </Card>

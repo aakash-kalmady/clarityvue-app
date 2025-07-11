@@ -49,6 +49,7 @@ export default function Dashboard({
   const memberSince = new Date(profile.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
+    day: "numeric",
   });
 
   return (
@@ -74,8 +75,8 @@ export default function Dashboard({
               <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-2 drop-shadow-lg">
                 Hi, {profile.displayName}! 👋
               </h1>
-              <p className="text-slate-300 flex items-center gap-2 text-sm sm:text-base">
-                <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+              <p className="text-slate-300 flex items-center gap-2 text-base">
+                <Calendar className="w-4 h-4" />
                 Member since {memberSince}
               </p>
             </div>
@@ -85,19 +86,19 @@ export default function Dashboard({
               variant="outline"
               size="sm"
               asChild
-              className="text-sm border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 transition-all duration-300 hover:scale-105"
+              className="text-base border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 transition-all duration-300 hover:scale-105"
             >
               <Link href="/profile/edit">
-                <UserPen className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                <UserPen className="w-4 h-4 mr-2" />
                 Edit Profile
               </Link>
             </Button>
             <Button
-              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-slate-100 text-sm shadow-xl transition-all duration-300 hover:scale-105"
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-slate-100 text-base shadow-xl transition-all duration-300 hover:scale-105"
               asChild
             >
               <Link href="/album/new">
-                <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                <Plus className="w-4 h-4 mr-2" />
                 Create Album
               </Link>
             </Button>
@@ -118,7 +119,7 @@ export default function Dashboard({
             <div className="text-3xl font-extrabold text-slate-100 drop-shadow-lg mb-1">
               {albums.length}
             </div>
-            <p className="text-slate-400 text-xs">Photo collections</p>
+            <p className="text-slate-400 text-sm">Photo collections</p>
           </div>
         </Card>
         <Card className="group bg-gradient-to-br from-slate-800/60 via-indigo-900/30 to-purple-900/40 border border-slate-600/50 backdrop-blur-xl shadow-2xl hover:shadow-purple-500/20 hover:scale-[1.03] transition-all duration-300 hover:border-slate-500/70">
@@ -132,7 +133,7 @@ export default function Dashboard({
             <div className="text-3xl font-extrabold text-slate-100 drop-shadow-lg mb-1">
               {totalImages}
             </div>
-            <p className="text-slate-400 text-xs">Uploaded photos</p>
+            <p className="text-slate-400 text-sm">Uploaded photos</p>
           </div>
         </Card>
         <Card className="group bg-gradient-to-br from-slate-800/60 via-purple-900/30 to-blue-900/40 border border-slate-600/50 backdrop-blur-xl shadow-2xl hover:shadow-cyan-500/20 hover:scale-[1.03] transition-all duration-300 hover:border-slate-500/70 sm:col-span-2 lg:col-span-1">
@@ -147,7 +148,7 @@ export default function Dashboard({
               variant="outline"
               size="sm"
               asChild
-              className="w-full text-sm border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 h-9 transition-all duration-300 hover:scale-105 rounded-xl font-semibold"
+              className="w-full text-base border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 h-10 transition-all duration-300 hover:scale-105 rounded-xl font-semibold"
             >
               <Link href={`/u/${profile.username}`}>View Profile</Link>
             </Button>
@@ -164,7 +165,7 @@ export default function Dashboard({
           <h2 className="text-2xl font-bold text-slate-100 drop-shadow-lg">
             Your Albums
           </h2>
-          <div className="flex items-center gap-2 text-slate-400 text-sm">
+          <div className="flex items-center gap-2 text-slate-400 text-base">
             <Sparkles className="w-4 h-4" />
             <span>
               {albums.length} collection{albums.length !== 1 ? "s" : ""}

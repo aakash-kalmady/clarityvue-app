@@ -429,7 +429,7 @@ export default function PrivacyPage() {
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/10 py-6 px-4 sm:px-6 bg-white/5 backdrop-blur-xl mt-12">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-white/60 text-sm">
-          <p>&copy; 2025 Aakash Kalmady.</p>
+          <p>&copy; 2025 -Aakash Kalmady</p>
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
