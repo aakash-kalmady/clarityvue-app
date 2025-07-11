@@ -62,7 +62,7 @@ export default function PrivateNavBar({
   };
 }) {
   // State for sidebar collapse functionality
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   /**
    * Toggles the sidebar collapse state for desktop layout.
