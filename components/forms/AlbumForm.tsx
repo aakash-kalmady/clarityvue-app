@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createAlbum, deleteAlbum, updateAlbum } from "@/server/actions/albums";
 import { AlbumFormSchema } from "@/server/schema/albums";
-import { ChangeEvent, useState, useTransition, memo } from "react";
+import { ChangeEvent, useState, useTransition } from "react";
 import { Textarea } from "../ui/textarea";
 import { createImageUrl, deleteImage } from "@/server/actions/images";
 import {
@@ -35,7 +35,49 @@ import { Loader2, Image as ImageIcon, Trash2 } from "lucide-react";
 import { z } from "zod";
 import Link from "next/link";
 
-interface AlbumFormProps {
+/**
+ * AlbumForm Component
+ *
+ * A comprehensive form component for creating and editing albums in the ClarityVue photo portfolio app.
+ * This component handles both creation and editing modes, with different behaviors and UI elements
+ * based on whether an existing album is being edited.
+ *
+ * Features:
+ * - Dual mode: Create new albums or edit existing ones
+ * - Form validation using React Hook Form and Zod schema
+ * - Image upload handling with file validation
+ * - Album cover image management
+ * - Delete functionality with confirmation dialog
+ * - Responsive design with galaxy theme styling
+ * - Error handling and user feedback via toast notifications
+ *
+ * Props:
+ * @param {Object} album - Optional album object for edit mode
+ * @param {string} album.id - Unique album identifier
+ * @param {string} album.title - Album title
+ * @param {string} album.description - Album description
+ * @param {number} album.albumOrder - Display order for sorting
+ * @param {string} album.imageUrl - Current album cover image URL
+ *
+ * Usage Examples:
+ *
+ * // Create new album
+ * <AlbumForm />
+ *
+ * // Edit existing album
+ * <AlbumForm album={{
+ *   id: "album-123",
+ *   title: "Summer Vacation",
+ *   description: "Photos from our beach trip",
+ *   albumOrder: 1,
+ *   imageUrl: "https://example.com/cover.jpg"
+ * }} />
+ *
+ * @returns {JSX.Element} A form component with album creation/editing functionality
+ */
+export default function AlbumForm({
+  album,
+}: {
   album?: {
     id: string;
     title: string;
@@ -43,23 +85,34 @@ interface AlbumFormProps {
     albumOrder: number;
     imageUrl: string;
   };
-}
-
-const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
+}) {
+  // ===== ROUTING & NAVIGATION =====
   const router = useRouter();
   const searchParams = useSearchParams();
   const returnUrl =
     searchParams.get("redirect") ||
     (album ? `/album/${album.id}` : "/dashboard");
 
+  // ===== STATE MANAGEMENT =====
   const [isDeletePending, startDeleteTransition] = useTransition();
   const [file, setFile] = useState<File | null>(null);
 
+  // ===== FORM SUBMISSION HANDLER =====
+  /**
+   * Handles form submission for both create and edit modes
+   * - Determines appropriate server action (createAlbum or updateAlbum)
+   * - Handles image upload if a new file is selected
+   * - Manages existing image deletion when replacing covers
+   * - Provides user feedback via toast notifications
+   * - Handles errors and displays them in the form
+   */
   const onSubmit = async (data: z.infer<typeof AlbumFormSchema>) => {
     const action =
       album == null ? createAlbum : updateAlbum.bind(null, album.id);
     try {
+      // Handle image upload for edit mode
       if (album && file) {
+        // Delete existing image if it's not the default placeholder
         if (
           album.imageUrl !==
           "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg"
@@ -67,6 +120,7 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
           await deleteImage(album.imageUrl, album.id, false);
         }
 
+        // Upload new image
         const fileName = file.name.replaceAll(" ", "_");
         const { uploadUrl, publicUrl } = await createImageUrl(
           fileName,
@@ -84,6 +138,8 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
         }
         data.imageUrl = publicUrl;
       }
+
+      // Submit form data
       await action(data);
       setFile(null);
       router.push(returnUrl);
@@ -97,6 +153,13 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
     }
   };
 
+  // ===== FORM CONFIGURATION =====
+  /**
+   * React Hook Form configuration with Zod validation
+   * - Sets up form with appropriate default values
+   * - Uses Zod resolver for validation
+   * - Handles both create and edit modes
+   */
   const form = useForm<z.infer<typeof AlbumFormSchema>>({
     resolver: zodResolver(AlbumFormSchema),
     defaultValues: album
@@ -114,7 +177,16 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
 
   const { isDirty } = form.formState;
 
+  // ===== FILE UPLOAD HANDLING =====
   const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
+
+  /**
+   * Handles file selection for album cover images
+   * - Validates file size (max 10MB)
+   * - Validates file type (must be image)
+   * - Updates form state with selected file
+   * - Sets form errors for invalid files
+   */
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -133,9 +205,12 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
     }
   };
 
+  // ===== RENDER =====
   return (
     <div className="w-full max-w-2xl mx-auto p-4 sm:p-6">
+      {/* Main Form Container */}
       <div className="bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 backdrop-blur-xl border border-slate-600/50 rounded-2xl shadow-2xl shadow-slate-900/50 p-4 sm:p-6 lg:p-8">
+        {/* Header Section */}
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-100 drop-shadow-lg">
             {album ? "Edit Album" : "Create New Album"}
@@ -146,14 +221,18 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
               : "Create a new album to organize and showcase your photos."}
           </p>
         </div>
+
+        {/* Form Component */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Show root error if any */}
+            {/* Error Display */}
             {form.formState.errors.root && (
               <div className="p-4 rounded-lg bg-red-600/10 border border-red-500/30 text-red-300 text-sm">
                 {form.formState.errors.root.message}
               </div>
             )}
+
+            {/* Album Title Field */}
             <FormField
               control={form.control}
               name="title"
@@ -177,6 +256,8 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
                 </FormItem>
               )}
             />
+
+            {/* Album Description Field */}
             <FormField
               control={form.control}
               name="description"
@@ -201,6 +282,7 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
               )}
             />
 
+            {/* Album Cover Image Field (Edit Mode Only) */}
             {album && (
               <FormField
                 control={form.control}
@@ -234,6 +316,7 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
               />
             )}
 
+            {/* Album Order Field */}
             <FormField
               control={form.control}
               name="albumOrder"
@@ -258,7 +341,9 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
               )}
             />
 
+            {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              {/* Submit Button */}
               <Button
                 disabled={form.formState.isSubmitting || !isDirty}
                 type="submit"
@@ -281,6 +366,7 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
                 )}
               </Button>
 
+              {/* Cancel Button */}
               <Button
                 disabled={form.formState.isSubmitting}
                 type="button"
@@ -296,7 +382,7 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
                 </Link>
               </Button>
 
-              {/* Delete Button (only shows if editing existing album) */}
+              {/* Delete Button (Edit Mode Only) */}
               {album && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
@@ -310,6 +396,8 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
                       <span className="truncate">Delete</span>
                     </Button>
                   </AlertDialogTrigger>
+
+                  {/* Delete Confirmation Dialog */}
                   <AlertDialogContent className="bg-slate-800/50 backdrop-blur-xl border-slate-600/50">
                     <AlertDialogHeader>
                       <AlertDialogTitle className="text-slate-100 text-lg sm:text-xl">
@@ -359,6 +447,4 @@ const AlbumForm = memo(function AlbumForm({ album }: AlbumFormProps) {
       </div>
     </div>
   );
-});
-
-export default AlbumForm;
+}

@@ -1,8 +1,37 @@
+/**
+ * PrivateNavBar: Navigation component for authenticated users with responsive design.
+ *
+ * This component provides:
+ * - Mobile/tablet top navigation bar
+ * - Desktop collapsible sidebar navigation
+ * - User profile information display
+ * - Navigation links for dashboard, album creation, and profile
+ * - Clerk UserButton integration
+ * - Responsive design for all screen sizes
+ *
+ * Features:
+ * - Collapsible sidebar for desktop layout
+ * - Fixed top navigation for mobile/tablet
+ * - Glassmorphism styling with backdrop blur
+ * - Hover effects and transitions
+ * - Profile information display
+ * - Logo and branding elements
+ * - Responsive icon and text sizing
+ *
+ * Layouts:
+ * - Mobile/Tablet: Fixed top bar with compact navigation
+ * - Desktop: Collapsible sidebar with full navigation
+ *
+ * @param profile - Optional user profile data for display
+ *
+ * @example
+ * <PrivateNavBar profile={{ displayName: "John Doe", username: "john" }} />
+ */
 "use client";
 
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -13,38 +42,62 @@ import {
   ArrowRightToLine,
 } from "lucide-react";
 
-interface PrivateNavBarProps {
+/**
+ * Private navigation component with responsive design and user management.
+ *
+ * State Management:
+ * - Sidebar collapse state for desktop layout
+ * - Responsive behavior for different screen sizes
+ * - User profile integration
+ *
+ * @param profile - Optional user profile data
+ * @returns Navigation component with responsive layout
+ */
+export default function PrivateNavBar({
+  profile,
+}: {
   profile?: {
     displayName?: string;
     username?: string;
   };
-}
-
-const PrivateNavBar = memo(function PrivateNavBar({
-  profile,
-}: PrivateNavBarProps) {
+}) {
+  // State for sidebar collapse functionality
   const [isCollapsed, setIsCollapsed] = useState(true);
 
+  /**
+   * Toggles the sidebar collapse state for desktop layout.
+   */
   const toggleCollapsed = useCallback(() => {
     setIsCollapsed((prev) => !prev);
   }, []);
 
   // Mobile/Tablet Top Navigation
+  /**
+   * Mobile and tablet navigation bar component.
+   *
+   * Features:
+   * - Fixed positioning at top of screen
+   * - Compact navigation with icons and text
+   * - Logo and branding elements
+   * - User authentication integration
+   *
+   * @returns Mobile navigation bar component
+   */
   const MobileTopNav = () => (
-    <div className="lg:hidden bg-white/5 backdrop-blur-xl border-b border-white/10 fixed top-0 left-0 right-0 z-50 pt-safe-area-top">
-      <div className="flex items-center justify-between px-3 py-2">
+    <div className="lg:hidden bg-white/5 backdrop-blur-xl border-b border-white/10 fixed top-0 left-0 right-0 z-50 pt-safe-area-top h-14">
+      <div className="flex items-center justify-between px-3 p-2">
         {/* Logo - smaller on mobile */}
         <div className="flex items-center gap-2">
           <Link href="/dashboard" className="flex items-center gap-1.5">
             <Image src="/assets/logo.svg" width={20} height={20} alt="Logo" />
-            <span className="text-sm font-bold text-white hidden sm:inline">
+            <span className="text-sm font-bold text-white sm:inline">
               ClarityVue
             </span>
           </Link>
         </div>
 
         {/* Navigation buttons - optimized for mobile */}
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-1">
           {/* Home - icon only on very small screens */}
           <Link href="/dashboard">
             <Button
@@ -85,31 +138,8 @@ const PrivateNavBar = memo(function PrivateNavBar({
 
           {/* User Button - smaller on mobile */}
           <SignedIn>
-            <div className="ml-1 flex-shrink-0">
-              <UserButton
-                appearance={{
-                  elements: {
-                    userButtonPopoverCard:
-                      "bg-white/30 backdrop-blur-xl border border-white/20 shadow-2xl",
-                    userButtonPopoverActionButton:
-                      "text-slate-900 hover:bg-white/40",
-                    userButtonPopoverActionButtonIcon: "text-slate-900",
-                    userButtonPopoverActionButtonText: "text-slate-900",
-                    userButtonPopoverFooter: "text-slate-700",
-                    userButtonPopoverHeader: "text-slate-900",
-                    userButtonPopoverHeaderTitle: "text-slate-900",
-                    userButtonPopoverHeaderSubtitle: "text-slate-700",
-                    userButtonPopoverActionButton__manageAccount:
-                      "text-blue-600",
-                    userButtonPopoverActionButton__signOut: "text-pink-600",
-                  },
-                  variables: {
-                    colorPrimary: "#6366f1",
-                    colorBackground: "rgba(255,255,255,0.3)",
-                    colorText: "#0f172a",
-                  },
-                }}
-              />
+            <div className="ml-1 flex flex-shrink-0 items-center justify-center">
+              <UserButton />
             </div>
           </SignedIn>
         </div>
@@ -118,9 +148,21 @@ const PrivateNavBar = memo(function PrivateNavBar({
   );
 
   // Desktop Sidebar Navigation
+  /**
+   * Desktop sidebar navigation component.
+   *
+   * Features:
+   * - Collapsible sidebar with toggle functionality
+   * - Full navigation with icons and text
+   * - User profile section with information
+   * - Logo and branding elements
+   * - Smooth transitions and animations
+   *
+   * @returns Desktop sidebar navigation component
+   */
   const DesktopSidebar = () => (
     <div className="hidden lg:flex relative bg-white/5 backdrop-blur-xl border-r border-white/10 flex-col transition-all duration-300">
-      {/* Logo Section */}
+      {/* Logo Section with collapse toggle */}
       <div className={"border-b border-white/10 py-4 px-2 "}>
         {isCollapsed ? (
           <div className="flex flex-col items-center justify-between">
@@ -166,6 +208,7 @@ const PrivateNavBar = memo(function PrivateNavBar({
 
       {/* Navigation Links */}
       <nav className="flex-1 flex flex-col gap-2 p-2">
+        {/* Dashboard Link */}
         {isCollapsed ? (
           <Link href="/dashboard">
             <Button
@@ -189,6 +232,7 @@ const PrivateNavBar = memo(function PrivateNavBar({
           </Link>
         )}
 
+        {/* Create Album Link */}
         {isCollapsed ? (
           <Link href="/album/new">
             <Button
@@ -212,6 +256,7 @@ const PrivateNavBar = memo(function PrivateNavBar({
           </Link>
         )}
 
+        {/* Profile Link - conditional rendering */}
         {profile &&
           (isCollapsed ? (
             <Link href={`/u/${profile.username}`}>
@@ -237,7 +282,7 @@ const PrivateNavBar = memo(function PrivateNavBar({
           ))}
       </nav>
 
-      {/* User Section */}
+      {/* User Section with profile information */}
       <div className="p-2 border-t">
         <div
           className={`flex flex-row items-center p-2 rounded-full bg-white/5  ${
@@ -245,29 +290,7 @@ const PrivateNavBar = memo(function PrivateNavBar({
           }`}
         >
           <SignedIn>
-            <UserButton
-              appearance={{
-                elements: {
-                  userButtonPopoverCard:
-                    "bg-white/30 backdrop-blur-xl border border-white/20 shadow-2xl",
-                  userButtonPopoverActionButton:
-                    "text-slate-900 hover:bg-white/40",
-                  userButtonPopoverActionButtonIcon: "text-slate-900",
-                  userButtonPopoverActionButtonText: "text-slate-900",
-                  userButtonPopoverFooter: "text-slate-700",
-                  userButtonPopoverHeader: "text-slate-900",
-                  userButtonPopoverHeaderTitle: "text-slate-900",
-                  userButtonPopoverHeaderSubtitle: "text-slate-700",
-                  userButtonPopoverActionButton__manageAccount: "text-blue-600",
-                  userButtonPopoverActionButton__signOut: "text-pink-600",
-                },
-                variables: {
-                  colorPrimary: "#6366f1",
-                  colorBackground: "rgba(255,255,255,0.3)",
-                  colorText: "#0f172a",
-                },
-              }}
-            />
+            <UserButton />
           </SignedIn>
           {!isCollapsed && (
             <div className="ml-2 min-w-0 flex flex-col items-start justify-center">
@@ -290,6 +313,4 @@ const PrivateNavBar = memo(function PrivateNavBar({
       <DesktopSidebar />
     </>
   );
-});
-
-export default PrivateNavBar;
+}

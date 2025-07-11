@@ -1,7 +1,34 @@
+/**
+ * PublicAlbumPage: Displays a public album view for visitors.
+ *
+ * This component provides:
+ * - Album header with title, description, and photo count
+ * - Gallery grid of public images
+ * - Empty state when no images are present
+ * - Responsive design for all screen sizes
+ *
+ * Features:
+ * - Animated entrance effects with staggered timing
+ * - Glassmorphism styling with backdrop blur
+ * - Photo count display and statistics
+ * - Empty state with informative message
+ * - Responsive grid layout for images
+ * - Public viewing without edit capabilities
+ *
+ * @param album - Album object containing metadata and information
+ * @param images - Array of public images to display
+ *
+ * @example
+ * <PublicAlbumPage
+ *   album={{ id: "123", title: "Vacation Photos", description: "Summer 2024", albumOrder: 1 }}
+ *   images={[{ id: "1", imageUrl: "url", altText: "Beach", caption: "Sunset", imageOrder: 1 }]}
+ * />
+ */
 import PublicImageCard from "./cards/PublicImageCard";
 import { Camera, Sparkles, Image as ImageIcon } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 
+// Type definitions for album and image data structures
 interface Image {
   id: string;
   imageUrl: string;
@@ -22,21 +49,41 @@ interface PublicAlbumPageProps {
   images: Image[];
 }
 
+/**
+ * Public album page component for displaying shared albums.
+ *
+ * Layout:
+ * - Album header with metadata and statistics
+ * - Gallery section with image grid
+ * - Empty state when no images available
+ * - Staggered animations for visual appeal
+ *
+ * @param album - Album data for display
+ * @param images - Array of public images
+ * @returns Public album page with gallery and metadata
+ */
 export default function PublicAlbumPage({
   album,
   images,
 }: PublicAlbumPageProps) {
   return (
     <div className="p-4 sm:p-6 space-y-6">
-      {/* Header Section */}
+      {/* Album Header Section - Title, description, and photo count */}
       <div className="relative transition-all duration-1000 delay-200 opacity-0 animate-[fadeIn_1s_ease-out_0.2s_forwards]">
+        {/* Glassmorphism background overlay */}
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-600/40 via-indigo-600/30 to-purple-600/20 backdrop-blur-2xl border border-white/20 shadow-2xl" />
+
+        {/* Header content with responsive layout */}
         <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6 p-6 rounded-2xl z-10">
+          {/* Left side: Album info with icon and metadata */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
             <div className="flex items-center gap-3">
+              {/* Album icon with gradient background */}
               <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-white/20">
                 <Camera className="w-6 h-6 text-white" />
               </div>
+
+              {/* Album title and description */}
               <div>
                 <div className="flex items-center gap-3">
                   <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
@@ -52,7 +99,7 @@ export default function PublicAlbumPage({
             </div>
           </div>
 
-          {/* Stats Section */}
+          {/* Right side: Photo count statistics */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 border border-white/20">
               <ImageIcon className="w-4 h-4 text-white/60" />
@@ -64,8 +111,9 @@ export default function PublicAlbumPage({
         </div>
       </div>
 
-      {/* Images Section */}
+      {/* Images Gallery Section - Public image display */}
       <div className="transition-all duration-1000 delay-400 opacity-0 animate-[fadeIn_1s_ease-out_0.4s_forwards]">
+        {/* Section header with title and count */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-6">
           <h2 className="text-xl sm:text-2xl font-semibold text-white flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-blue-300 animate-pulse" />
@@ -78,13 +126,18 @@ export default function PublicAlbumPage({
           )}
         </div>
 
+        {/* Images grid or empty state */}
         {images.length < 1 ? (
+          /* Empty state when album has no photos */
           <Card className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 border-white/20 backdrop-blur-xl transition-all duration-300 hover:scale-[1.01]">
             <CardContent className="pt-8 sm:pt-12 pb-8 sm:pb-12">
               <div className="text-center space-y-4">
+                {/* Empty state icon */}
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-full flex items-center justify-center mx-auto border border-white/20">
                   <Camera className="w-6 h-6 sm:w-8 sm:h-8 text-white/70" />
                 </div>
+
+                {/* Empty state text */}
                 <div>
                   <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
                     No photos yet
@@ -98,6 +151,7 @@ export default function PublicAlbumPage({
             </CardContent>
           </Card>
         ) : (
+          /* Images grid with staggered animations */
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
             {images.map((image, index) => (
               <div

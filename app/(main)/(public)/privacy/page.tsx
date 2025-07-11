@@ -1,3 +1,22 @@
+/**
+ * Privacy Policy Page: Displays the application's privacy policy and terms.
+ *
+ * This page provides:
+ * - Comprehensive privacy policy information
+ * - Legal compliance documentation
+ * - User-friendly policy presentation
+ * - Animated background elements
+ * - Responsive design for all devices
+ *
+ * Features:
+ * - Glassmorphism styling with backdrop blur
+ * - Animated background elements
+ * - Card-based content organization
+ * - Navigation back to home
+ * - Footer integration
+ *
+ * @returns Privacy policy page with comprehensive legal information
+ */
 // app/privacy/page.tsx
 
 import { Button } from "@/components/ui/button";
@@ -20,15 +39,26 @@ import {
 import Link from "next/link";
 import Footer from "@/components/Footer";
 
+/**
+ * Privacy policy page component that displays comprehensive legal information.
+ *
+ * Layout:
+ * - Animated background with glassmorphism effects
+ * - Navigation header with back button
+ * - Card-based content sections
+ * - Footer with additional links
+ *
+ * @returns Privacy policy page with legal information and navigation
+ */
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
-      {/* Background Elements */}
+      {/* Background Elements - Creates depth and visual interest */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10" />
       <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" />
 
-      {/* Navigation */}
+      {/* Navigation Header - Back button and page title */}
       <nav className="relative z-10 flex justify-between items-center px-4 sm:px-6 py-4 border-b border-white/10 bg-white/5 backdrop-blur-xl">
         <Button
           variant="ghost"
@@ -49,10 +79,10 @@ export default function PrivacyPage() {
         </div>
       </nav>
 
-      {/* Main Content */}
+      {/* Main Content Area - Privacy policy sections */}
       <main className="relative z-10 container mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
-          {/* Header */}
+          {/* Page Header - Title and description */}
           <div className="text-center space-y-4">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-white/20 text-white/90 text-sm backdrop-blur-xl">
               <Shield className="w-4 h-4" />
@@ -67,7 +97,7 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          {/* Last Updated */}
+          {/* Last Updated Information */}
           <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white">
             <CardContent className="p-6">
               <div className="flex items-center gap-3">
@@ -80,8 +110,9 @@ export default function PrivacyPage() {
             </CardContent>
           </Card>
 
-          {/* Privacy Principles */}
+          {/* Privacy Principles - Key concepts in card format */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Data Security Principle */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white group hover:bg-white/15 transition-all duration-300">
               <CardHeader className="pb-4">
                 <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition-colors">
@@ -95,6 +126,7 @@ export default function PrivacyPage() {
               </CardHeader>
             </Card>
 
+            {/* Public Sharing Principle */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white group hover:bg-white/15 transition-all duration-300">
               <CardHeader className="pb-4">
                 <div className="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center group-hover:bg-purple-500/30 transition-colors">
@@ -109,6 +141,7 @@ export default function PrivacyPage() {
               </CardHeader>
             </Card>
 
+            {/* Account Control Principle */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white group hover:bg-white/15 transition-all duration-300">
               <CardHeader className="pb-4">
                 <div className="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center group-hover:bg-green-500/30 transition-colors">
@@ -123,9 +156,9 @@ export default function PrivacyPage() {
             </Card>
           </div>
 
-          {/* Detailed Sections */}
+          {/* Detailed Policy Sections */}
           <div className="space-y-8">
-            {/* Introduction */}
+            {/* Introduction Section */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white">
               <CardHeader>
                 <CardTitle className="text-white text-xl sm:text-2xl flex items-center gap-3">
@@ -146,7 +179,7 @@ export default function PrivacyPage() {
               </CardContent>
             </Card>
 
-            {/* Information We Collect */}
+            {/* Information Collection Section */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white">
               <CardHeader>
                 <CardTitle className="text-white text-xl sm:text-2xl flex items-center gap-3">
@@ -194,7 +227,7 @@ export default function PrivacyPage() {
               </CardContent>
             </Card>
 
-            {/* Publicly Shared Information */}
+            {/* Public Information Section */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white">
               <CardHeader>
                 <CardTitle className="text-white text-xl sm:text-2xl flex items-center gap-3">
@@ -233,7 +266,7 @@ export default function PrivacyPage() {
               </CardContent>
             </Card>
 
-            {/* How We Use Information */}
+            {/* Information Usage Section */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white">
               <CardHeader>
                 <CardTitle className="text-white text-xl sm:text-2xl flex items-center gap-3">
@@ -250,184 +283,40 @@ export default function PrivacyPage() {
                 <ul className="space-y-2 text-white/70">
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                    <span>To provide and maintain our service.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                    <span>To manage your account and profile.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
-                      To display your user-generated content to the public as
-                      intended by the service.
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                    <span>To improve our website and user experience.</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            {/* Your Rights and Data Management */}
-            <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white">
-              <CardHeader>
-                <CardTitle className="text-white text-xl sm:text-2xl flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                    <span className="text-blue-400 font-bold">5</span>
-                  </div>
-                  Your Rights and Data Management
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-white/80 leading-relaxed">
-                  You have the right to access, update, or delete the
-                  information we have on you. You can manage your display name,
-                  username, and bio directly from your account settings page.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Account Deletion and Data Retention */}
-            <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white">
-              <CardHeader>
-                <CardTitle className="text-white text-xl sm:text-2xl flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                    <span className="text-purple-400 font-bold">6</span>
-                  </div>
-                  Account Deletion and Data Retention
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-white/80 leading-relaxed">
-                  We give you full control over your account. If you choose to
-                  delete your account from our authentication provider,{" "}
-                  <strong>Clerk</strong>, this action will trigger a complete
-                  removal of your data from our systems.
-                </p>
-                <p className="text-white/80 leading-relaxed">
-                  Upon account deletion, we will permanently:
-                </p>
-                <ul className="space-y-2 text-white/70">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                    <span>
-                      <strong>Delete your personal data</strong> (display name,
-                      username, bio) from our application databases.
+                      <strong>Account Management:</strong> To create and
+                      maintain your user account and profile.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
-                      <strong>Delete all images and albums</strong> you have
-                      uploaded from our storage provider, Amazon Web Services
-                      (AWS) S3.
+                      <strong>Content Display:</strong> To display your photos
+                      and albums as you&apos;ve configured them.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong>Service Improvement:</strong> To improve our
+                      platform and user experience.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong>Communication:</strong> To respond to your
+                      inquiries and provide support.
                     </span>
                   </li>
                 </ul>
-                <p className="text-white/80 leading-relaxed">
-                  This process is irreversible. Once your data is deleted, it
-                  cannot be recovered.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Data Security */}
-            <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white">
-              <CardHeader>
-                <CardTitle className="text-white text-xl sm:text-2xl flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
-                    <span className="text-green-400 font-bold">7</span>
-                  </div>
-                  Data Security
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-white/80 leading-relaxed">
-                  We are committed to protecting your data. We implement
-                  reasonable security measures to protect your personal
-                  information stored in our database. However, please remember
-                  that no method of transmission over the Internet or method of
-                  electronic storage is 100% secure.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Changes to This Privacy Policy */}
-            <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white">
-              <CardHeader>
-                <CardTitle className="text-white text-xl sm:text-2xl flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
-                    <span className="text-orange-400 font-bold">8</span>
-                  </div>
-                  Changes to This Privacy Policy
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-white/80 leading-relaxed">
-                  We may update our Privacy Policy from time to time. We will
-                  notify you of any changes by posting the new Privacy Policy on
-                  this page and updating the &ldquo;Last Updated&rdquo; date.
-                  You are advised to review this Privacy Policy periodically for
-                  any changes.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Contact Information */}
-            <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white">
-              <CardHeader>
-                <CardTitle className="text-white text-xl sm:text-2xl flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                    <span className="text-blue-400 font-bold">9</span>
-                  </div>
-                  Contact Us
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-white/80 leading-relaxed">
-                  If you have any questions about this Privacy Policy, please
-                  contact us at:
-                </p>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <p className="font-medium text-white">Email</p>
-                    <a
-                      href="mailto:arkalmady@gmail.com"
-                      className="text-blue-400 hover:text-blue-300 transition-colors"
-                    >
-                      arkalmady@gmail.com
-                    </a>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </div>
-
-          {/* CTA Section */}
-          <Card className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-xl border-white/20 text-white text-center">
-            <CardContent className="p-8">
-              <h3 className="text-xl sm:text-2xl font-semibold mb-4">
-                Ready to Get Started?
-              </h3>
-              <p className="text-white/70 mb-6 max-w-md mx-auto">
-                Join thousands of photographers who trust ClarityVue with their
-                precious memories.
-              </p>
-              <Button
-                asChild
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                <Link href="/">Create Your Portfolio</Link>
-              </Button>
-            </CardContent>
-          </Card>
         </div>
       </main>
 
-      {/* Footer */}
+      {/* Footer - Additional navigation and links */}
       <Footer isPrivacyPage={true} />
     </div>
   );

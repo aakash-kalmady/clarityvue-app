@@ -1,3 +1,35 @@
+/**
+ * ImageUploadBox: Drag-and-drop image upload component with real-time feedback.
+ *
+ * This component provides:
+ * - Drag and drop file upload functionality
+ * - File validation (size, type, format)
+ * - Real-time upload progress and status feedback
+ * - Automatic metadata generation
+ * - Error handling and user notifications
+ * - Responsive design for all screen sizes
+ *
+ * Features:
+ * - Visual feedback for drag states
+ * - Upload status indicators (idle, uploading, success, error)
+ * - File size validation (10MB limit)
+ * - Image type validation
+ * - Automatic file processing and storage
+ * - Toast notifications for user feedback
+ * - Auto-reset functionality after upload
+ *
+ * Upload Process:
+ * 1. File validation (size and type)
+ * 2. Pre-signed URL generation
+ * 3. File upload to storage provider
+ * 4. Metadata generation and database save
+ * 5. Success/error feedback and reset
+ *
+ * @param albumId - The ID of the album to upload images to
+ *
+ * @example
+ * <ImageUploadBox albumId="album-123" />
+ */
 "use client";
 
 import { createImage, createImageUrl } from "@/server/actions/images";
@@ -9,7 +41,20 @@ import { UploadCloud, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
 // Define the status types for clear feedback
 type UploadStatus = "idle" | "uploading" | "success" | "error";
 
+/**
+ * Image upload component with drag-and-drop functionality.
+ *
+ * State Management:
+ * - Upload status tracking (idle, uploading, success, error)
+ * - Drag state for visual feedback
+ * - Message display for user communication
+ * - Timer management for auto-reset functionality
+ *
+ * @param props - Component props containing albumId
+ * @returns ImageUploadBox component with upload functionality
+ */
 export default function ImageUploadBox(props: { albumId: string }) {
+  // Configuration constants
   const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
   const { albumId } = useParams();
 
@@ -24,6 +69,18 @@ export default function ImageUploadBox(props: { albumId: string }) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // --- File Processing and Upload Logic ---
+  /**
+   * Processes and uploads a file with comprehensive validation and feedback.
+   *
+   * Steps:
+   * 1. Validate file size and type
+   * 2. Generate pre-signed URL
+   * 3. Upload file to storage
+   * 4. Generate metadata and save to database
+   * 5. Handle success/error feedback
+   *
+   * @param file - The file to upload
+   */
   const processAndUploadFile = async (file: File) => {
     // 1. Validate the file
     if (file.size > MAX_IMAGE_SIZE) {
@@ -82,6 +139,11 @@ export default function ImageUploadBox(props: { albumId: string }) {
   };
 
   // --- UI Feedback Handlers ---
+  /**
+   * Handles successful upload with user feedback and auto-reset.
+   *
+   * @param successMessage - Message to display to user
+   */
   const handleUploadSuccess = (successMessage: string) => {
     setStatus("success");
     setMessage(successMessage);
@@ -89,6 +151,11 @@ export default function ImageUploadBox(props: { albumId: string }) {
     resetTimerRef.current = setTimeout(() => resetComponent(), 1000);
   };
 
+  /**
+   * Handles upload errors with user feedback and auto-reset.
+   *
+   * @param errorMessage - Error message to display to user
+   */
   const handleUploadError = (errorMessage: string) => {
     setStatus("error");
     setMessage(errorMessage);
@@ -96,6 +163,9 @@ export default function ImageUploadBox(props: { albumId: string }) {
     resetTimerRef.current = setTimeout(() => resetComponent(), 2000);
   };
 
+  /**
+   * Resets the component state to idle and clears file input.
+   */
   const resetComponent = () => {
     setStatus("idle");
     setMessage("Click or drag to upload");
@@ -106,23 +176,43 @@ export default function ImageUploadBox(props: { albumId: string }) {
   };
 
   // --- Event Handlers ---
+  /**
+   * Handles drag enter events for visual feedback.
+   *
+   * @param e - Drag event
+   */
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     if (status !== "uploading") setIsDragging(true);
   };
 
+  /**
+   * Handles drag leave events to reset visual state.
+   *
+   * @param e - Drag event
+   */
   const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
   };
 
+  /**
+   * Handles drag over events to allow drop functionality.
+   *
+   * @param e - Drag event
+   */
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation(); // Necessary to allow the drop event
   };
 
+  /**
+   * Handles file drop events and initiates upload.
+   *
+   * @param e - Drop event
+   */
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -135,6 +225,11 @@ export default function ImageUploadBox(props: { albumId: string }) {
     }
   };
 
+  /**
+   * Handles file selection from input element.
+   *
+   * @param e - Change event from file input
+   */
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     if (status === "uploading") return;
     const file = e.target.files?.[0];
@@ -144,6 +239,11 @@ export default function ImageUploadBox(props: { albumId: string }) {
   };
 
   // --- Render correct icon based on status ---
+  /**
+   * Renders the appropriate icon based on current upload status.
+   *
+   * @returns Status-specific icon component
+   */
   const StatusIcon = () => {
     switch (status) {
       case "uploading":
@@ -182,6 +282,7 @@ export default function ImageUploadBox(props: { albumId: string }) {
       onDrop={handleDrop}
       onClick={() => status !== "uploading" && fileInputRef.current?.click()}
     >
+      {/* Hidden file input for click-to-upload functionality */}
       <input
         ref={fileInputRef}
         type="file"
@@ -190,11 +291,14 @@ export default function ImageUploadBox(props: { albumId: string }) {
         onChange={handleFileSelect}
       />
 
+      {/* Upload interface with status-based content */}
       <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4">
+        {/* Status icon */}
         <div className="flex items-center justify-center">
           <StatusIcon />
         </div>
 
+        {/* Status message and instructions */}
         <div className="text-center space-y-2">
           <p
             className={`text-base sm:text-lg font-medium ${

@@ -1,3 +1,31 @@
+/**
+ * LandingPage: Public landing page component for unauthenticated users.
+ *
+ * This component provides:
+ * - Hero section with compelling headline and description
+ * - Feature highlights with icons and descriptions
+ * - Step-by-step getting started guide
+ * - Animated background elements and particles
+ * - Call-to-action for user registration
+ * - Responsive design for all screen sizes
+ *
+ * Features:
+ * - Animated floating particles and background orbs
+ * - Staggered entrance animations
+ * - Glassmorphism styling with backdrop blur
+ * - Interactive hover effects
+ * - Gradient text animations
+ * - Responsive grid layouts
+ * - Feature showcase with color-coded icons
+ *
+ * Sections:
+ * - Navigation bar with sign-in/sign-up buttons
+ * - Hero section with main headline and features
+ * - Getting started guide with step-by-step process
+ * - Footer with additional links
+ *
+ * @returns Landing page component for unauthenticated users
+ */
 import { Button } from "./ui/button";
 import Link from "next/link";
 import {
@@ -16,7 +44,20 @@ import {
 import PublicNavBar from "./PublicNavBar";
 import Footer from "./Footer";
 
+/**
+ * Landing page component that showcases the app to unauthenticated users.
+ *
+ * Layout:
+ * - Animated background with floating elements
+ * - Navigation bar with authentication buttons
+ * - Hero section with features and CTA
+ * - Getting started guide with steps
+ * - Footer with additional links
+ *
+ * @returns Landing page with animated elements and call-to-action
+ */
 export default function LandingPage() {
+  // Step-by-step guide for new users
   const steps = [
     {
       icon: <UserPlus className="w-6 h-6 text-blue-400 shrink-0" />,
@@ -66,6 +107,7 @@ export default function LandingPage() {
     },
   ];
 
+  // Key features to highlight
   const features = [
     { icon: Camera, text: "High-Quality Uploads", color: "blue" },
     { icon: Shield, text: "Secure & Private", color: "purple" },
@@ -78,7 +120,7 @@ export default function LandingPage() {
       {/* Enhanced Animated Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20" />
 
-      {/* Floating orbs */}
+      {/* Floating orbs with different animation durations */}
       <div
         className="absolute top-20 left-4 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 bg-purple-500/30 rounded-full blur-3xl animate-pulse"
         style={{
@@ -104,7 +146,7 @@ export default function LandingPage() {
         }}
       />
 
-      {/* Static Floating Particles */}
+      {/* Static Floating Particles - Creates dynamic movement */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {Array.from({ length: 15 }, (_, i) => {
           const left = `${(i * 7) % 100}%`;
@@ -127,7 +169,7 @@ export default function LandingPage() {
         })}
       </div>
 
-      {/* Navigation */}
+      {/* Navigation Bar */}
       <PublicNavBar />
 
       {/* Hero Section with enhanced animations */}

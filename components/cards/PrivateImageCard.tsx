@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, memo } from "react";
+import { useState, useTransition } from "react";
 import { Trash2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { deleteImage } from "@/server/actions/images";
@@ -19,21 +19,73 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-const PrivateImageCard = memo(function PrivateImageCard({
+/**
+ * PrivateImageCard Component
+ *
+ * A card component that displays a single image in private album views with edit/delete actions.
+ * This component is used when users are viewing their own albums and provides functionality
+ * to view images in full size and delete them with confirmation.
+ *
+ * Features:
+ * - Hover-based action button display
+ * - Image deletion with confirmation dialog
+ * - Full-size image viewing in new tab
+ * - Responsive design with galaxy theme styling
+ * - Smooth animations and transitions
+ * - Error handling with toast notifications
+ * - Loading states for delete operations
+ * - Proper image optimization with Next.js Image component
+ *
+ * Props:
+ * @param {Object} image - Image data object
+ * @param {string} image.id - Unique image identifier
+ * @param {string} image.imageUrl - Image URL for display
+ * @param {string} image.altText - Alt text for accessibility
+ * @param {string} albumId - ID of the album containing this image
+ *
+ * State Management:
+ * - isDeletePending: Tracks delete operation loading state
+ * - isHovered: Controls action button visibility
+ * - isDialogOpen: Manages confirmation dialog state
+ *
+ * Event Handlers:
+ * - handleDelete: Performs image deletion with error handling
+ * - handleDeleteClick: Opens confirmation dialog
+ * - Mouse enter/leave: Controls hover state
+ *
+ * Usage Examples:
+ *
+ * <PrivateImageCard
+ *   image={{
+ *     id: "img-123",
+ *     imageUrl: "https://example.com/photo.jpg",
+ *     altText: "Sunset over mountains"
+ *   }}
+ *   albumId="album-456"
+ * />
+ *
+ * @returns {JSX.Element} A card component displaying an image with edit/delete actions
+ */
+export default function PrivateImageCard({
   image,
   albumId,
 }: {
-  image: {
-    id: string;
-    imageUrl: string;
-    altText: string;
-  };
+  image: { id: string; imageUrl: string; altText: string };
   albumId: string;
 }) {
+  // ===== STATE MANAGEMENT =====
   const [isDeletePending, startDeleteTransition] = useTransition();
   const [isHovered, setIsHovered] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // ===== DELETE HANDLER =====
+  /**
+   * Handles the image deletion process
+   * - Calls the server action to delete the image
+   * - Provides user feedback via toast notifications
+   * - Handles errors and displays appropriate messages
+   * - Closes the confirmation dialog after completion
+   */
   const handleDelete = async () => {
     console.log("Delete button clicked for image:", image.id);
     setIsDialogOpen(false);
@@ -61,6 +113,13 @@ const PrivateImageCard = memo(function PrivateImageCard({
     });
   };
 
+  // ===== DIALOG HANDLER =====
+  /**
+   * Handles the delete button click event
+   * - Prevents default link behavior
+   * - Stops event propagation
+   * - Opens the confirmation dialog
+   */
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -68,13 +127,14 @@ const PrivateImageCard = memo(function PrivateImageCard({
     setIsDialogOpen(true);
   };
 
+  // ===== RENDER =====
   return (
     <div
       className="relative group aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 border border-slate-600/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-blue-500/20"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image */}
+      {/* Image Container */}
       <div className="relative w-full h-full">
         <Image
           src={image.imageUrl}
@@ -86,11 +146,11 @@ const PrivateImageCard = memo(function PrivateImageCard({
           quality={75}
         />
 
-        {/* Overlay */}
+        {/* Hover Overlay */}
         <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/40 transition-all duration-300" />
       </div>
 
-      {/* Action Buttons */}
+      {/* Action Buttons Container */}
       <div
         className={`absolute inset-0 flex items-center justify-center gap-2 transition-all duration-300 ${
           isHovered ? "opacity-100" : "opacity-0"
@@ -108,7 +168,7 @@ const PrivateImageCard = memo(function PrivateImageCard({
           </Link>
         </Button>
 
-        {/* Delete Button */}
+        {/* Delete Button with Confirmation Dialog */}
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
             <Button
@@ -121,6 +181,8 @@ const PrivateImageCard = memo(function PrivateImageCard({
               <Trash2 className="h-4 w-4" />
             </Button>
           </AlertDialogTrigger>
+
+          {/* Delete Confirmation Dialog */}
           <AlertDialogContent className="bg-slate-900/95 border border-slate-600/50 backdrop-blur-xl">
             <AlertDialogHeader>
               <AlertDialogTitle className="text-slate-100">
@@ -151,6 +213,4 @@ const PrivateImageCard = memo(function PrivateImageCard({
       </div>
     </div>
   );
-});
-
-export default PrivateImageCard;
+}

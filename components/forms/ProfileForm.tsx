@@ -22,17 +22,63 @@ import { Loader2, User, AtSign, FileText } from "lucide-react";
 import { z } from "zod";
 import Link from "next/link";
 
+/**
+ * ProfileForm Component
+ *
+ * A form component for creating and editing user profiles in the ClarityVue photo portfolio app.
+ * This component handles both profile creation for new users and profile updates for existing users,
+ * with different UI states and behaviors based on the mode.
+ *
+ * Features:
+ * - Dual mode: Create new profiles or edit existing ones
+ * - Form validation using React Hook Form and Zod schema
+ * - Real-time form state tracking (dirty state)
+ * - Responsive design with galaxy theme styling
+ * - Error handling and user feedback via toast notifications
+ * - Icon-enhanced form fields for better UX
+ * - Conditional cancel button (only shown in edit mode)
+ *
+ * Props:
+ * @param {Object} profile - Optional profile object for edit mode
+ * @param {string} profile.displayName - User's display name
+ * @param {string} profile.username - Unique username for public profile URL
+ * @param {string} profile.bio - User's biography/description
+ *
+ * Form Fields:
+ * - Display Name: User's full name (visible on public profile)
+ * - Username: Unique identifier for public profile URL
+ * - Biography: Personal description and photography style info
+ *
+ * Usage Examples:
+ *
+ * // Create new profile
+ * <ProfileForm />
+ *
+ * // Edit existing profile
+ * <ProfileForm profile={{
+ *   displayName: "Jane Doe",
+ *   username: "janedoe",
+ *   bio: "Professional photographer specializing in landscape photography"
+ * }} />
+ *
+ * @returns {JSX.Element} A form component with profile creation/editing functionality
+ */
 export default function ProfileForm({
   profile,
 }: {
-  profile?: {
-    displayName: string;
-    username: string;
-    bio: string;
-  };
+  profile?: { displayName: string; username: string; bio: string };
 }) {
+  // ===== ROUTING & NAVIGATION =====
   const router = useRouter();
 
+  // ===== FORM SUBMISSION HANDLER =====
+  /**
+   * Handles form submission for both create and edit modes
+   * - Determines appropriate server action (createProfile or updateProfile)
+   * - Provides user feedback via toast notifications
+   * - Handles errors and displays them in the form
+   * - Redirects to dashboard after successful submission
+   */
   async function onSubmit(data: z.infer<typeof ProfileFormSchema>) {
     const action = profile == null ? createProfile : updateProfile;
     try {
@@ -48,6 +94,13 @@ export default function ProfileForm({
     }
   }
 
+  // ===== FORM CONFIGURATION =====
+  /**
+   * React Hook Form configuration with Zod validation
+   * - Sets up form with appropriate default values
+   * - Uses Zod resolver for validation
+   * - Handles both create and edit modes
+   */
   const form = useForm<z.infer<typeof ProfileFormSchema>>({
     resolver: zodResolver(ProfileFormSchema),
     defaultValues: profile
@@ -63,9 +116,12 @@ export default function ProfileForm({
 
   const { isDirty } = form.formState;
 
+  // ===== RENDER =====
   return (
     <div className="w-full max-w-2xl mx-auto p-4 sm:p-6">
+      {/* Main Form Container */}
       <div className="bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 backdrop-blur-xl border border-slate-600/50 rounded-2xl shadow-2xl shadow-slate-900/50 p-4 sm:p-6 lg:p-8">
+        {/* Header Section */}
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-100 drop-shadow-lg">
             {profile ? "Edit Profile" : "Create Your Profile"}
@@ -76,14 +132,18 @@ export default function ProfileForm({
               : "Set up your profile to get started with ClarityVue."}
           </p>
         </div>
+
+        {/* Form Component */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Show root error if any */}
+            {/* Error Display */}
             {form.formState.errors.root && (
               <div className="p-4 rounded-lg bg-red-600/10 border border-red-500/30 text-red-300 text-sm">
                 {form.formState.errors.root.message}
               </div>
             )}
+
+            {/* Display Name Field */}
             <FormField
               control={form.control}
               name="displayName"
@@ -108,6 +168,8 @@ export default function ProfileForm({
                 </FormItem>
               )}
             />
+
+            {/* Username Field */}
             <FormField
               control={form.control}
               name="username"
@@ -132,6 +194,8 @@ export default function ProfileForm({
                 </FormItem>
               )}
             />
+
+            {/* Biography Field */}
             <FormField
               control={form.control}
               name="bio"
@@ -156,7 +220,10 @@ export default function ProfileForm({
                 </FormItem>
               )}
             />
+
+            {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              {/* Submit Button */}
               <Button
                 disabled={form.formState.isSubmitting || !isDirty}
                 type="submit"
@@ -178,6 +245,8 @@ export default function ProfileForm({
                   </>
                 )}
               </Button>
+
+              {/* Cancel Button (Edit Mode Only) */}
               {profile && (
                 <Button
                   disabled={form.formState.isSubmitting}

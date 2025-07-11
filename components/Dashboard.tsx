@@ -1,3 +1,33 @@
+/**
+ * Dashboard: Main user dashboard component for authenticated users.
+ *
+ * This component provides:
+ * - User profile header with greeting and member info
+ * - Action buttons for profile editing and album creation
+ * - Statistics cards showing albums, images, and public profile
+ * - Album grid with empty state handling
+ * - Responsive design for all screen sizes
+ *
+ * Features:
+ * - Animated entrance effects with staggered timing
+ * - Glassmorphism styling with backdrop blur
+ * - Interactive hover effects and transitions
+ * - Profile image with ring styling
+ * - Member since date calculation
+ * - Public profile link generation
+ * - Empty state with call-to-action
+ *
+ * @param profile - User profile object containing display info and dates
+ * @param albums - Array of user's albums with metadata
+ * @param totalImages - Total count of images across all albums
+ *
+ * @example
+ * <Dashboard
+ *   profile={{ id: "123", displayName: "John Doe", username: "john", imageUrl: "url", createdAt: new Date() }}
+ *   albums={[{ id: "1", title: "Vacation", description: "Summer pics", imageUrl: "url" }]}
+ *   totalImages={25}
+ * />
+ */
 import { Button } from "./ui/button";
 import {
   UserPen,
@@ -13,39 +43,48 @@ import Link from "next/link";
 import AlbumCard from "./cards/AlbumCard";
 import { Card } from "./ui/card";
 
-interface Profile {
-  id: string;
-  clerkUserId: string;
-  displayName: string;
-  username: string;
-  bio: string;
-  imageUrl: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface Album {
-  id: string;
-  clerkUserId: string;
-  imageUrl: string;
-  createdAt: Date;
-  updatedAt: Date;
-  title: string;
-  description: string;
-  albumOrder: number;
-}
-
-interface DashboardProps {
-  profile: Profile;
-  albums: Album[];
-  totalImages: number;
-}
-
+/**
+ * Main dashboard component that displays user overview and album management.
+ *
+ * Layout:
+ * - Header section with profile info and action buttons
+ * - Statistics cards showing key metrics
+ * - Albums section with grid or empty state
+ * - Staggered animations for visual appeal
+ *
+ * @param profile - User profile data for display
+ * @param albums - User's album collection
+ * @param totalImages - Total image count across all albums
+ * @returns Dashboard component with user overview and album management
+ */
 export default function Dashboard({
   profile,
   albums,
   totalImages,
-}: DashboardProps) {
+}: {
+  profile: {
+    id: string;
+    clerkUserId: string;
+    displayName: string;
+    username: string;
+    bio: string;
+    imageUrl: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  albums: {
+    id: string;
+    clerkUserId: string;
+    imageUrl: string;
+    createdAt: Date;
+    updatedAt: Date;
+    title: string;
+    description: string;
+    albumOrder: number;
+  }[];
+  totalImages: number;
+}) {
+  // Calculate member since date for display
   const memberSince = new Date(profile.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -54,14 +93,19 @@ export default function Dashboard({
 
   return (
     <div className="p-4 sm:p-6 space-y-8">
-      {/* Header Section */}
+      {/* Profile Header Section - User greeting and action buttons */}
       <div className="relative transition-all duration-1000 delay-200 opacity-0 animate-[fadeIn_1s_ease-out_0.2s_forwards]">
+        {/* Glassmorphism background overlay */}
         <div
           className="absolute inset-0 rounded-2xl bg-gradient-to-br from-slate-900/80 via-blue-900/40 to-indigo-900/60 backdrop-blur-2xl border border-slate-700/50 shadow-2xl"
           style={{ zIndex: 0 }}
         />
+
+        {/* Header content with responsive layout */}
         <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6 p-6 rounded-2xl z-10">
+          {/* Left side: Profile image and user info */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+            {/* Profile image with ring styling */}
             <div className="relative w-16 h-16 lg:w-20 lg:h-20 flex-shrink-0">
               <Image
                 src={profile.imageUrl}
@@ -70,6 +114,8 @@ export default function Dashboard({
                 alt="Profile"
               />
             </div>
+
+            {/* User greeting and member info */}
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-2 drop-shadow-lg wrap-anywhere">
                 Hi, {profile.displayName}! 👋
@@ -80,7 +126,10 @@ export default function Dashboard({
               </p>
             </div>
           </div>
+
+          {/* Right side: Action buttons */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {/* Edit Profile button */}
             <Button
               variant="outline"
               size="sm"
@@ -92,6 +141,8 @@ export default function Dashboard({
                 Edit Profile
               </Link>
             </Button>
+
+            {/* Create Album button with gradient styling */}
             <Button
               className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-slate-100 text-base shadow-xl transition-all duration-300 hover:scale-105"
               asChild
@@ -105,8 +156,9 @@ export default function Dashboard({
         </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Statistics Cards Section - Key metrics display */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 transition-all duration-1000 delay-400 opacity-0 animate-[fadeIn_1s_ease-out_0.4s_forwards]">
+        {/* Total Albums Card */}
         <Card className="group bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 border border-slate-600/50 backdrop-blur-xl shadow-2xl hover:shadow-blue-500/20 hover:scale-[1.03] transition-all duration-300 hover:border-slate-500/70">
           <div className="px-5">
             <div className="flex items-center gap-2 text-base text-slate-200 mb-2">
@@ -121,6 +173,8 @@ export default function Dashboard({
             <p className="text-slate-400 text-sm">Photo collections</p>
           </div>
         </Card>
+
+        {/* Total Images Card */}
         <Card className="group bg-gradient-to-br from-slate-800/60 via-indigo-900/30 to-purple-900/40 border border-slate-600/50 backdrop-blur-xl shadow-2xl hover:shadow-purple-500/20 hover:scale-[1.03] transition-all duration-300 hover:border-slate-500/70">
           <div className="px-5">
             <div className="flex items-center gap-2 text-base text-slate-200 mb-2">
@@ -135,6 +189,8 @@ export default function Dashboard({
             <p className="text-slate-400 text-sm">Uploaded photos</p>
           </div>
         </Card>
+
+        {/* Public Profile Card */}
         <Card className="group bg-gradient-to-br from-slate-800/60 via-purple-900/30 to-blue-900/40 border border-slate-600/50 backdrop-blur-xl shadow-2xl hover:shadow-cyan-500/20 hover:scale-[1.03] transition-all duration-300 hover:border-slate-500/70 sm:col-span-2 lg:col-span-1">
           <div className="px-5">
             <div className="flex items-center gap-2 text-base text-slate-200 mb-2">
@@ -155,11 +211,12 @@ export default function Dashboard({
         </Card>
       </div>
 
-      {/* Divider above Albums Section */}
-
-      {/* Albums Section */}
+      {/* Albums Section - User's album collection */}
       <div className="transition-all duration-1000 delay-800 opacity-0 mb-8 animate-[fadeIn_1s_ease-out_0.8s_forwards]">
+        {/* Decorative divider */}
         <div className="w-full h-1 bg-gradient-to-r from-slate-600/80 via-blue-600/80 to-indigo-600/80 rounded-full mb-4 opacity-0 animate-[fadeIn_1s_ease-out_0.6s_forwards]" />
+
+        {/* Section header with title and count */}
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-slate-100 drop-shadow-lg">
             Your Albums
@@ -172,11 +229,14 @@ export default function Dashboard({
           </div>
         </div>
 
+        {/* Albums grid or empty state */}
         {albums.length === 0 ? (
+          /* Empty state when user has no albums */
           <div className="text-center py-12">
             <div className="relative">
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-slate-800/60 via-blue-900/30 to-indigo-900/40 backdrop-blur-xl border border-slate-600/50 shadow-xl"></div>
               <div className="relative p-8">
+                {/* Empty state icon */}
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-700/50 flex items-center justify-center">
                   <svg
                     className="w-8 h-8 text-slate-400"
@@ -192,6 +252,8 @@ export default function Dashboard({
                     />
                   </svg>
                 </div>
+
+                {/* Empty state text */}
                 <h3 className="text-xl font-semibold text-slate-200 mb-2">
                   No albums yet
                 </h3>
@@ -199,6 +261,8 @@ export default function Dashboard({
                   Create your first album to start sharing your photos with the
                   world.
                 </p>
+
+                {/* Call-to-action button */}
                 <div className="mt-6">
                   <Button
                     className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-slate-100 shadow-xl transition-all duration-300 hover:scale-105"
@@ -214,6 +278,7 @@ export default function Dashboard({
             </div>
           </div>
         ) : (
+          /* Albums grid with staggered animations */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {albums.map((album, index) => (
               <div
@@ -226,10 +291,7 @@ export default function Dashboard({
                 }}
               >
                 <AlbumCard
-                  title={album.title}
-                  description={album.description}
-                  albumId={album.id}
-                  imageUrl={album.imageUrl}
+                  album={album}
                   isPrivate={true}
                   username={profile.username}
                 />

@@ -1,3 +1,23 @@
+/**
+ * Root Layout: The main layout component that wraps the entire application.
+ *
+ * This component provides:
+ * - Global font configuration (Geist Sans and Geist Mono)
+ * - Clerk authentication provider setup
+ * - Theme provider configuration
+ * - Global metadata and viewport settings
+ * - Progress bar and toast notifications
+ * - Dark theme as default
+ *
+ * Features:
+ * - Server-side rendering support
+ * - SEO optimization with metadata
+ * - PWA capabilities with Apple Web App settings
+ * - Responsive viewport configuration
+ * - Global styling with gradient backgrounds
+ *
+ * @param children - React components to be rendered within the layout
+ */
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -7,6 +27,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 
+// Font configuration for the application
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -17,6 +38,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/**
+ * Global metadata configuration for SEO and PWA capabilities.
+ *
+ * Includes:
+ * - Page title and description
+ * - Keywords for search engines
+ * - Author information
+ * - Apple Web App settings
+ * - Icon configuration
+ */
 export const metadata: Metadata = {
   title: "ClarityVue",
   description:
@@ -47,6 +78,15 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Viewport configuration for responsive design and PWA support.
+ *
+ * Settings:
+ * - Device width scaling
+ * - Disabled user scaling for consistent experience
+ * - Theme color for browser UI
+ * - Viewport fit for mobile devices
+ */
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -56,6 +96,16 @@ export const viewport: Viewport = {
   themeColor: "#0f172a",
 };
 
+/**
+ * Root layout component that wraps the entire application.
+ *
+ * Provides:
+ * - Clerk authentication context
+ * - Theme provider for dark/light mode
+ * - Progress bar for navigation feedback
+ * - Toast notifications system
+ * - Global styling with gradient backgrounds
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -71,12 +121,14 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900`}
         >
+          {/* Theme provider for dark/light mode support */}
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
+            {/* Progress bar for navigation feedback */}
             <NextTopLoader
               color="#3b82f6"
               initialPosition={0.08}
@@ -88,6 +140,8 @@ export default function RootLayout({
               speed={200}
               shadow="0 0 10px #3b82f6,0 0 5px #3b82f6"
             />
+
+            {/* Toast notification system */}
             <Toaster
               position="top-center"
               theme="dark"
@@ -100,6 +154,8 @@ export default function RootLayout({
                 },
               }}
             />
+
+            {/* Main application content */}
             {children}
           </ThemeProvider>
         </body>

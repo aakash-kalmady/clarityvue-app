@@ -1,8 +1,46 @@
 import Image from "next/image";
 import Link from "next/link";
-import { memo } from "react";
 
-const PublicImageCard = memo(function PublicImageCard({
+/**
+ * PublicImageCard Component
+ *
+ * A simple card component that displays a single image in public album and profile views.
+ * This component is used when displaying images to public visitors and provides
+ * a clean, minimal interface for viewing images in full size.
+ *
+ * Features:
+ * - Simple, clean design for public viewing
+ * - Full-size image viewing in new tab
+ * - Proper image optimization with Next.js Image component
+ * - Responsive sizing with appropriate breakpoints
+ * - Hover effects for better user interaction
+ * - Lazy loading for performance optimization
+ *
+ * Props:
+ * @param {Object} image - Image data object
+ * @param {string} image.id - Unique image identifier
+ * @param {string} image.imageUrl - Image URL for display
+ * @param {string} image.altText - Alt text for accessibility
+ *
+ * Design Considerations:
+ * - Minimal interface suitable for public viewing
+ * - No edit/delete actions (public users can't modify content)
+ * - Focus on image display and viewing experience
+ * - Consistent with public album/profile aesthetic
+ *
+ * Usage Examples:
+ *
+ * <PublicImageCard
+ *   image={{
+ *     id: "img-123",
+ *     imageUrl: "https://example.com/photo.jpg",
+ *     altText: "Sunset over mountains"
+ *   }}
+ * />
+ *
+ * @returns {JSX.Element} A simple card component displaying an image for public viewing
+ */
+export default function PublicImageCard({
   image,
 }: {
   image: {
@@ -31,6 +69,4 @@ const PublicImageCard = memo(function PublicImageCard({
       </Link>
     </div>
   );
-});
-
-export default PublicImageCard;
+}
