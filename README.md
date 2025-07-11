@@ -1,4 +1,4 @@
-# ClarityVue ✨
+# ClarityVue 📷
 
 A modern, scalable photo portfolio platform built with cutting-edge web technologies. Designed for photographers and creators to showcase their work with enterprise-level reliability and performance.
 
