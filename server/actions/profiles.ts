@@ -30,9 +30,11 @@ export async function createProfile(
     await db
       .insert(ProfileTable)
       .values({ ...data, imageUrl: user.imageUrl, clerkUserId: user.id });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If any error occurs, throw a new error with a readable message
-    throw new Error(`Error: ${error.message || error}`);
+    throw new Error(
+      `Error: ${error instanceof Error ? error.message : String(error)}`
+    );
   } finally {
     // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");
@@ -66,9 +68,13 @@ export async function updateProfile(
         "Profile not found or user not authorized to update this profile."
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If any error occurs, throw a new error with a readable message
-    throw new Error(`Failed to update profile: ${error.message || error}`);
+    throw new Error(
+      `Failed to update profile: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
   } finally {
     // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");
@@ -109,9 +115,13 @@ export async function deleteProfile(userId: string): Promise<void> {
     if (rowCount === 0) {
       throw new Error("Profile not found.");
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If any error occurs, throw a new error with a readable message
-    throw new Error(`Failed to delete profile: ${error.message || error}`);
+    throw new Error(
+      `Failed to delete profile: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
   } finally {
     // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");

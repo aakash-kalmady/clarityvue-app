@@ -497,4 +497,70 @@
   .animate-bounce {
     animation: bounce 1s infinite;
   }
+
+  /* Landing page specific animations */
+  .landing-fade-in {
+    opacity: 0;
+    transform: translateY(32px) scale(0.95);
+    transition: all 700ms ease-out;
+  }
+
+  .landing-fade-in.animate-in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .landing-slide-in-right {
+    opacity: 0;
+    transform: translateX(-48px) scale(0.95);
+    transition: all 800ms ease-out;
+  }
+
+  .landing-slide-in-right.animate-in {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  .landing-scale-in {
+    opacity: 0;
+    transform: scale(0.75);
+    transition: all 1000ms ease-out;
+  }
+
+  .landing-scale-in.animate-in {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Staggered landing animations */
+  .landing-stagger-1 {
+    transition-delay: 0.1s;
+  }
+  .landing-stagger-2 {
+    transition-delay: 0.2s;
+  }
+  .landing-stagger-3 {
+    transition-delay: 0.3s;
+  }
+  .landing-stagger-4 {
+    transition-delay: 0.4s;
+  }
+  .landing-stagger-5 {
+    transition-delay: 0.5s;
+  }
+  .landing-stagger-6 {
+    transition-delay: 0.6s;
+  }
+  .landing-stagger-7 {
+    transition-delay: 0.7s;
+  }
+  .landing-stagger-8 {
+    transition-delay: 0.8s;
+  }
+  .landing-stagger-9 {
+    transition-delay: 0.9s;
+  }
+  .landing-stagger-10 {
+    transition-delay: 1s;
+  }
 }

@@ -1,5 +1,6 @@
 import { getProfile } from "@/server/actions/profiles";
 import { getAlbums } from "@/server/actions/albums";
+import { getUserImageCount } from "@/server/actions/images";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import Dashboard from "@/components/Dashboard";
@@ -12,6 +13,9 @@ export default async function Page() {
   if (!profile) return redirect("/profile/new");
 
   const albums = await getAlbums(profile.clerkUserId);
+  const totalImages = await getUserImageCount(profile.clerkUserId);
 
-  return <Dashboard profile={profile} albums={albums} />;
+  return (
+    <Dashboard profile={profile} albums={albums} totalImages={totalImages} />
+  );
 }

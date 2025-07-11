@@ -1,5 +1,5 @@
 {
-  "id": "20042f70-be72-4fa9-8983-1dc1d2bd1f01",
+  "id": "698053c9-34ad-4775-bc95-df4570670196",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -17,13 +17,13 @@
         },
         "title": {
           "name": "title",
-          "type": "text",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
         "description": {
           "name": "description",
-          "type": "text",
+          "type": "varchar(150)",
           "primaryKey": false,
           "notNull": true
         },
@@ -41,7 +41,7 @@
         },
         "imageUrl": {
           "name": "imageUrl",
-          "type": "text",
+          "type": "varchar(2000)",
           "primaryKey": false,
           "notNull": true
         },
@@ -103,19 +103,19 @@
         },
         "imageUrl": {
           "name": "imageUrl",
-          "type": "text",
+          "type": "varchar(2000)",
           "primaryKey": false,
           "notNull": true
         },
         "altText": {
           "name": "altText",
-          "type": "text",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
         "caption": {
           "name": "caption",
-          "type": "text",
+          "type": "varchar(150)",
           "primaryKey": false,
           "notNull": true
         },
@@ -187,26 +187,26 @@
         },
         "displayName": {
           "name": "displayName",
-          "type": "text",
+          "type": "varchar(70)",
           "primaryKey": false,
           "notNull": true
         },
         "username": {
           "name": "username",
-          "type": "text",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
         "bio": {
           "name": "bio",
-          "type": "text",
+          "type": "varchar(150)",
           "primaryKey": false,
           "notNull": true,
           "default": "'Welcome to my profile!'"
         },
         "imageUrl": {
           "name": "imageUrl",
-          "type": "text",
+          "type": "varchar(2000)",
           "primaryKey": false,
           "notNull": true
         },

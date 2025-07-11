@@ -1,9 +1,9 @@
 "use server";
 
 import { db } from "@/drizzle/db";
-import { ImageTable } from "@/drizzle/schema";
+import { ImageTable, AlbumTable } from "@/drizzle/schema";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 import { ImageFormSchema } from "../schema/images";
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
@@ -102,9 +102,13 @@ export async function deleteImage(
         );
       }
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If any error occurs, throw a new error with a readable message
-    throw new Error(`Failed to delete image: ${error.message || error}`);
+    throw new Error(
+      `Failed to delete image: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
   } finally {
     // Revalidate the `/album/${albumId}` path to ensure the page fetches fresh data after the database operation
     revalidatePath(`/album/${albumId}`);
@@ -120,6 +124,23 @@ export async function getImages(albumId: string): Promise<Image[]> {
   });
 
   return event;
+}
+
+// This function gets the total image count for a user across all their albums
+export async function getUserImageCount(clerkUserId: string): Promise<number> {
+  try {
+    // Query to count all images that belong to albums owned by the user
+    const result = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(ImageTable)
+      .innerJoin(AlbumTable, eq(ImageTable.albumId, AlbumTable.id))
+      .where(eq(AlbumTable.clerkUserId, clerkUserId));
+
+    return result[0]?.count || 0;
+  } catch (error: unknown) {
+    console.error("Error getting user image count:", error);
+    return 0;
+  }
 }
 
 // This function creates a new image in the database after validating the input data
@@ -140,9 +161,11 @@ export async function createImage(
 
     // Attempt to insert the validated image data into the database, linking it to the parent album
     await db.insert(ImageTable).values({ ...data, albumId: albumId });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If any error occurs during the process, throw a new error with a readable message
-    throw new Error(`Error: ${error.message || error}`);
+    throw new Error(
+      `Error: ${error instanceof Error ? error.message : String(error)}`
+    );
   } finally {
     // Revalidate the `/album/${albumIds}` path to ensure the page fetches fresh data after the database operation
     revalidatePath(`/album/${albumId}`);
@@ -177,8 +200,10 @@ export async function deleteImages(albumId: string): Promise<void> {
       // Attempt to delete the images from the AWS S3 bucket
       await s3Client.send(deleteCommand);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If any error occurs during the process, throw a new error with a readable message
-    throw new Error(`Error: ${error.message || error}`);
+    throw new Error(
+      `Error: ${error instanceof Error ? error.message : String(error)}`
+    );
   }
 }

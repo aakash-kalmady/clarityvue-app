@@ -80,8 +80,9 @@ export async function createAlbum(
     await db.insert(AlbumTable).values({ ...data, clerkUserId: userId });
   } catch (error: unknown) {
     // If any error occurs during the process, throw a new error with a readable message
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new Error(`Error: ${errorMessage}`);
+    throw new Error(
+      `Error: ${error instanceof Error ? error.message : String(error)}`
+    );
   } finally {
     // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");
@@ -118,8 +119,11 @@ export async function updateAlbum(
     }
   } catch (error: unknown) {
     // If any error occurs, throw a new error with a readable message
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new Error(`Failed to update album: ${errorMessage}`);
+    throw new Error(
+      `Failed to update album: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
   } finally {
     // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");
@@ -147,8 +151,11 @@ export async function deleteAlbum(
     await deleteImages(albumId);
   } catch (error: unknown) {
     // If any error occurs, throw a new error with a readable message
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new Error(`Failed to delete album: ${errorMessage}`);
+    throw new Error(
+      `Failed to delete album: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
   } finally {
     // Revalidate the '/dashboard' path to ensure the page fetches fresh data after the database operation
     revalidatePath("/dashboard");

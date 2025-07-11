@@ -38,10 +38,14 @@ interface Album {
 interface DashboardProps {
   profile: Profile;
   albums: Album[];
+  totalImages: number;
 }
 
-export default function Dashboard({ profile, albums }: DashboardProps) {
-  const totalImages = 0; // Placeholder - would need to query images table for each album
+export default function Dashboard({
+  profile,
+  albums,
+  totalImages,
+}: DashboardProps) {
   const memberSince = new Date(profile.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
