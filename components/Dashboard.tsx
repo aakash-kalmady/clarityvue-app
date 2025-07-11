@@ -112,6 +112,7 @@ export default function Dashboard({
                 fill
                 className="rounded-full ring-4 ring-slate-600/50 shadow-2xl transition-all duration-300 hover:scale-105"
                 alt="Profile"
+                layout="fill"
               />
             </div>
 
