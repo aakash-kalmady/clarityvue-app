@@ -62,17 +62,16 @@ export default function Dashboard({
         />
         <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6 p-6 rounded-2xl z-10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-            <div className="relative flex-shrink-0">
+            <div className="relative w-16 h-16 lg:w-20 lg:h-20 flex-shrink-0">
               <Image
                 src={profile.imageUrl}
-                width={60}
-                height={60}
-                className="sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full ring-4 ring-slate-600/50 shadow-2xl transition-all duration-300 hover:scale-105"
+                fill
+                className="rounded-full ring-4 ring-slate-600/50 shadow-2xl transition-all duration-300 hover:scale-105"
                 alt="Profile"
               />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-2 drop-shadow-lg">
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-2 drop-shadow-lg wrap-anywhere">
                 Hi, {profile.displayName}! 👋
               </h1>
               <p className="text-slate-300 flex items-center gap-2 text-base">
@@ -148,7 +147,7 @@ export default function Dashboard({
               variant="outline"
               size="sm"
               asChild
-              className="w-full text-base border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 h-10 transition-all duration-300 hover:scale-105 rounded-xl font-semibold"
+              className="w-full text-base border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 text-slate-200 h-10 rounded-xl font-semibold"
             >
               <Link href={`/u/${profile.username}`}>View Profile</Link>
             </Button>

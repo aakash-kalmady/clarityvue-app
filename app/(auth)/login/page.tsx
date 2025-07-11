@@ -25,7 +25,41 @@ export default function LoginPage() {
         ))}
       </div>
       {/* Centered Clerk SignIn */}
-      <SignIn routing="hash" />
+      <SignIn
+        routing="hash"
+        appearance={{
+          elements: {
+            card: "bg-white/20 backdrop-blur-2xl border border-white/30 shadow-2xl",
+            formButtonPrimary:
+              "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:to-purple-700 text-white font-bold transition-all duration-300",
+            headerTitle: "text-white drop-shadow-lg",
+            headerSubtitle: "text-white/80",
+            socialButtonsBlockButton:
+              "bg-white/30 text-white hover:bg-white/40",
+            dividerText: "text-white/70",
+            footer: "bg-white/10 backdrop-blur-xl border-t border-white/20",
+            footerAction: "text-white/90",
+            footerActionLink: "text-pink-400 hover:text-pink-300",
+            cardFooter:
+              "bg-white/10 backdrop-blur-xl border-t border-white/20 text-white/70",
+            formFieldInput: "bg-white/30 text-white placeholder-white/70",
+            formFieldLabel: "text-white/90",
+            formFieldInputShowPasswordButton: "text-white",
+            formFieldInputErrorText: "text-pink-400",
+            identityPreview: "bg-white/20 text-white",
+            identityPreviewEditButton: "text-blue-400",
+            formResendCodeLink: "text-blue-400",
+            formFieldSuccessText: "text-green-400",
+          },
+          variables: {
+            colorPrimary: "#a21caf", // fuchsia-700
+            colorBackground: "rgba(30, 27, 75, 0.3)",
+            colorText: "#fff",
+            colorInputBackground: "rgba(255,255,255,0.15)",
+            colorInputText: "#fff",
+          },
+        }}
+      />
     </main>
   );
 }

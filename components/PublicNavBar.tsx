@@ -16,7 +16,7 @@ export default function PublicNavBar() {
             alt="Logo"
           />
         </div>
-        <span className="text-lg sm:text-xl font-bold text-white bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+        <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
           ClarityVue
         </span>
       </div>

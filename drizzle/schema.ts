@@ -19,7 +19,7 @@ const updatedAt = timestamp()
 export const ProfileTable = pgTable("profiles", {
   id: uuid().primaryKey().defaultRandom(),
   clerkUserId: text().notNull(),
-  displayName: varchar({ length: 70 }).notNull(),
+  displayName: varchar({ length: 50 }).notNull(),
   username: varchar({ length: 50 }).notNull().unique(),
   bio: varchar({ length: 150 }).notNull().default("Welcome to my profile!"),
   imageUrl: varchar({ length: 2000 }).notNull(),

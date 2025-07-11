@@ -8,7 +8,6 @@ import Link from "next/link";
 import {
   User,
   Plus,
-  Eye,
   Home,
   ArrowLeftToLine,
   ArrowRightToLine,
@@ -70,18 +69,6 @@ const PrivateNavBar = memo(function PrivateNavBar({
             </Button>
           </Link>
 
-          {/* Profile - icon only on very small screens */}
-          <Link href="/profile/edit">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white hover:bg-white/10 text-sm px-2 sm:px-3 h-10 min-w-0"
-            >
-              <User className="w-4 h-4 sm:mr-2 flex-shrink-0" />
-              <span className="hidden sm:inline truncate">Profile</span>
-            </Button>
-          </Link>
-
           {/* View Profile - show on all screens but with different styling */}
           {profile && (
             <Link href={`/u/${profile.username}`}>
@@ -90,8 +77,8 @@ const PrivateNavBar = memo(function PrivateNavBar({
                 size="sm"
                 className="text-white hover:bg-white/10 text-sm px-2 sm:px-3 h-10 min-w-0"
               >
-                <Eye className="w-4 h-4 sm:mr-2 flex-shrink-0" />
-                <span className="hidden sm:inline truncate">View</span>
+                <User className="w-4 h-4 sm:mr-2 flex-shrink-0" />
+                <span className="hidden sm:inline truncate">Profile</span>
               </Button>
             </Link>
           )}
@@ -99,7 +86,30 @@ const PrivateNavBar = memo(function PrivateNavBar({
           {/* User Button - smaller on mobile */}
           <SignedIn>
             <div className="ml-1 flex-shrink-0">
-              <UserButton />
+              <UserButton
+                appearance={{
+                  elements: {
+                    userButtonPopoverCard:
+                      "bg-white/30 backdrop-blur-xl border border-white/20 shadow-2xl",
+                    userButtonPopoverActionButton:
+                      "text-slate-900 hover:bg-white/40",
+                    userButtonPopoverActionButtonIcon: "text-slate-900",
+                    userButtonPopoverActionButtonText: "text-slate-900",
+                    userButtonPopoverFooter: "text-slate-700",
+                    userButtonPopoverHeader: "text-slate-900",
+                    userButtonPopoverHeaderTitle: "text-slate-900",
+                    userButtonPopoverHeaderSubtitle: "text-slate-700",
+                    userButtonPopoverActionButton__manageAccount:
+                      "text-blue-600",
+                    userButtonPopoverActionButton__signOut: "text-pink-600",
+                  },
+                  variables: {
+                    colorPrimary: "#6366f1",
+                    colorBackground: "rgba(255,255,255,0.3)",
+                    colorText: "#0f172a",
+                  },
+                }}
+              />
             </div>
           </SignedIn>
         </div>
@@ -111,7 +121,7 @@ const PrivateNavBar = memo(function PrivateNavBar({
   const DesktopSidebar = () => (
     <div className="hidden lg:flex relative bg-white/5 backdrop-blur-xl border-r border-white/10 flex-col transition-all duration-300">
       {/* Logo Section */}
-      <div className={"border-b border-white/10 py-3 px-2 "}>
+      <div className={"border-b border-white/10 py-4 px-2 "}>
         {isCollapsed ? (
           <div className="flex flex-col items-center justify-between">
             <Link
@@ -155,7 +165,7 @@ const PrivateNavBar = memo(function PrivateNavBar({
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 p-2 space-y-5">
+      <nav className="flex-1 flex flex-col gap-2 p-2">
         {isCollapsed ? (
           <Link href="/dashboard">
             <Button
@@ -202,29 +212,6 @@ const PrivateNavBar = memo(function PrivateNavBar({
           </Link>
         )}
 
-        {isCollapsed ? (
-          <Link href="/profile/edit">
-            <Button
-              size={"sm"}
-              variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-center"
-            >
-              <User className="w-5 h-5" />
-            </Button>
-          </Link>
-        ) : (
-          <Link href="/profile/edit">
-            <Button
-              size={"sm"}
-              variant="ghost"
-              className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-start px-2"
-            >
-              <User className=" mr-2 w-5 h-5" />
-              <span className="truncate">Profile</span>
-            </Button>
-          </Link>
-        )}
-
         {profile &&
           (isCollapsed ? (
             <Link href={`/u/${profile.username}`}>
@@ -233,7 +220,7 @@ const PrivateNavBar = memo(function PrivateNavBar({
                 variant="ghost"
                 className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-center"
               >
-                <Eye className="w-5 h-5" />
+                <User className="w-5 h-5" />
               </Button>
             </Link>
           ) : (
@@ -243,8 +230,8 @@ const PrivateNavBar = memo(function PrivateNavBar({
                 variant="ghost"
                 className="w-full flex text-white hover:bg-white/10 hover:text-white text-base justify-start px-2"
               >
-                <Eye className="mr-2 w-5 h-5" />
-                <span className="truncate">Public Profile</span>
+                <User className="mr-2 w-5 h-5" />
+                <span className="truncate">Profile</span>
               </Button>
             </Link>
           ))}
@@ -258,7 +245,29 @@ const PrivateNavBar = memo(function PrivateNavBar({
           }`}
         >
           <SignedIn>
-            <UserButton />
+            <UserButton
+              appearance={{
+                elements: {
+                  userButtonPopoverCard:
+                    "bg-white/30 backdrop-blur-xl border border-white/20 shadow-2xl",
+                  userButtonPopoverActionButton:
+                    "text-slate-900 hover:bg-white/40",
+                  userButtonPopoverActionButtonIcon: "text-slate-900",
+                  userButtonPopoverActionButtonText: "text-slate-900",
+                  userButtonPopoverFooter: "text-slate-700",
+                  userButtonPopoverHeader: "text-slate-900",
+                  userButtonPopoverHeaderTitle: "text-slate-900",
+                  userButtonPopoverHeaderSubtitle: "text-slate-700",
+                  userButtonPopoverActionButton__manageAccount: "text-blue-600",
+                  userButtonPopoverActionButton__signOut: "text-pink-600",
+                },
+                variables: {
+                  colorPrimary: "#6366f1",
+                  colorBackground: "rgba(255,255,255,0.3)",
+                  colorText: "#0f172a",
+                },
+              }}
+            />
           </SignedIn>
           {!isCollapsed && (
             <div className="ml-2 min-w-0 flex flex-col items-start justify-center">
