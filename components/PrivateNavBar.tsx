@@ -163,12 +163,13 @@ export default function PrivateNavBar({
   const DesktopSidebar = () => (
     <div className="hidden lg:flex relative bg-white/5 backdrop-blur-xl border-r border-white/10 flex-col transition-all duration-300">
       {/* Logo Section with collapse toggle */}
-      <div className={"border-b border-white/10 py-4 px-2 "}>
+      <div className={"border-b border-white/10 py-4 "}>
         {isCollapsed ? (
           <div className="flex flex-col items-center justify-between">
             <Link
               href="/dashboard"
               className="flex justify-center items-center"
+              title="Dashboard"
             >
               <Image
                 src="/assets/logo.svg"
@@ -182,14 +183,15 @@ export default function PrivateNavBar({
             <button
               onClick={toggleCollapsed}
               className="mt-4 text-white/60 hover:text-white transition-colors flex justify-center items-center"
+              title="Toggle Sidebar"
             >
               <ArrowRightToLine />
             </button>
           </div>
         ) : (
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-start">
             <Button asChild variant="link">
-              <Link href="/dashboard" className="flex items-center gap-2">
+              <Link href="/dashboard">
                 <span className="text-xl font-bold text-white truncate">
                   ClarityVue
                 </span>
@@ -210,7 +212,7 @@ export default function PrivateNavBar({
       <nav className="flex-1 flex flex-col gap-2 p-2">
         {/* Dashboard Link */}
         {isCollapsed ? (
-          <Link href="/dashboard">
+          <Link href="/dashboard" title="Home">
             <Button
               size={"sm"}
               variant="ghost"
@@ -234,7 +236,7 @@ export default function PrivateNavBar({
 
         {/* Create Album Link */}
         {isCollapsed ? (
-          <Link href="/album/new">
+          <Link href="/album/new" title="Create Album">
             <Button
               size={"sm"}
               variant="ghost"
@@ -259,7 +261,7 @@ export default function PrivateNavBar({
         {/* Profile Link - conditional rendering */}
         {profile &&
           (isCollapsed ? (
-            <Link href={`/u/${profile.username}`}>
+            <Link href={`/u/${profile.username}`} title="View Profile">
               <Button
                 size={"sm"}
                 variant="ghost"
@@ -285,8 +287,8 @@ export default function PrivateNavBar({
       {/* User Section with profile information */}
       <div className="p-2 border-t">
         <div
-          className={`flex flex-row items-center p-2 rounded-full bg-white/5  ${
-            isCollapsed ? "justify-center" : "justify-start"
+          className={`flex flex-row items-center p-2 rounded-2xl  ${
+            isCollapsed ? "justify-center" : "justify-start bg-white/5"
           }`}
         >
           <SignedIn>
