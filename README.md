@@ -48,8 +48,6 @@ The application uses a well-structured relational database design with proper in
 
 ![Database Schema](/public/assets/schema.svg)
 
-_Replace the image path above with your actual database schema diagram. You can create this using tools like dbdiagram.io, Lucidchart, or any ERD tool._
-
 ### Key Database Features
 
 - **Optimized Indexing**: Strategic indexes for efficient query performance
