@@ -2,7 +2,7 @@
 
 import { db } from "@/drizzle/db";
 import { ProfileTable } from "@/drizzle/schema";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { ProfileFormSchema } from "../schema/profiles";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
@@ -47,20 +47,20 @@ export async function updateProfile(
 ): Promise<void> {
   try {
     // Authenticate the user
-    const user = await currentUser();
+    const { userId } = await auth();
     // Validate the incoming data against the profile form schema
     const { success, data } = ProfileFormSchema.safeParse(unsafeData);
 
     // If validation fails or the user is not authenticated, throw an error
-    if (!success || !user) {
+    if (!success || !userId) {
       throw new Error("Invalid profile data or user not authenticated.");
     }
 
     // Attempt to update the profile in the database
     const { rowCount } = await db
       .update(ProfileTable)
-      .set({ ...data, imageUrl: user.imageUrl }) // Update with validated data
-      .where(eq(ProfileTable.clerkUserId, user.id)); // Ensure user owns the event
+      .set({ ...data }) // Update with validated data
+      .where(eq(ProfileTable.clerkUserId, userId)); // Ensure user owns the event
 
     // If no profile was updated (either not found or not owned by the user), throw an error
     if (rowCount === 0) {

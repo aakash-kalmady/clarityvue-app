@@ -138,8 +138,11 @@ export async function getUserImageCount(clerkUserId: string): Promise<number> {
 
     return result[0]?.count || 0;
   } catch (error: unknown) {
-    console.error("Error getting user image count:", error);
-    return 0;
+    throw new Error(
+      `Failed to get image count: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
   }
 }
 

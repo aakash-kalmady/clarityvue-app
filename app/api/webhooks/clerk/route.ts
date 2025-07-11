@@ -3,6 +3,10 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { deleteAlbum, getAlbums } from "@/server/actions/albums";
 import { deleteProfile } from "@/server/actions/profiles";
+import { db } from "@/drizzle/db";
+import { ProfileTable } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -67,7 +71,27 @@ export async function POST(req: Request) {
       await deleteProfile(id);
     } catch (error: unknown) {
       return new Response(
-        `Error occured while deleting user data ${
+        `Error occured while deleting user data: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+        {
+          status: 500,
+        }
+      );
+    }
+  } else if (evt.type === "user.updated") {
+    const { id, image_url } = evt.data;
+
+    try {
+      // Update the user's profile in your database
+      await db
+        .update(ProfileTable)
+        .set({ imageUrl: image_url })
+        .where(eq(ProfileTable.clerkUserId, id));
+      revalidatePath("/dashboard");
+    } catch (error) {
+      return new Response(
+        `Error updating profile image URL: ${
           error instanceof Error ? error.message : String(error)
         }`,
         {
