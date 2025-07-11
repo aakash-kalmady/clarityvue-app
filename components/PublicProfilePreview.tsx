@@ -68,7 +68,7 @@ export default async function PublicProfilePreview({
 }) {
   // Get current user ID for owner detection
   const { userId } = await auth();
-  const { username, clerkUserId } = profile;
+  const { username } = profile;
 
   // Generate public URL for sharing
   const publicUrl = `${"https://clarityvue.com"}/u/${username}`;

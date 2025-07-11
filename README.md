@@ -46,7 +46,7 @@ ClarityVue is a comprehensive photo portfolio platform that enables users to cre
 
 The application uses a well-structured relational database design with proper indexing and foreign key relationships.
 
-![Database Schema](https://lucid.app/publicSegments/view/8006c4b8-8a08-4b24-9b02-2d43fc531a3d/image.png)
+![Database Schema](/public/assets/schema.svg)
 
 _Replace the image path above with your actual database schema diagram. You can create this using tools like dbdiagram.io, Lucidchart, or any ERD tool._
 
