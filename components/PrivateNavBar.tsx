@@ -169,7 +169,7 @@ export default function PrivateNavBar({
             <Link
               href="/dashboard"
               className="flex justify-center items-center"
-              title="Dashboard"
+              aria-labelledby="Dashboard"
             >
               <Image
                 src="/assets/logo.svg"
@@ -183,7 +183,7 @@ export default function PrivateNavBar({
             <button
               onClick={toggleCollapsed}
               className="mt-4 text-white/60 hover:text-white transition-colors flex justify-center items-center"
-              title="Toggle Sidebar"
+              aria-labelledby="Toggle Sidebar"
             >
               <ArrowRightToLine />
             </button>
@@ -212,7 +212,7 @@ export default function PrivateNavBar({
       <nav className="flex-1 flex flex-col gap-2 p-2">
         {/* Dashboard Link */}
         {isCollapsed ? (
-          <Link href="/dashboard" title="Home">
+          <Link href="/dashboard" aria-labelledby="Home">
             <Button
               size={"sm"}
               variant="ghost"
@@ -236,7 +236,7 @@ export default function PrivateNavBar({
 
         {/* Create Album Link */}
         {isCollapsed ? (
-          <Link href="/album/new" title="Create Album">
+          <Link href="/album/new" aria-labelledby="Create Album">
             <Button
               size={"sm"}
               variant="ghost"
@@ -261,7 +261,10 @@ export default function PrivateNavBar({
         {/* Profile Link - conditional rendering */}
         {profile &&
           (isCollapsed ? (
-            <Link href={`/u/${profile.username}`} title="View Profile">
+            <Link
+              href={`/u/${profile.username}`}
+              aria-labelledby="View Profile"
+            >
               <Button
                 size={"sm"}
                 variant="ghost"
