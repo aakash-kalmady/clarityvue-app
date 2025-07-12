@@ -123,7 +123,7 @@ The application uses a well-structured relational database design with proper in
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/clarityvue-app.git
+   git clone https://github.com/aakash-kalmady/clarityvue-app.git
    cd clarityvue-app
    ```
 
