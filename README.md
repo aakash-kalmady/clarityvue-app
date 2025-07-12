@@ -1,4 +1,4 @@
-# ClarityVue ✨
+# ClarityVue 📷✨
 
 A modern, scalable photo portfolio platform built with cutting-edge web technologies. Designed for photographers and creators to showcase their work with enterprise-level reliability and performance.
 
@@ -47,8 +47,6 @@ ClarityVue is a comprehensive photo portfolio platform that enables users to cre
 The application uses a well-structured relational database design with proper indexing and foreign key relationships.
 
 ![Database Schema](/public/assets/schema.svg)
-
-_Replace the image path above with your actual database schema diagram. You can create this using tools like dbdiagram.io, Lucidchart, or any ERD tool._
 
 ### Key Database Features
 
@@ -125,7 +123,7 @@ _Replace the image path above with your actual database schema diagram. You can 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/clarityvue-app.git
+   git clone https://github.com/aakash-kalmady/clarityvue-app.git
    cd clarityvue-app
    ```
 
