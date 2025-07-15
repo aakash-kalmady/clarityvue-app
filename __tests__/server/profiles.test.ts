@@ -71,4 +71,13 @@ describe("Profiles server actions", () => {
   it("should delete a profile", async () => {
     await expect(deleteProfile("user1")).resolves.not.toThrow();
   });
+
+  it("should handle 100 concurrent getProfile calls", async () => {
+    const userId = "user1";
+    const promises = Array.from({ length: 100 }, () => getProfile(userId));
+    const results = await Promise.all(promises);
+    results.forEach((result) => {
+      expect(result).toEqual({ id: "1", username: "testuser" });
+    });
+  });
 });
