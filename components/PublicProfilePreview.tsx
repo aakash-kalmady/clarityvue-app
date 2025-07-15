@@ -118,11 +118,10 @@ export default async function PublicProfilePreview({
             <div className="relative p-6 sm:p-8">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8">
                 {/* Profile Image - User's profile picture */}
-                <div className="relative flex-shrink-0">
+                <div className="relative flex-shrink-0 w-[120px] h-[120px]">
                   <Image
                     src={profile.imageUrl}
-                    width={120}
-                    height={120}
+                    fill
                     alt={`${profile.displayName}&apos;s profile`}
                     className="object-cover rounded-full ring-4 ring-white/30 shadow-2xl transition-all duration-300 hover:scale-105"
                   />
