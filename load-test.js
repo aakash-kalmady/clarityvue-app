@@ -7,9 +7,9 @@ import { sleep, check } from "k6";
 // We'll ramp up to 100 users over a minute, stay there for a minute, then ramp down.
 export const options = {
   stages: [
-    { duration: "30s", target: 50 }, // Ramp up to 50 users over 30 seconds
-    { duration: "1m", target: 100 }, // Ramp up from 50 to 100 users over 1 minute
-    { duration: "1m", target: 100 }, // Stay at 100 users for 1 minute
+    { duration: "30s", target: 250 }, // Ramp up to 50 users over 30 seconds
+    { duration: "1m", target: 500 }, // Ramp up from 50 to 100 users over 1 minute
+    { duration: "1m", target: 500 }, // Stay at 100 users for 1 minute
     { duration: "30s", target: 0 }, // Ramp down to 0 users
   ],
   // Define thresholds for success. If these aren't met, the test will fail.
@@ -32,7 +32,9 @@ export default function () {
   sleep(3);
 
   // 3. Visit a sample portfolio page
-  const portfolioRes = http.get(`${BASE_URL}/u/akalmady`); // Change to a real public user on your site
+  const portfolioRes = http.get(
+    `${BASE_URL}/u/akalmady/3a2f788e-237c-4dbd-8d2e-b70280897297`
+  ); // Change to a real public user on your site
   check(portfolioRes, { "portfolio page was 200": (r) => r.status === 200 });
 
   sleep(5);
