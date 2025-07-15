@@ -1,7 +1,7 @@
 "use server";
 
-import { db } from "@/drizzle/db";
-import { ImageTable, AlbumTable } from "@/drizzle/schema";
+import { db } from "../../drizzle/db";
+import { ImageTable, AlbumTable } from "../../drizzle/schema";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { and, asc, eq, sql } from "drizzle-orm";
 import { ImageFormSchema } from "../schema/images";

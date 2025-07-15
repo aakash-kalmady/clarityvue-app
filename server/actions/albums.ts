@@ -1,7 +1,7 @@
 "use server";
 
-import { db } from "@/drizzle/db";
-import { AlbumTable, ProfileTable } from "@/drizzle/schema";
+import { db } from "../../drizzle/db";
+import { AlbumTable, ProfileTable } from "../../drizzle/schema";
 import { auth } from "@clerk/nextjs/server";
 import { and, asc, eq } from "drizzle-orm";
 import { AlbumFormSchema } from "../schema/albums";
