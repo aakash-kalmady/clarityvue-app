@@ -110,6 +110,24 @@ The application uses a well-structured relational database design with proper in
 
 ---
 
+## 📈 Performance Test
+
+To validate the application's scalability and reliability, a load test was conducted simulating **500 concurrent users**. The test focused on core user flows, such as viewing public profiles and fetching album images, to measure performance under heavy traffic.
+
+### 500 Concurrent Users Load Test Summary
+
+The results confirm that the architecture can handle significant user loads with low latency and a near-perfect success rate, ensuring a stable and responsive experience.
+
+| Metric                    | Result   |
+| ------------------------- | -------- |
+| **Average Response Time** | ~200ms   |
+| **Success Rate**          | **100%** |
+| **Total Requests**        | >20,000  |
+
+### Test Result Screenshot
+
+![Performance Test](/public/assets/test.png)
+
 ## 🚀 Getting Started
 
 ### Prerequisites
