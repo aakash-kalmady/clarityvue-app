@@ -84,8 +84,8 @@ export default function Dashboard({
   }[];
   totalImages: number;
 }) {
-  // Calculate member since date for display
-  const memberSince = new Date(profile.createdAt).toLocaleDateString("en-US", {
+  // Calculate user since date for display
+  const userSince = new Date(profile.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -115,14 +115,14 @@ export default function Dashboard({
               />
             </div>
 
-            {/* User greeting and member info */}
+            {/* User greeting and user info */}
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-2 drop-shadow-lg wrap-anywhere">
                 Hi, {profile.displayName}! 👋
               </h1>
               <p className="text-slate-300 flex items-center gap-2 text-base">
                 <Calendar className="w-4 h-4" />
-                Member since {memberSince}
+                User since {userSince}
               </p>
             </div>
           </div>
