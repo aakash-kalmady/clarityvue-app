@@ -27,15 +27,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Shield,
-  Lock,
-  Eye,
-  Users,
-  FileText,
-  CheckCircle,
-  ArrowLeft,
-} from "lucide-react";
+import { Shield, Lock, Eye, Users, FileText, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 
@@ -198,21 +190,18 @@ export default function PrivacyPage() {
                 </p>
                 <ul className="space-y-2 text-white/70">
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
                       <strong>Display Name:</strong> Your publicly visible name
                       on our platform.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
                       <strong>Username:</strong> Your unique identifier for your
                       profile.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
                       <strong>Bio:</strong> The personal description you provide
                       for your profile.
@@ -245,14 +234,12 @@ export default function PrivacyPage() {
                 </p>
                 <ul className="space-y-2 text-white/70">
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
                       <strong>Images and Albums:</strong> Any images or
                       collections of images you upload.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
                       <strong>Names and Descriptions:</strong> The titles and
                       descriptions you assign to your images or albums.
@@ -282,28 +269,24 @@ export default function PrivacyPage() {
                 </p>
                 <ul className="space-y-2 text-white/70">
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
                       <strong>Account Management:</strong> To create and
                       maintain your user account and profile.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
                       <strong>Content Display:</strong> To display your photos
                       and albums as you&apos;ve configured them.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
                       <strong>Service Improvement:</strong> To improve our
                       platform and user experience.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     <span>
                       <strong>Communication:</strong> To respond to your
                       inquiries and provide support.

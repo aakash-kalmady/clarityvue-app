@@ -34,7 +34,6 @@ import {
   Users,
   Shield,
   Zap,
-  CheckCircle,
   UserPlus,
   UserCircle,
   FolderPlus,
@@ -64,8 +63,10 @@ export default function LandingPage() {
       text: (
         <>
           <b>Create an account:</b> Click{" "}
-          <span className="text-blue-400">Get Started</span> and sign up with
-          your email or Google.
+          <a className="text-blue-400" href="/register">
+            Get Started
+          </a>{" "}
+          and sign up with your email or Google.
         </>
       ),
     },
@@ -249,11 +250,9 @@ export default function LandingPage() {
               {/* Platform Features with enhanced animation */}
               <div className="flex items-center justify-center lg:justify-start gap-6 text-white/60 text-xs sm:text-sm opacity-0 animate-[fadeIn_1s_ease-out_1.2s_forwards]">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-400" />
                   <span>Free to use</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-400" />
                   <span>Built with modern tech</span>
                 </div>
               </div>
@@ -298,7 +297,7 @@ export default function LandingPage() {
 
                 {/* Enhanced CTA button */}
                 <div className="mt-6 flex justify-center w-full opacity-0 animate-[fadeIn_1s_ease-out_1.6s_forwards]">
-                  <Link href="/login">
+                  <Link href="/register">
                     <Button className="w-full px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold text-base shadow-lg transition-all duration-300 hover:scale-105">
                       Get Started
                     </Button>
